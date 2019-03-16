@@ -87,13 +87,13 @@
     <ClInclude Include="GUI\GUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Rest\Motorcycle.h">
+    <ClInclude Include="Restaurant\Motorcycle.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
-    <ClInclude Include="Rest\Order.h">
+    <ClInclude Include="Restaurant\Order.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
-    <ClInclude Include="Rest\Restaurant.h">
+    <ClInclude Include="Restaurant\Restaurant.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
     <ClInclude Include="Events\Event.h">
@@ -219,13 +219,13 @@
     <ClCompile Include="GUI\GUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Rest\Motorcycle.cpp">
+    <ClCompile Include="Restaurant\Motorcycle.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
-    <ClCompile Include="Rest\Order.cpp">
+    <ClCompile Include="Restaurant\Order.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
-    <ClCompile Include="Rest\Restaurant.cpp">
+    <ClCompile Include="Restaurant\Restaurant.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
     <ClCompile Include="Events\Event.cpp">

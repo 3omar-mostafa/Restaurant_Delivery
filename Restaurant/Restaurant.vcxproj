@@ -101,9 +101,9 @@
     <ClInclude Include="Generic_DS\Node.h" />
     <ClInclude Include="Generic_DS\Queue.h" />
     <ClInclude Include="GUI\GUI.h" />
-    <ClInclude Include="Rest\Motorcycle.h" />
-    <ClInclude Include="Rest\Order.h" />
-    <ClInclude Include="Rest\Restaurant.h" />
+    <ClInclude Include="Restaurant\Motorcycle.h" />
+    <ClInclude Include="Restaurant\Order.h" />
+    <ClInclude Include="Restaurant\Restaurant.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMUgraphicsLib\CMUgraphics.cpp" />
@@ -145,9 +145,9 @@
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\ArrivalEvent.cpp" />
     <ClCompile Include="GUI\GUI.cpp" />
-    <ClCompile Include="Rest\Motorcycle.cpp" />
-    <ClCompile Include="Rest\Order.cpp" />
-    <ClCompile Include="Rest\Restaurant.cpp" />
+    <ClCompile Include="Restaurant\Motorcycle.cpp" />
+    <ClCompile Include="Restaurant\Order.cpp" />
+    <ClCompile Include="Restaurant\Restaurant.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt" />

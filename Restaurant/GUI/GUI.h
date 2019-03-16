@@ -4,7 +4,7 @@
 #include "..\CMUgraphicsLib\CMUgraphics.h"
 #include "..\Defs.h"
 
-#include "..\Rest\Order.h"
+#include "..\Restaurant\Order.h"
 
 #include <string>
 using namespace std;
