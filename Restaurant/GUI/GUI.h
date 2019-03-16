@@ -14,7 +14,7 @@ class GUI
 
 private:
 	window *pWind;
-	color OrdersClrs[TYPE_CNT];
+	color OrdersClrs[TYPE_COUNT];
 
 
 	// Some Static Constant Data Members: ---------------------
@@ -73,11 +73,11 @@ private:
 	//
 
 	void DrawSingleOrder(Order* pO, int RegionCount) const;		//draws ONE order 
-	void DrawOrders() const;		//drwas ALL orders in OrdListForDrawing
+	void DrawOrders() const;		//draws ALL orders in OrdListForDrawing
 
 
 
-	void DrawString(const int iX, const int iY, const string Text); // prints a message in the passed coordinates
+	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
 	void DrawRestArea() const;	    // draws the restaurant area
 
 	void ClearStatusBar() const;    // clears the status bar
@@ -95,11 +95,11 @@ public:
 	void PrintMessage(string msg) const; // prints a message in the status bar
 
 
-	void UpdateInterface();
+	void UpdateInterface() const;
 	void AddOrderForDrawing(Order* pOrd);	//Adds a new order to the drawing list
 	void ResetDrawingList();		//resets drawing list (should be called every timestep after drawing)
 
-	PROG_MODE getGUIMode() const;			//returns the mode of the program
+	PROGRAM_MODE getGUIMode() const;			//returns the mode of the program
 
 };
 

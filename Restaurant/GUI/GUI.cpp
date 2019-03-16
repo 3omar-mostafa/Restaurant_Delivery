@@ -4,13 +4,13 @@
 GUI::GUI()
 {
 	pWind = new window(WindWidth+15,WindHeight,0,0); 
-	pWind->ChangeTitle("The Restautant");
+	pWind->ChangeTitle("The Restaurant");
 
 	OrderCount = 0;
 
 	//Set color for each order type
-	OrdersClrs[TYPE_NRM] = 	DARKBLUE;	//normal-order color
-	OrdersClrs[TYPE_FROZ] = VIOLET;		//Frozen-order color
+	OrdersClrs[TYPE_NORMAL] = 	DARKBLUE;	//normal-order color
+	OrdersClrs[TYPE_FROZEN] = VIOLET;		//Frozen-order color
 	OrdersClrs[TYPE_VIP] = 	RED;		//VIP-order color					
 
 	ClearStatusBar();
@@ -38,14 +38,14 @@ string GUI::GetString() const
 {
 	string Label;
 	char Key;
-	while(1)
+	while(true)
 	{
 		pWind->WaitKeyPress(Key);
 		if(Key == 27 )	//ESCAPE key is pressed
 			return "";	//returns nothing as user has cancelled label
 		if(Key == 13 )	//ENTER key is pressed
 			return Label;
-		if((Key == 8) && (Label.size() >= 1))	//BackSpace is pressed
+		if((Key == 8) && (!Label.empty()))	//BackSpace is pressed
 			Label.resize(Label.size() -1 );			
 		else
 			Label += Key;
@@ -68,7 +68,7 @@ void GUI::PrintMessage(string msg) const	//Prints a message on status bar
 	                                                                      // to be able to write multi-line
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawString(const int iX, const int iY, const string Text)
+void GUI::DrawString(const int iX, const int iY, const string Text) const
 {
 	pWind->SetPen(DARKRED);
 	pWind->SetFont(18, BOLD , BY_NAME, "Arial");   
@@ -153,25 +153,25 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a pri
 	//It depends on the region and the order distance
 	switch (Region)
 	{
-	case A_REG:
+	case A_REGION:
 		refX = (WindWidth/2 - RestWidth/2);
 		refY = YHalfDrawingArea - OrderHeight; //
 		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
 		y = refY - YPos*OrderHeight - YPos; // YPos
 		break;
-	case B_REG:
+	case B_REGION:
 		refX = (WindWidth/2 + RestWidth/2);
 		refY = YHalfDrawingArea - OrderHeight; //
 		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
 		y = refY - YPos*OrderHeight - YPos; // YPos
 		break;
-	case C_REG:
+	case C_REGION:
 		refX = (WindWidth/2 + RestWidth/2);
 		refY = YHalfDrawingArea + OrderHeight; //
 		x = refX + (DrawDistance-1)*OrderWidth + DrawDistance; //(Distance)
 		y = refY + (YPos-1)*OrderHeight + YPos; // YPos
 		break;
-	case D_REG:
+	case D_REGION:
 		refX = (WindWidth/2 - RestWidth/2);
 		refY = YHalfDrawingArea + OrderHeight; //
 		x = refX - DrawDistance*OrderWidth - DrawDistance; //(Distance)
@@ -200,7 +200,7 @@ void GUI::DrawOrders() const
 {
 
 	//Prepare counter for each region
-	int RegionsCounts[REG_CNT]={0};	//initlaize all counters to zero
+	int RegionsCounts[REGION_COUNT]={0};	//initlaize all counters to zero
 
 	for(int i=0; i<OrderCount; i++)
 	{
@@ -211,7 +211,7 @@ void GUI::DrawOrders() const
 
 }
 
-void GUI::UpdateInterface() 
+void GUI::UpdateInterface() const
 {
 	ClearDrawingArea();
 	DrawRestArea();
@@ -237,16 +237,16 @@ void GUI::ResetDrawingList()
 }
 
 
-PROG_MODE	GUI::getGUIMode() const
+PROGRAM_MODE	GUI::getGUIMode() const
 {
-	PROG_MODE Mode;
+	PROGRAM_MODE Mode;
 	do
 	{
 		PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)DEMO... ");
 		string S = GetString();
-		Mode = (PROG_MODE) (atoi(S.c_str())-1);
+		Mode = (PROGRAM_MODE) (atoi(S.c_str())-1);
 	}
-	while(Mode< 0 || Mode >= MODE_CNT);
+	while(Mode< 0 || Mode >= MODE_COUNT);
 	
 	return Mode;
 }

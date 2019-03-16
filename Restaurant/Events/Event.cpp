@@ -3,18 +3,18 @@
 
 Event::Event(int eTime, int ordID)
 {
-	EventTime = eTime;
-	OrderID	= ordID;
+	eventTime = eTime;
+	orderID	= ordID;
 }
 
 
-int Event::getEventTime()
+int Event::getEventTime() const
 {
-	return EventTime;
+	return eventTime;
 }
-int Event::getOrderID()
+int Event::getOrderID() const
 {
-	return OrderID;
+	return orderID;
 }
 
 

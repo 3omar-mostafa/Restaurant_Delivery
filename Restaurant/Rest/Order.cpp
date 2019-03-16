@@ -1,10 +1,10 @@
 #include "Order.h"
 
-Order::Order(int id, ORD_TYPE r_Type, REGION r_region)
+Order::Order(int id, ORDER_TYPE r_Type, REGION r_region)
 {
 	ID = (id>0&&id<1000)?id:0;	//1<ID<999
 	type = r_Type;
-	Region = r_region;	
+	region = r_region;	
 }
 
 Order::~Order()
@@ -24,15 +24,15 @@ int Order::GetType() const
 
 REGION Order::GetRegion() const
 {
-	return Region;
+	return region;
 }
 
 void Order::SetDistance(int d)
 {
-	Distance = d>0?d:0;
+	distance = d>0?d:0;
 }
 
 int Order::GetDistance() const
 {
-	return Distance;
+	return distance;
 }

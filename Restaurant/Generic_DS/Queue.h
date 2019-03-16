@@ -154,7 +154,7 @@ gets the front of this queue. The operation does not modify the queue.
 
 Input: None.
 Output: The front of the queue.
-return: flase if Queue is empty
+return: false if Queue is empty
 */
 template <typename T>
 bool Queue<T>:: peekFront(T& frntEntry) const 

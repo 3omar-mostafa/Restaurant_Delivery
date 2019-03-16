@@ -12,18 +12,18 @@ Restaurant::Restaurant()
 	pGUI = NULL;
 }
 
-void Restaurant::RunSimulation()
+void Restaurant::runSimulation()
 {
 	pGUI = new GUI;
-	PROG_MODE	mode = pGUI->getGUIMode();
+	PROGRAM_MODE	mode = pGUI->getGUIMode();
 		
 	switch (mode)	//Add a function for each mode in next phases
 	{
-	case MODE_INTR:
+	case MODE_INTERACTIVE:
 		break;
 	case MODE_STEP:
 		break;
-	case MODE_SLNT:
+	case MODE_SILENT:
 		break;
 	case MODE_DEMO:
 		Just_A_Demo();
@@ -35,22 +35,22 @@ void Restaurant::RunSimulation()
 
 
 //////////////////////////////////  Event handling functions   /////////////////////////////
-void Restaurant::AddEvent(Event* pE)	//adds a new event to the queue of events
+void Restaurant::addEvent(Event* pE)	//adds a new event to the queue of events
 {
-	EventsQueue.enqueue(pE);
+	eventsQueue.enqueue(pE);
 }
 
 //Executes ALL events that should take place at current timestep
-void Restaurant::ExecuteEvents(int CurrentTimeStep)
+void Restaurant::executeEvents(int CurrentTimeStep)
 {
 	Event *pE;
-	while( EventsQueue.peekFront(pE) )	//as long as there are more events
+	while( eventsQueue.peekFront(pE) )	//as long as there are more events
 	{
 		if(pE->getEventTime() > CurrentTimeStep )	//no more events at current time
 			return;
 
-		pE->Execute(this);
-		EventsQueue.dequeue(pE);	//remove event from the queue
+		pE->execute(this);
+		eventsQueue.dequeue(pE);	//remove event from the queue
 		delete pE;		//deallocate event object from memory
 	}
 
@@ -103,24 +103,24 @@ void Restaurant::Just_A_Demo()
 		if(i<EventCnt*0.2)	//let 1st 20% of orders be VIP (just for sake of demo)
 			OType = TYPE_VIP;
 		else if(i<EventCnt*0.5)	
-			OType = TYPE_FROZ;	//let next 30% be Frozen
+			OType = TYPE_FROZEN;	//let next 30% be Frozen
 		else
-			OType = TYPE_NRM;	//let the rest be normal
+			OType = TYPE_NORMAL;	//let the rest be normal
 
 		
-		int reg = rand()% REG_CNT;	//randomize region
+		int reg = rand()% REGION_COUNT;	//randomize region
 
 
 		//Randomize event time
 		EvTime += rand()%4;
-		pEv = new ArrivalEvent(EvTime,O_id,(ORD_TYPE)OType,(REGION)reg);
-		AddEvent(pEv);
+		pEv = new ArrivalEvent(EvTime,O_id,(ORDER_TYPE)OType,(REGION)reg);
+		addEvent(pEv);
 
 	}	
 
 	int CurrentTimeStep = 1;
 	//as long as events queue is not empty yet
-	while(!EventsQueue.isEmpty())
+	while(!eventsQueue.isEmpty())
 	{
 		//print current timestep
 		char timestep[10];
@@ -128,7 +128,7 @@ void Restaurant::Just_A_Demo()
 		pGUI->PrintMessage(timestep);
 
 
-		ExecuteEvents(CurrentTimeStep);	//execute all events at current time step
+		executeEvents(CurrentTimeStep);	//execute all events at current time step
 		//The above line may add new orders to the DEMO_Queue
 
 		//Let's draw all arrived orders by passing them to the GUI to draw

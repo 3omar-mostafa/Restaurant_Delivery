@@ -8,15 +8,15 @@
 class ArrivalEvent: public Event
 {
 	//info about the order ralted to arrival event
-	int OrdDistance;	//order distance
-	ORD_TYPE OrdType;		//order type: Normal, Frozen, VIP
-	REGION OrdRegion;  //Region of this order	                
-	double OrdMoney;	//Total order money
+	int orderDistance;	//order distance
+	ORDER_TYPE orderType;		//order type: Normal, Frozen, VIP
+	REGION orderRegion;  //Region of this order	                
+	double orderMoney;	//Total order money
 public:
-	ArrivalEvent(int eTime, int oID, ORD_TYPE oType, REGION reg);
+	ArrivalEvent(int eTime, int oID, ORDER_TYPE oType, REGION reg);
 	//Add more constructors if needed
 	
-	virtual void Execute(Restaurant *pRest);	//override execute function
+	void execute(Restaurant *pRest) override;	//override execute function
 
 };
 

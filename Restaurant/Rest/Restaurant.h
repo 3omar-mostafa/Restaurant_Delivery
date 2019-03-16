@@ -15,7 +15,7 @@ class Restaurant
 {	
 private:
 	GUI *pGUI;
-	Queue<Event*> EventsQueue;	//Queue of all events that will be loaded from file
+	Queue<Event*> eventsQueue;	//Queue of all events that will be loaded from file
 
 	
 	/// ==> 
@@ -31,9 +31,9 @@ public:
 	
 	Restaurant();
 	~Restaurant();
-	void AddEvent(Event* pE);	//adds a new event to the queue of events
-	void ExecuteEvents(int TimeStep);	//executes all events at current timestep
-	void RunSimulation();
+	void addEvent(Event* pE);	//adds a new event to the queue of events
+	void executeEvents(int TimeStep);	//executes all events at current timestep
+	void runSimulation();
 
 	/// ==> 
 	///  DEMO-related functions. Should be removed in phases 1&2
