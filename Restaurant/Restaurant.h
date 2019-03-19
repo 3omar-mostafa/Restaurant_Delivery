@@ -8,7 +8,7 @@
 #include "..\Generic_DS\Queue.h"
 #include "..\Events\Event.h"
 
-
+#include "Motorcycle.h"
 #include "Order.h"
 
 // it is the maestro of the project
@@ -17,14 +17,6 @@ class Restaurant
 private:
 	GUI *pGUI;
 	Queue<Event*> eventsQueue;	//Queue of all events that will be loaded from file
-
-	//1st Idea: 
-	//		A PriorityQueue for Normal + VIP orders
-	//		A Queue for Frozen orders
-	//		Orders of each individual Timestep are added to each Queue in that specific Timestep,
-	//			only sorting the orders of that timestep with respect to each other
-	PriorityQueue<Order*> vnQueue;
-	Queue<Order*> frozenQueue;
 
 	
 	/// ==> 
@@ -35,6 +27,28 @@ private:
 	//
 	// TODO: Add More Data Members As Needed
 	//
+	int autoPromotionLimit;
+
+	//Orders:
+	//	3rd idea: 
+	//		A PriorityQueue for VIP orders.
+	//		A separate Data Structure(queue?) for Normal orders, which handles Auto and Manual Promotion, and cancellation.
+	//		A Queue for Frozen orders.
+	//		Separate Queues for each region.
+	//		Orders of each individual Timestep are added to each Queue in that specific Timestep,
+	//		only sorting the orders of that timestep with respect to each other.	
+	PriorityQueue<Order*> vipQueue[REGION_COUNT];
+	Queue<Order*> normalQueue[REGION_COUNT];
+	Queue<Order*> frozenQueue[REGION_COUNT];
+
+	//Motorcycles:
+	//	1st idea:
+	//		3 PriorityQueues for each type, fastest Motorcycles have the highest priority.
+	//		4 Regions, each region has its own PriorityQueues.
+	PriorityQueue<Motorcycle*>
+		vipMotorQueue[REGION_COUNT],
+		normalMotorQueue[REGION_COUNT],
+		frozenMotorQueue[REGION_COUNT];
 
 public:
 	
@@ -51,10 +65,10 @@ public:
 	Order* getDemoOrder();			//return the front order from demo queue
 	/// ==> 
 
-
 	//
 	// TODO: Add More Member Functions As Needed
 	//
+	bool autoPromote(int currentTimeStep, REGION reg);	//Handles auto-promotion of Normal orders to VIP orders
 
 };
 

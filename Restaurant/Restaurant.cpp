@@ -155,6 +155,21 @@ void Restaurant::AddtoDemoQueue(Order *pOrd)
 	DEMO_Queue.enqueue(pOrd);
 }
 
+bool Restaurant::autoPromote(int currentTimeStep, REGION reg)
+{
+	Order* toBePromoted;
+	if (!normalQueue[reg].peekFront(toBePromoted))
+		return false;
+	if (currentTimeStep - toBePromoted->getArrivalTime() >= autoPromotionLimit)
+	{
+		normalQueue[reg].dequeue(toBePromoted);
+		toBePromoted->promote();
+		vipQueue[reg].enqueue(toBePromoted);
+		return true;
+	}
+	return false;
+}
+
 Order* Restaurant::getDemoOrder()
 {
 	Order* pOrd;

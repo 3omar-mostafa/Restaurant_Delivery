@@ -6,6 +6,7 @@
 class Order
 {
 	void setPriority();
+
 protected:
 	int ID;         //Each order has a unique ID (from 1 --> 999 )
 	ORDER_TYPE type;		//order type: Normal, Frozen, VIP
@@ -37,10 +38,14 @@ public:
 
 	void SetDistance(int d);
 	int GetDistance() const;
-
+		
 	//
 	// TODO: Add More Member Functions As Needed
 	//
+
+	void setType(ORDER_TYPE newType);
+	bool promote(int extraMoney = 0);
+	int getArrivalTime() const;
 
 };
 

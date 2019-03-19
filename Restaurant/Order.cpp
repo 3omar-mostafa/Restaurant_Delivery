@@ -2,6 +2,23 @@
 
 void Order::setPriority()
 {
+	priority = type == TYPE_VIP ? (400.0/arrivalTime + 100.0/distance + 0.1 * totalMoney) : -1;
+}
+
+void Order::setType(ORDER_TYPE newType)
+{
+	type = newType;
+}
+
+bool Order::promote(int extraMoney)
+{
+	if (type == TYPE_VIP || type == TYPE_FROZEN)
+		return false;
+
+	type = TYPE_VIP;
+	totalMoney += extraMoney;
+	setPriority();
+	return true;
 }
 
 Order::Order(int id, ORDER_TYPE r_Type, REGION r_region)
@@ -45,4 +62,9 @@ void Order::SetDistance(int d)
 int Order::GetDistance() const
 {
 	return distance;
+}
+
+int Order::getArrivalTime() const
+{
+	return arrivalTime;
 }
