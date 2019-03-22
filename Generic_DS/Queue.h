@@ -57,6 +57,7 @@ public :
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;	
+	/*void cancellation(int id);*/
 	~Queue();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -107,11 +108,18 @@ bool Queue<T>::enqueue( const T& newEntry)
 	Node<T>* newNodePtr = new Node<T>(newEntry);
 	// Insert the new node
 	if (isEmpty())
+	{
 		frontPtr = newNodePtr; // The queue is empty
+		backPtr = frontPtr;
+		return true;
+	}
 	else
+	{
 		backPtr->setNext(newNodePtr); // The queue was not empty
-	backPtr = newNodePtr; // New node is at back
-	return true ;
+		backPtr = newNodePtr; // New node is at back
+		return true;
+	}
+	return false;
 } // end enqueue
 
 
@@ -126,13 +134,13 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool Queue<T>:: dequeue(T& frntEntry)  
+bool Queue<T>:: dequeue(T& frontEntry)  
 {
 	if(isEmpty())
 		return false;
 
 	Node<T>* nodeToDeletePtr = frontPtr;
-	frntEntry = frontPtr->getItem();
+	frontEntry = frontPtr->getItem();
 	frontPtr = frontPtr->getNext();
 	// Queue is not empty; remove front
 	if (nodeToDeletePtr == backPtr)	 // Special case: one node in queue
@@ -166,7 +174,9 @@ bool Queue<T>:: peekFront(T& frntEntry) const
 	return true;
 
 }
+
 ///////////////////////////////////////////////////////////////////////////////////
+
 
 template <typename T>
 Queue<T>::~Queue()

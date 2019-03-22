@@ -14,6 +14,7 @@ public:
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
+	
 	~PriorityQueue();
 };
 
@@ -160,7 +161,6 @@ bool PriorityQueue<T>::peekFront(T& frntEntry) const
 	return true;
 
 }
-///////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 PriorityQueue<T>::~PriorityQueue()
