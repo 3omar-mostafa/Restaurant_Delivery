@@ -6,6 +6,7 @@
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\PriorityQueue.h"
 #include "..\Generic_DS\Queue.h"
+#include "..\Generic_DS\MixedList.h"
 #include "..\Events\Event.h"
 
 #include "Motorcycle.h"
@@ -32,13 +33,13 @@ private:
 	//Orders:
 	//	3rd idea: 
 	//		A PriorityQueue for VIP orders.
-	//		A separate Data Structure(queue?) for Normal orders, which handles Auto and Manual Promotion, and cancellation.
+	//		A separate Data Structure(queue?)-->(MixedList) for Normal orders, which handles Auto and Manual Promotion, and cancellation.
 	//		A Queue for Frozen orders.
 	//		Separate Queues for each region.
 	//		Orders of each individual Timestep are added to each Queue in that specific Timestep,
 	//		only sorting the orders of that timestep with respect to each other.	
 	PriorityQueue<Order*> vipQueue[REGION_COUNT];
-	Queue<Order*> normalQueue[REGION_COUNT];
+	MixedList<Order*> normalQueue[REGION_COUNT];
 	Queue<Order*> frozenQueue[REGION_COUNT];
 
 	//Motorcycles:
@@ -68,7 +69,16 @@ public:
 	//
 	// TODO: Add More Member Functions As Needed
 	//
-	bool autoPromote(int currentTimeStep, REGION reg);	//Handles auto-promotion of Normal orders to VIP orders
+	void loadFromFile(string fileName);
+
+	void interactiveMode();
+
+	// Promotion functions:
+	bool autoPromoteRegion(int currentTimeStep, REGION reg);	//Handles auto-promotion of Normal orders to VIP orders
+	bool autoPromoteAll(int currentTimeStep);
+
+	// Cancellation functions:
+	bool cancel(int id);
 
 };
 

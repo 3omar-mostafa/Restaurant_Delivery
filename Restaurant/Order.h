@@ -8,7 +8,7 @@ class Order
 	void setPriority();
 
 protected:
-	int ID;         //Each order has a unique ID (from 1 --> 999 )
+	int ID;         //Each order has a unique ID (from 1 --> 999)
 	ORDER_TYPE type;		//order type: Normal, Frozen, VIP
 	REGION region;  //Region of this order
 	int distance;	//The distance (in meters) between the order location and the restaurant 
@@ -29,7 +29,7 @@ public:
 	virtual ~Order();
 
 	int GetID();
-	
+	bool operator==(int right);
 	// Used to sort the elements in the PriorityQueue
 	bool operator>(Order& right);
 
@@ -42,6 +42,7 @@ public:
 	//
 	// TODO: Add More Member Functions As Needed
 	//
+
 
 	void setType(ORDER_TYPE newType);
 	bool promote(int extraMoney = 0);

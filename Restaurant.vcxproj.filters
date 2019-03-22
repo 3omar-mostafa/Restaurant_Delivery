@@ -111,6 +111,15 @@
     <ClInclude Include="Generic_DS\PriorityQueue.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
+    <ClInclude Include="Events\CancellationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PromotionEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\MixedList.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Demo_Main.cpp" />
@@ -235,6 +244,12 @@
       <Filter>Events</Filter>
     </ClCompile>
     <ClCompile Include="Events\ArrivalEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\CancellationEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PromotionEvent.cpp">
       <Filter>Events</Filter>
     </ClCompile>
   </ItemGroup>

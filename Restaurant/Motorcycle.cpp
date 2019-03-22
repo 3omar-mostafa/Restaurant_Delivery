@@ -19,7 +19,6 @@ bool Motorcycle::operator>(Motorcycle & right)
 }
 
 
-
 Motorcycle::~Motorcycle()
 {
 }
