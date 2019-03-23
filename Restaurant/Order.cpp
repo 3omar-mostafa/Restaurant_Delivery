@@ -73,10 +73,3 @@ int Order::getArrivalTime() const
 {
 	return arrivalTime;
 }
-
-template <>
-//Compares the Order objects pointed to by the pointers.
-bool isGreaterThan<Order*>(Order* left, Order* right)
-{
-	return *left > *right;
-}

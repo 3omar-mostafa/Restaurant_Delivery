@@ -29,7 +29,7 @@ void ArrivalEvent::execute(Restaurant* pRest)
 	///For the sake of demo, this function will just create an order and add it to DemoQueue
 	///Remove the next code lines in phase 1&2
 	Order* pOrd = new Order(orderID, orderType, orderRegion);
-	orderIdArray[orderID] = pOrd;
+	pRest->orderOfID(orderID) = pOrd;
 
 	pRest->AddtoDemoQueue(pOrd);
 }

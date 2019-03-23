@@ -6,11 +6,12 @@
 #include "..\GUI\GUI.h"
 #include "..\Generic_DS\PriorityQueue.h"
 #include "..\Generic_DS\Queue.h"
-#include "..\Generic_DS\MixedList.h"
+#include "..\Generic_DS\LinkedList.h"
 #include "..\Events\Event.h"
 
 #include "Motorcycle.h"
 #include "Order.h"
+
 
 // it is the maestro of the project
 class Restaurant  
@@ -51,6 +52,9 @@ private:
 		normalMotorQueue[REGION_COUNT],
 		frozenMotorQueue[REGION_COUNT];
 
+	//Array of Order* to handle cancellations.
+	Order* orderIdArray[MaxPossibleOrdCnt];
+
 public:
 	
 	Restaurant();
@@ -70,12 +74,12 @@ public:
 	// TODO: Add More Member Functions As Needed
 	//
 	void loadFromFile(string fileName);
-
+	Order*& orderOfID(int i);
 	void interactiveMode();
 
 	// Promotion functions:
 	bool autoPromoteRegion(int currentTimeStep, REGION reg);	//Handles auto-promotion of Normal orders to VIP orders
-	bool autoPromoteAll(int currentTimeStep);
+	void autoPromoteAll(int currentTimeStep);
 
 	// Cancellation functions:
 	bool cancel(int id);

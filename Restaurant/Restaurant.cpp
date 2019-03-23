@@ -2,6 +2,20 @@
 #include "..\Events\ArrivalEvent.h"
 #include "..\Events\CancellationEvent.h"
 
+template <typename T>
+//Comparator function which has a specialization to deal with orders.
+bool isGreaterThan(T left, T right)
+{
+	return left > right;
+}
+
+template <>
+//Compares the Order objects pointed to by the pointers.
+bool isGreaterThan<Order*>(Order* left, Order* right)
+{
+	return *left > *right;
+}
+
 
 Restaurant::Restaurant()
 {
@@ -241,6 +255,11 @@ void Restaurant::loadFromFile(string fileName)
 	inFile.close();
 }
 
+Order *& Restaurant::orderOfID(int i)
+{
+	return orderIdArray[i];
+}
+
 bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
 {
 	Order* toBePromoted;
@@ -256,7 +275,7 @@ bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
 	return false;
 }
 
-bool Restaurant::autoPromoteAll(int currentTimeStep)
+void Restaurant::autoPromoteAll(int currentTimeStep)
 {
 	for (int i = 0; i < REGION_COUNT; i++)
 		while (autoPromoteRegion(currentTimeStep, REGION(i)));
@@ -264,7 +283,7 @@ bool Restaurant::autoPromoteAll(int currentTimeStep)
 
 bool Restaurant::cancel(int id)
 {
-	Order* cancelledOrder  = orderIdArray[id];
+	Order* cancelledOrder = orderIdArray[id];
 	for (int i = 0; i < REGION_COUNT; i++)
 	{
 		if (normalQueue[i].remove(cancelledOrder))

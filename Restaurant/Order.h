@@ -50,8 +50,4 @@ public:
 
 };
 
-// Adding all Order* into an array, to be called by their unique IDs.
-Order* orderIdArray[MaxPossibleOrdCnt];
-
-
 #endif

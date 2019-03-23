@@ -36,7 +36,7 @@ LinkedList<T>::LinkedList()
 template<typename T>
 bool LinkedList<T>::isEmpty() const
 {
-	return headPtr;
+	return frontPtr;
 }
 
 
@@ -120,7 +120,7 @@ bool LinkedList<T>::remove(T & removedEntry)
 		{
 			Node<T>* deletedPtr = curPtr->getNext();
 			curPtr->setNext(deletedPtr->getNext());
-			if (backPtr == temp)
+			if (backPtr == deletedPtr)
 				backPtr = curPtr;
 			curPtr->setNext(NULL);
 			delete deletedPtr;

@@ -45,16 +45,8 @@ enum PROGRAM_MODE	//mode of the program interface
 
 template <typename T>
 //Comparator function which has a specialization to deal with orders.
-bool isGreaterThan(T left, T right)
-{
-	return left > right;
-}
-
+bool isGreaterThan(T left, T right);
 
 #define MaxPossibleOrdCnt 999	//arbitrary value
-
-
-
-
 
 #endif
