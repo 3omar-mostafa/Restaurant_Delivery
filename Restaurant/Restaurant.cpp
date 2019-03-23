@@ -73,16 +73,19 @@ Restaurant::~Restaurant()
 void Restaurant::interactiveMode()
 {
 	loadFromFile("input.txt");
-	int CurrentTimeStep = 1;
+	int currentTimeStep = 1;
 	while (!eventsQueue.isEmpty())
 	{
 		//print current timestep
 		char timestep[10];
-		itoa(CurrentTimeStep, timestep, 10);
+		itoa(currentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep);
 
-
-		executeEvents(CurrentTimeStep);	//execute all events at current time step
+		executeEvents(currentTimeStep);	//execute all events at current time step
+		
+		pGUI->UpdateInterface();		
+		pGUI->waitForClick();
+		currentTimeStep++;
 	}
 }
 
@@ -261,10 +264,10 @@ bool Restaurant::autoPromoteAll(int currentTimeStep)
 
 bool Restaurant::cancel(int id)
 {
-	Order* cancelledOrder;
+	Order* cancelledOrder  = orderIdArray[id];
 	for (int i = 0; i < REGION_COUNT; i++)
 	{
-		if (normalQueue[i].remove(id, cancelledOrder))
+		if (normalQueue[i].remove(cancelledOrder))
 			return true;
 	}
 	return false;

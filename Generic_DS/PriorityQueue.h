@@ -19,12 +19,6 @@ public:
 };
 
 
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -83,7 +77,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	}
 
 	// If the new node has a higher priority than the front node
-	if (newNodePtr->getItem() > frontPtr->getItem())
+	if (isGreaterThan(newNodePtr->getItem(), frontPtr->getItem()))
 	{
 		newNodePtr->setNext(frontPtr);
 		frontPtr = newNodePtr;
@@ -94,7 +88,7 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	Node<T> *currPtr = frontPtr;
 	while (currPtr->getNext())
 	{
-		if (newNodePtr->getItem() > currPtr->getNext()->getItem())
+		if (isGreaterThan(newNodePtr->getItem(), currPtr->getNext()->getItem()))
 		{
 			newNodePtr->setNext(currPtr->getNext());
 			currPtr->setNext(newNodePtr);

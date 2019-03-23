@@ -117,7 +117,7 @@
     <ClInclude Include="Events\PromotionEvent.h">
       <Filter>Events</Filter>
     </ClInclude>
-    <ClInclude Include="Generic_DS\MixedList.h">
+    <ClInclude Include="Generic_DS\LinkedList.h">
       <Filter>Generic_DS</Filter>
     </ClInclude>
   </ItemGroup>

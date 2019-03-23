@@ -39,7 +39,7 @@ private:
 	//		Orders of each individual Timestep are added to each Queue in that specific Timestep,
 	//		only sorting the orders of that timestep with respect to each other.	
 	PriorityQueue<Order*> vipQueue[REGION_COUNT];
-	MixedList<Order*> normalQueue[REGION_COUNT];
+	LinkedList<Order*> normalQueue[REGION_COUNT];
 	Queue<Order*> frozenQueue[REGION_COUNT];
 
 	//Motorcycles:
