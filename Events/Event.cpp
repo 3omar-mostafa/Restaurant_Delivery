@@ -7,15 +7,16 @@ Event::Event(int eTime, int ordID)
 	orderID	= ordID;
 }
 
+
 int Event::getEventTime() const
 {
 	return eventTime;
 }
-
 int Event::getOrderID() const
 {
 	return orderID;
 }
+
 
 Event::~Event()
 {

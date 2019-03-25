@@ -1,3 +1,34 @@
-﻿  ArrivalEvent.cpp
-c:\users\omar salama\desktop\resturant_delivery-master\events\arrivalevent.cpp(31): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-  Restaurant.vcxproj -> C:\Users\Omar Salama\Desktop\Resturant_Delivery-master\Debug\Restaurant.exe
+﻿  Demo_Main.cpp
+  CancellationEvent.cpp
+  ArrivalEvent.cpp
+  PromotionEvent.cpp
+  Restaurant.cpp
+c:\users\pc\desktop\resturant_delivery-master\restaurant\restaurant\restaurant.cpp(81): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdlib.h(1323): note: see declaration of 'itoa'
+c:\users\pc\desktop\resturant_delivery-master\restaurant\restaurant\restaurant.cpp(101): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+c:\users\pc\desktop\resturant_delivery-master\restaurant\restaurant\restaurant.cpp(144): warning C4996: 'itoa': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _itoa. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\stdlib.h(1323): note: see declaration of 'itoa'
+c:\users\pc\desktop\resturant_delivery-master\restaurant\generic_ds\mixedlist.h(97): error C2446: '==': no conversion from 'int' to 'T'
+          with
+          [
+              T=Order *
+          ]
+  c:\users\pc\desktop\resturant_delivery-master\restaurant\generic_ds\mixedlist.h(97): note: Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+  c:\users\pc\desktop\resturant_delivery-master\restaurant\generic_ds\mixedlist.h(92): note: while compiling class template member function 'bool MixedList<Order *>::remove(int,T &)'
+          with
+          [
+              T=Order *
+          ]
+  c:\users\pc\desktop\resturant_delivery-master\restaurant\restaurant\restaurant.cpp(267): note: see reference to function template instantiation 'bool MixedList<Order *>::remove(int,T &)' being compiled
+          with
+          [
+              T=Order *
+          ]
+  c:\users\pc\desktop\resturant_delivery-master\restaurant\restaurant\restaurant.h(42): note: see reference to class template instantiation 'MixedList<Order *>' being compiled
+c:\users\pc\desktop\resturant_delivery-master\restaurant\generic_ds\mixedlist.h(107): error C2446: '==': no conversion from 'int' to 'T'
+          with
+          [
+              T=Order *
+          ]
+  c:\users\pc\desktop\resturant_delivery-master\restaurant\generic_ds\mixedlist.h(107): note: Conversion from integral type to pointer type requires reinterpret_cast, C-style cast or function-style cast
+  Generating Code...

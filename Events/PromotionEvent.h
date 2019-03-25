@@ -8,7 +8,6 @@ class PromotionEvent :
 public:
 	PromotionEvent(int eTime, int ordID, double extraMoney);
 	void execute(Restaurant *pRest) override;
-	void readData(ifstream & inFile);
 	~PromotionEvent();
 };
 

@@ -3,27 +3,17 @@
 #include "Node.h"
 
 template <typename T>
-//Comparator function which has a specialization to deal with orders.
-bool isGreaterThan(T left, T right);
-
-template <>
-//Compares the Order objects pointed to by the pointers.
-bool isGreaterThan<Order*>(Order* left, Order* right);
-
-template <typename T>
 class PriorityQueue
 {
 private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
-	int count;
 public:
 	PriorityQueue();
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
-	int getLength() const;
 	
 	~PriorityQueue();
 };
@@ -42,7 +32,7 @@ PriorityQueue<T>::PriorityQueue()
 {
 	backPtr = nullptr;
 	frontPtr = nullptr;
-	count = 0;
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +73,6 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	{
 		frontPtr = newNodePtr;
 		backPtr = newNodePtr;
-		count++;
 		return true;
 	}
 
@@ -92,7 +81,6 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	{
 		newNodePtr->setNext(frontPtr);
 		frontPtr = newNodePtr;
-		count++;
 		return true;
 	}
 
@@ -104,7 +92,6 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 		{
 			newNodePtr->setNext(currPtr->getNext());
 			currPtr->setNext(newNodePtr);
-			count++;
 			return true;
 		}
 		currPtr = currPtr->getNext();
@@ -113,7 +100,6 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	// If the new node has a lower priority than the back node
 	backPtr->setNext(newNodePtr);
 	backPtr = newNodePtr;
-	count++;
 	return true;
 } // end enqueue
 
@@ -144,7 +130,7 @@ bool PriorityQueue<T>::dequeue(T& frntEntry)
 	// Free memory reserved by the dequeued node
 	delete nodeToDeletePtr;
 
-	count--;
+
 	return true;
 
 }
@@ -170,15 +156,8 @@ bool PriorityQueue<T>::peekFront(T& frntEntry) const
 
 }
 
-template<typename T>
-int PriorityQueue<T>::getLength() const
-{
-	return count;
-}
-
 template <typename T>
 PriorityQueue<T>::~PriorityQueue()
 {
 }
-
 #endif

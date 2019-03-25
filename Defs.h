@@ -43,6 +43,10 @@ enum PROGRAM_MODE	//mode of the program interface
 	MODE_COUNT	//number of possible modes
 };
 
+template <typename T>
+//Comparator function which has a specialization to deal with orders.
+bool isGreaterThan(T left, T right);
+
 #define MaxPossibleOrdCnt 999	//arbitrary value
 
 #endif

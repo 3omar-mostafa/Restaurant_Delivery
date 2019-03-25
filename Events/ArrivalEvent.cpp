@@ -8,13 +8,13 @@
 	orderRegion = reg;
 }*/
 
-ArrivalEvent::ArrivalEvent(int eTime, ORDER_TYPE oType, int oID, int oDistance, double oMoney, REGION oRegion) :Event(eTime, oID)
+ArrivalEvent::ArrivalEvent(int eTime, int oID, ORDER_TYPE oType, REGION reg, double oMoney) :Event(eTime, oID)
 {
 	orderType = oType;
-	orderDistance = oDistance;
+	orderRegion = reg;
 	orderMoney = oMoney;
-	orderRegion = oRegion;
 }
+
 
 
 ArrivalEvent::ArrivalEvent() :Event(-1, -1)
@@ -28,11 +28,10 @@ void ArrivalEvent::execute(Restaurant* pRest)
 
 	///For the sake of demo, this function will just create an order and add it to DemoQueue
 	///Remove the next code lines in phase 1&2
-	Order* pOrd = new Order(eventTime, orderType, orderID, orderDistance, orderMoney, orderRegion);
-	pRest->orderOfID(orderID) = pOrd;	//Add to order array
+	Order* pOrd = new Order(orderID, orderType, orderRegion);
+	pRest->orderOfID(orderID) = pOrd;
 
-	//pRest->AddtoDemoQueue(pOrd);
-	pRest->addToActiveQueue(pOrd);
+	pRest->AddtoDemoQueue(pOrd);
 }
 
 void ArrivalEvent::readData(ifstream & inFile)
@@ -50,8 +49,8 @@ void ArrivalEvent::readData(ifstream & inFile)
 		break;
 
 	case 'F':
-		orderType = TYPE_FROZEN;	//kanet normal bardoo
+		orderType = TYPE_NORMAL;
 		break;
 	}
-	orderRegion = REGION(charOrderRegion - 'A');
+	orderRegion = REGION('A' - charOrderRegion);
 }

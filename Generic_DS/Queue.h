@@ -51,14 +51,12 @@ private :
 	
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
-	int count;
 public :
 	Queue();	
 	bool isEmpty() const ;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);  
 	bool peekFront(T& frntEntry)  const;	
-	int getLength() const;
 	/*void cancellation(int id);*/
 	~Queue();
 };
@@ -75,7 +73,6 @@ Queue<T>::Queue()
 {
 	backPtr=nullptr;
 	frontPtr=nullptr;
-	count = 0;
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -114,14 +111,12 @@ bool Queue<T>::enqueue( const T& newEntry)
 	{
 		frontPtr = newNodePtr; // The queue is empty
 		backPtr = frontPtr;
-		count++;
 		return true;
 	}
 	else
 	{
 		backPtr->setNext(newNodePtr); // The queue was not empty
 		backPtr = newNodePtr; // New node is at back
-		count++;
 		return true;
 	}
 	return false;
@@ -154,7 +149,7 @@ bool Queue<T>:: dequeue(T& frontEntry)
 	// Free memory reserved by the dequeued node
 	delete nodeToDeletePtr;
 
-	count--;
+
 	return true;
 
 }
@@ -178,12 +173,6 @@ bool Queue<T>:: peekFront(T& frntEntry) const
 	frntEntry = frontPtr->getItem();
 	return true;
 
-}
-
-template<typename T>
-int Queue<T>::getLength() const
-{
-	return count;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
