@@ -15,7 +15,7 @@ class ArrivalEvent: public Event
 public:
 	//ArrivalEvent(int eTime, int oID, ORDER_TYPE oType, REGION reg);
 	//Add more constructors if needed
-	ArrivalEvent(int eTime, int oID, ORDER_TYPE oType, REGION reg, double oMoney = 0);
+	ArrivalEvent(int eTime, ORDER_TYPE oType, int oID, int oDistance, double oMoney, REGION oRegion);
 	ArrivalEvent();
 
 	void execute(Restaurant *pRest) override;	//override execute function
