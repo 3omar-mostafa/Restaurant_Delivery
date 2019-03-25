@@ -21,10 +21,13 @@ bool Order::promote(int extraMoney)
 	return true;
 }
 
-Order::Order(int id, ORDER_TYPE r_Type, REGION r_region)
+Order::Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Money, REGION r_region)
 {
-	ID = (id > 0 && id < 1000) ? id : 0;	//1<ID<999
+	arrivalTime = r_Time;
 	type = r_Type;
+	ID = (r_ID > 0 && r_ID < 1000) ? r_ID : 0;	//1<ID<999
+	distance = r_Distance;
+	totalMoney = r_Money;
 	region = r_region;
 	setPriority();
 }

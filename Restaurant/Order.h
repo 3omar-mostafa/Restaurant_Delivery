@@ -25,7 +25,7 @@ protected:
 	//
 
 public:
-	Order(int ID, ORDER_TYPE r_Type, REGION r_region);
+	Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Money, REGION r_region);
 	virtual ~Order();
 
 	int GetID();

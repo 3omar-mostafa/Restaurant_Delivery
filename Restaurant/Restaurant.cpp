@@ -2,16 +2,16 @@
 #include "..\Events\ArrivalEvent.h"
 #include "..\Events\CancellationEvent.h"
 
+
 template <typename T>
-//Comparator function which has a specialization to deal with orders.
 bool isGreaterThan(T left, T right)
 {
 	return left > right;
 }
 
-template <>
-//Compares the Order objects pointed to by the pointers.
-bool isGreaterThan<Order*>(Order* left, Order* right)
+template <typename T>
+//Compares the references pointed to by the pointers.
+bool isGreaterThan(T* left, T* right)
 {
 	return *left > *right;
 }
@@ -40,7 +40,7 @@ void Restaurant::runSimulation()
 		break;
 
 	case MODE_DEMO:
-		//Just_A_Demo();
+		Just_A_Demo();
 		break;
 	};
 
@@ -91,102 +91,159 @@ void Restaurant::interactiveMode()
 	while (!eventsQueue.isEmpty())
 	{
 		//print current timestep
-		char timestep[10];
+		/*char timestep[10];
 		itoa(currentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);
+		pGUI->PrintMessage(timestep);*/
 
 		executeEvents(currentTimeStep);	//execute all events at current time step
-		
-		pGUI->UpdateInterface();		
+
+		string regionsData = to_string(currentTimeStep) + " --> ";
+		for (int reg = 0; reg < REGION_COUNT; reg++)
+		{
+			int noActiveOrdersOf[TYPE_COUNT] = { 0, 0, 0 };
+			int noAvailableMotor = 0;
+			noActiveOrdersOf[TYPE_NORMAL] += normalQueue[reg].getLength();
+			noActiveOrdersOf[TYPE_FROZEN] += frozenQueue[reg].getLength();
+			noActiveOrdersOf[TYPE_VIP] += vipQueue[reg].getLength();
+			noAvailableMotor += normalMotorQueue[reg].getLength() + frozenMotorQueue[reg].getLength() + vipMotorQueue[reg].getLength();
+			regionsData += "(";
+			regionsData += char('A' + reg);
+			regionsData += ") " + to_string(noActiveOrdersOf[TYPE_NORMAL]) + "N ";
+			regionsData += to_string(noActiveOrdersOf[TYPE_FROZEN]) + "F ";
+			regionsData += to_string(noActiveOrdersOf[TYPE_VIP]) + "V ";
+			regionsData += to_string(noAvailableMotor) + "Mc  ";
+		}
+		pGUI->PrintMessage(regionsData);
+
+		for (int reg = 0; reg < REGION_COUNT; reg++)
+		{
+			Order* pOrd = 0;
+			normalQueue[reg].pop(pOrd);
+			if (pOrd)
+				pGUI->AddOrderForDrawing(pOrd);
+
+			pOrd = 0;
+			frozenQueue[reg].dequeue(pOrd);
+			if (pOrd)
+				pGUI->AddOrderForDrawing(pOrd);
+
+			pOrd = 0;
+			vipQueue[reg].dequeue(pOrd);
+			if (pOrd)
+				pGUI->AddOrderForDrawing(pOrd);
+		}
+
+		pGUI->UpdateInterface();
 		pGUI->waitForClick();
 		currentTimeStep++;
 	}
+	pGUI->PrintMessage("Simulation over.");
+	pGUI->waitForClick();
 }
 
 //This is just a demo function for project introductory phase
 //It should be removed starting phase 1
 void Restaurant::Just_A_Demo()
 {
+	/*
+		//
+		// THIS IS JUST A DEMO FUNCTION
+		// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
 
-	//
-	// THIS IS JUST A DEMO FUNCTION
-	// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
+		int EventCnt;
+		Order* pOrd;
+		Event* pEv;
+		srand(time(NULL));
 
-	int EventCnt;
-	Order* pOrd;
-	Event* pEv;
-	srand(time(NULL));
+		pGUI->PrintMessage("Just a Demo. Enter EVENTS Count(next phases should read I/P filename):");
+		EventCnt = atoi(pGUI->GetString().c_str());	//get user input as a string then convert to integer
 
-	pGUI->PrintMessage("Just a Demo. Enter EVENTS Count(next phases should read I/P filename):");
-	EventCnt = atoi(pGUI->GetString().c_str());	//get user input as a string then convert to integer
+		pGUI->UpdateInterface();
 
-	pGUI->UpdateInterface();
+		pGUI->PrintMessage("Generating orders randomly... In next phases, orders should be loaded from a file");
 
-	pGUI->PrintMessage("Generating orders randomly... In next phases, orders should be loaded from a file");
+		int EvTime = 0;
 
-	int EvTime = 0;
-
-	//Create Random events
-	//All generated event will be "ArrivalEvents" for the demo
-	for (int i = 0; i < EventCnt; i++)
-	{
-		int O_id = i + 1;
-
-		//Rendomize order type
-		int OType;
-		if (i < EventCnt*0.2)	//let 1st 20% of orders be VIP (just for sake of demo)
-			OType = TYPE_VIP;
-		else if (i < EventCnt*0.5)
-			OType = TYPE_FROZEN;	//let next 30% be Frozen
-		else
-			OType = TYPE_NORMAL;	//let the rest be normal
-
-
-		int reg = rand() % REGION_COUNT;	//randomize region
-
-
-		//Randomize event time
-		EvTime += rand() % 4;
-		pEv = new ArrivalEvent(EvTime, O_id, (ORDER_TYPE)OType, (REGION)reg);
-		addEvent(pEv);
-
-	}
-
-	int CurrentTimeStep = 1;
-	//as long as events queue is not empty yet
-	while (!eventsQueue.isEmpty())
-	{
-		//print current timestep
-		char timestep[10];
-		itoa(CurrentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);
-
-
-		executeEvents(CurrentTimeStep);	//execute all events at current time step
-		//The above line may add new orders to the DEMO_Queue
-
-		//Let's draw all arrived orders by passing them to the GUI to draw
-
-		while (DEMO_Queue.dequeue(pOrd))
+		//Create Random events
+		//All generated event will be "ArrivalEvents" for the demo
+		for (int i = 0; i < EventCnt; i++)
 		{
-			pGUI->AddOrderForDrawing(pOrd);
-			pGUI->UpdateInterface();
+			int O_id = i + 1;
+
+			//Rendomize order type
+			int OType;
+			if (i < EventCnt*0.2)	//let 1st 20% of orders be VIP (just for sake of demo)
+				OType = TYPE_VIP;
+			else if (i < EventCnt*0.5)
+				OType = TYPE_FROZEN;	//let next 30% be Frozen
+			else
+				OType = TYPE_NORMAL;	//let the rest be normal
+
+
+			int reg = rand() % REGION_COUNT;	//randomize region
+
+
+			//Randomize event time
+			EvTime += rand() % 4;
+			pEv = new ArrivalEvent(EvTime, O_id, (ORDER_TYPE)OType, (REGION)reg);
+			addEvent(pEv);
+
 		}
-		Sleep(1000);
-		CurrentTimeStep++;	//advance timestep
-	}
+
+		int CurrentTimeStep = 1;
+		//as long as events queue is not empty yet
+		while (!eventsQueue.isEmpty())
+		{
+			//print current timestep
+			char timestep[10];
+			itoa(CurrentTimeStep, timestep, 10);
+			pGUI->PrintMessage(timestep);
 
 
-	pGUI->PrintMessage("generation done, click to END program");
-	pGUI->waitForClick();
+			executeEvents(CurrentTimeStep);	//execute all events at current time step
+			//The above line may add new orders to the DEMO_Queue
+
+			//Let's draw all arrived orders by passing them to the GUI to draw
+
+			while (DEMO_Queue.dequeue(pOrd))
+			{
+				pGUI->AddOrderForDrawing(pOrd);
+				pGUI->UpdateInterface();
+			}
+			Sleep(1000);
+			CurrentTimeStep++;	//advance timestep
+		}
 
 
+		pGUI->PrintMessage("generation done, click to END program");
+		pGUI->waitForClick();
+
+		*/
 }
 ////////////////
 
 void Restaurant::AddtoDemoQueue(Order *pOrd)
 {
 	DEMO_Queue.enqueue(pOrd);
+}
+
+void Restaurant::addToActiveQueue(Order * pOrd)
+{
+	REGION reg = pOrd->GetRegion();
+	switch (pOrd->GetType())
+	{
+	case TYPE_NORMAL:
+		normalQueue[reg].append(pOrd);
+		break;
+
+	case TYPE_FROZEN:
+		frozenQueue[reg].enqueue(pOrd);
+		break;
+
+	case TYPE_VIP:
+		vipQueue[reg].enqueue(pOrd);
+		break;
+	}
 }
 
 void Restaurant::loadFromFile(string fileName)
@@ -248,11 +305,14 @@ void Restaurant::loadFromFile(string fileName)
 		case 'P':
 			//toBeAdded = new PromotionEvent;
 			break;
+
+		case 'E':
+			inFile.close();
+			return;
 		}
 		toBeAdded->readData(inFile);
 		addEvent(toBeAdded);
 	}
-	inFile.close();
 }
 
 Order *& Restaurant::orderOfID(int i)

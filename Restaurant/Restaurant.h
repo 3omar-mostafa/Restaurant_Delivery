@@ -73,6 +73,7 @@ public:
 	//
 	// TODO: Add More Member Functions As Needed
 	//
+	void addToActiveQueue(Order* pOrd);	//Adds the order to its proper Queue
 	void loadFromFile(string fileName);
 	Order*& orderOfID(int i);
 	void interactiveMode();

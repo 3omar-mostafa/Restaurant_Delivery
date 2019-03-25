@@ -100,12 +100,12 @@
     <ClInclude Include="Events\ArrivalEvent.h" />
     <ClInclude Include="Events\CancellationEvent.h" />
     <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="Events\PromotionEvent.h" />
     <ClInclude Include="Generic_DS\LinkedList.h" />
     <ClInclude Include="Generic_DS\Node.h" />
     <ClInclude Include="Generic_DS\PriorityQueue.h" />
     <ClInclude Include="Generic_DS\Queue.h" />
     <ClInclude Include="GUI\GUI.h" />
-    <ClInclude Include="Events\PromotionEvent.h" />
     <ClInclude Include="Restaurant\Motorcycle.h" />
     <ClInclude Include="Restaurant\Order.h" />
     <ClInclude Include="Restaurant\Restaurant.h" />
@@ -147,11 +147,11 @@
     <ClCompile Include="CMUgraphicsLib\mousequeue.cpp" />
     <ClCompile Include="CMUgraphicsLib\windowinput.cpp" />
     <ClCompile Include="Demo_Main.cpp" />
+    <ClCompile Include="Events\ArrivalEvent.cpp" />
     <ClCompile Include="Events\CancellationEvent.cpp" />
     <ClCompile Include="Events\Event.cpp" />
-    <ClCompile Include="Events\ArrivalEvent.cpp" />
-    <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Events\PromotionEvent.cpp" />
+    <ClCompile Include="GUI\GUI.cpp" />
     <ClCompile Include="Restaurant\Motorcycle.cpp" />
     <ClCompile Include="Restaurant\Order.cpp" />
     <ClCompile Include="Restaurant\Restaurant.cpp" />
@@ -159,6 +159,7 @@
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt" />
     <Text Include="CMUgraphicsLib\Readme.txt" />
+    <Text Include="input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

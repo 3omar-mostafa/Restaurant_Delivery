@@ -87,6 +87,30 @@
     <ClInclude Include="GUI\GUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
+    <ClInclude Include="Events\ArrivalEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\CancellationEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\Event.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PromotionEvent.h">
+      <Filter>Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\LinkedList.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\Node.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\PriorityQueue.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Generic_DS\Queue.h">
+      <Filter>Generic_DS</Filter>
+    </ClInclude>
     <ClInclude Include="Restaurant\Motorcycle.h">
       <Filter>Restaurant</Filter>
     </ClInclude>
@@ -95,30 +119,6 @@
     </ClInclude>
     <ClInclude Include="Restaurant\Restaurant.h">
       <Filter>Restaurant</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\Event.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic_DS\Node.h">
-      <Filter>Generic_DS</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic_DS\Queue.h">
-      <Filter>Generic_DS</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\ArrivalEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic_DS\PriorityQueue.h">
-      <Filter>Generic_DS</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\CancellationEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\PromotionEvent.h">
-      <Filter>Events</Filter>
-    </ClInclude>
-    <ClInclude Include="Generic_DS\LinkedList.h">
-      <Filter>Generic_DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +231,18 @@
     <ClCompile Include="GUI\GUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Events\ArrivalEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\CancellationEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\Event.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PromotionEvent.cpp">
+      <Filter>Events</Filter>
+    </ClCompile>
     <ClCompile Include="Restaurant\Motorcycle.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
@@ -240,18 +252,6 @@
     <ClCompile Include="Restaurant\Restaurant.cpp">
       <Filter>Restaurant</Filter>
     </ClCompile>
-    <ClCompile Include="Events\Event.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\ArrivalEvent.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\CancellationEvent.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\PromotionEvent.cpp">
-      <Filter>Events</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt">
@@ -260,5 +260,6 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
+    <Text Include="input.txt" />
   </ItemGroup>
 </Project>
