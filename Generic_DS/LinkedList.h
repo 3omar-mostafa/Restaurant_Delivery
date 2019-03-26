@@ -143,7 +143,7 @@ bool LinkedList<T>::remove(T & removedEntry)
 			curPtr->setNext(deletedPtr->getNext());
 			if (backPtr == deletedPtr)						
 				backPtr = curPtr;
-			curPtr->setNext(NULL);
+			deletedPtr->setNext(NULL);
 			delete deletedPtr;
 			count--;
 			return true;
