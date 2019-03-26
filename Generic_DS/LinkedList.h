@@ -22,6 +22,7 @@ public:
 	bool peekFront(T& frontEntry);
 	bool pop(T& frontEntry);
 	void clear();
+	~LinkedList();
 
 	//Removes by element, returns false if the element wasn't found in the List
 	bool remove(T& removedEntry);	
@@ -109,6 +110,12 @@ void LinkedList<T>::clear()
 		pop(clearPlace);*/
 	while (pop(clearPlace));
 	count = 0;
+}
+
+template<typename T>
+LinkedList<T>::~LinkedList()
+{
+	clear();
 }
 
 template<typename T>

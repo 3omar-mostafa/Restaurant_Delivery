@@ -73,10 +73,16 @@ public:
 	//
 	// TODO: Add More Member Functions As Needed
 	//
-	void addToActiveQueue(Order* pOrd);	//Adds the order to its proper Queue
 	void loadFromFile(string fileName);
-	Order*& orderOfID(int i);
+	void showActiveOrders();
 	void interactiveMode();
+
+	// Queue functions:
+	void addToActiveQueue(Order* pOrd);	//Adds the order to its proper Queue
+	bool finished();
+
+	// Order functions:
+	Order*& orderOfID(int i);
 
 	// Promotion functions:
 	bool autoPromoteRegion(int currentTimeStep, REGION reg);	//Handles auto-promotion of Normal orders to VIP orders

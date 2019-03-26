@@ -88,15 +88,21 @@ void Restaurant::interactiveMode()
 {
 	loadFromFile("input.txt");
 	int currentTimeStep = 1;
-	while (!eventsQueue.isEmpty())
+	while (!eventsQueue.isEmpty() || !finished())
 	{
 		//print current timestep
 		/*char timestep[10];
 		itoa(currentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep);*/
 
-		executeEvents(currentTimeStep);	//execute all events at current time step
+		//Execute all events at current time step
+		executeEvents(currentTimeStep);
 
+		//Show all active orders in each region
+		showActiveOrders();
+		pGUI->UpdateInterface();
+
+		//Display region info on the status bar
 		string regionsData = to_string(currentTimeStep) + " --> ";
 		for (int reg = 0; reg < REGION_COUNT; reg++)
 		{
@@ -115,30 +121,33 @@ void Restaurant::interactiveMode()
 		}
 		pGUI->PrintMessage(regionsData);
 
+		//Delete the top order in each queue
 		for (int reg = 0; reg < REGION_COUNT; reg++)
 		{
 			Order* pOrd = 0;
 			normalQueue[reg].pop(pOrd);
-			if (pOrd)
-				pGUI->AddOrderForDrawing(pOrd);
-
-			pOrd = 0;
 			frozenQueue[reg].dequeue(pOrd);
-			if (pOrd)
-				pGUI->AddOrderForDrawing(pOrd);
-
-			pOrd = 0;
 			vipQueue[reg].dequeue(pOrd);
-			if (pOrd)
-				pGUI->AddOrderForDrawing(pOrd);
 		}
 
+		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
 		pGUI->UpdateInterface();
 		pGUI->waitForClick();
 		currentTimeStep++;
+		pGUI->ResetDrawingList();
 	}
+
+	pGUI->UpdateInterface();
 	pGUI->PrintMessage("Simulation over.");
 	pGUI->waitForClick();
+}
+
+bool Restaurant::finished()
+{
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+		if (!(normalQueue[reg].isEmpty() && frozenQueue[reg].isEmpty() && vipQueue[reg].isEmpty()))
+			return false;
+	return true;
 }
 
 //This is just a demo function for project introductory phase
@@ -305,13 +314,46 @@ void Restaurant::loadFromFile(string fileName)
 		case 'P':
 			//toBeAdded = new PromotionEvent;
 			break;
-
-		case 'E':
-			inFile.close();
-			return;
 		}
 		toBeAdded->readData(inFile);
 		addEvent(toBeAdded);
+	}
+	inFile.close();
+}
+
+//	Shows all orders currently in queues.
+//	For each region, pops the order from its respectful queue, shows it on screen, and then appends it to the end of the list.
+//	PriorityQueue requires special treatment.
+
+void Restaurant::showActiveOrders()
+{
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		Order* pOrd = 0;
+
+		int nQLength = normalQueue[reg].getLength();
+		for (int i = 0; i < nQLength; i++)
+		{
+			if (normalQueue[reg].pop(pOrd))
+			{
+				pGUI->AddOrderForDrawing(pOrd);
+				normalQueue[reg].append(pOrd);
+			}
+		}
+
+		int fQLength = frozenQueue[reg].getLength();
+		for (int i = 0; i < fQLength; i++)
+		{
+			if (frozenQueue[reg].dequeue(pOrd))
+			{
+				pGUI->AddOrderForDrawing(pOrd);
+				frozenQueue[reg].enqueue(pOrd);
+			}
+		}
+
+		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
+		while (tempVIPQueue.dequeue(pOrd))
+			pGUI->AddOrderForDrawing(pOrd);
 	}
 }
 

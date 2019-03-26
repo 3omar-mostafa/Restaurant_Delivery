@@ -192,5 +192,12 @@ int Queue<T>::getLength() const
 template <typename T>
 Queue<T>::~Queue()
 {
+	Node<T> *currPtr = frontPtr;
+	while (frontPtr)
+	{
+		frontPtr = frontPtr->getNext();
+		delete currPtr;
+		currPtr = frontPtr;
+	}
 }
 #endif

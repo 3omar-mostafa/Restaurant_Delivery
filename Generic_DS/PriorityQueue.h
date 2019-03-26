@@ -20,6 +20,7 @@ private:
 	int count;
 public:
 	PriorityQueue();
+	PriorityQueue(const PriorityQueue& copiedPQueue);
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
@@ -44,6 +45,19 @@ PriorityQueue<T>::PriorityQueue()
 	backPtr = nullptr;
 	frontPtr = nullptr;
 	count = 0;
+}
+template<typename T>
+PriorityQueue<T>::PriorityQueue(const PriorityQueue & copiedPQueue)
+{
+	frontPtr = backPtr = NULL;
+	count = 0;
+
+	Node<T> *currPtr = copiedPQueue.frontPtr;
+	while (currPtr)
+	{
+		enqueue(currPtr->getItem());
+		currPtr = currPtr->getNext();
+	}
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -180,6 +194,13 @@ int PriorityQueue<T>::getLength() const
 template <typename T>
 PriorityQueue<T>::~PriorityQueue()
 {
+	Node<T> *currPtr = frontPtr;
+	while (frontPtr)
+	{
+		frontPtr = frontPtr->getNext();
+		delete currPtr;
+		currPtr = frontPtr;
+	}
 }
 
 #endif
