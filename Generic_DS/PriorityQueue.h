@@ -3,7 +3,7 @@
 #include "Node.h"
 
 template <typename T>
-//Comparator function which has a specialization to deal with orders.
+//Comparator template function.
 bool isGreaterThan(T left, T right);
 
 template <typename T>
@@ -25,8 +25,7 @@ public:
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
-	int getLength() const;
-	
+	int getLength() const;	
 	~PriorityQueue();
 };
 

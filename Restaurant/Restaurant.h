@@ -20,15 +20,11 @@ private:
 	GUI *pGUI;
 	Queue<Event*> eventsQueue;	//Queue of all events that will be loaded from file
 
-	
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
-	Queue<Order*> DEMO_Queue;	//Important: This is just for demo
+	//Queue<Order*> DEMO_Queue;	//Important: This is just for demo
 	/// ==>
 	
-	//
-	// TODO: Add More Data Members As Needed
-	//
 	int autoPromotionLimit;
 
 	//Orders:
@@ -59,25 +55,25 @@ public:
 	
 	Restaurant();
 	~Restaurant();
+	void runSimulation();
+	
+	// Event functions:
 	void addEvent(Event* pE);	//adds a new event to the queue of events
 	void executeEvents(int TimeStep);	//executes all events at current timestep
-	void runSimulation();
+	
 
 	/// ==> 
 	///  DEMO-related functions. Should be removed in phases 1&2
-	void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
+	/*void Just_A_Demo();	//just to show a demo and should be removed in phase1 1 & 2
 	void AddtoDemoQueue(Order* po);	//adds an order to the demo queue
-	Order* getDemoOrder();			//return the front order from demo queue
+	Order* getDemoOrder();			//return the front order from demo queue*/
 	/// ==> 
 
-	//
-	// TODO: Add More Member Functions As Needed
-	//
-	void loadFromFile(string fileName);
-	void showActiveOrders();
+	void loadFromFile(string fileName);	
 	void interactiveMode();
 
 	// Queue functions:
+	void showActiveOrders();
 	void addToActiveQueue(Order* pOrd);	//Adds the order to its proper Queue
 	bool finished();
 

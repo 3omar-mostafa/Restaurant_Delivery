@@ -40,7 +40,7 @@ void Restaurant::runSimulation()
 		break;
 
 	case MODE_DEMO:
-		Just_A_Demo();
+		//Just_A_Demo();
 		break;
 	};
 
@@ -49,6 +49,7 @@ void Restaurant::runSimulation()
 
 
 //////////////////////////////////  Event handling functions   /////////////////////////////
+
 void Restaurant::addEvent(Event* pE)	//adds a new event to the queue of events
 {
 	eventsQueue.enqueue(pE);
@@ -76,12 +77,8 @@ Restaurant::~Restaurant()
 	delete pGUI;
 }
 
-
-
-
 ////////////////////////////////////////////////////////////////////////////////
-/// ==> 
-///  DEMO-related functions. Should be removed in phases 1&2
+
 
 //Simple simulator function for Phase 1:
 void Restaurant::interactiveMode()
@@ -142,6 +139,130 @@ void Restaurant::interactiveMode()
 	pGUI->waitForClick();
 }
 
+void Restaurant::loadFromFile(string fileName)
+{
+	//Reading from the input file:
+	ifstream inFile;
+	inFile.open(fileName);
+
+	//Colecting Motorcycle data (((((((((((((((pre-bonus))))))))))))))):	
+	int normalMotorSpeed, frozenMotorSpeed, vipMotorSpeed;
+	inFile >> normalMotorSpeed >> frozenMotorSpeed >> vipMotorSpeed;
+
+	int normalMotorCount[REGION_COUNT], frozenMotorCount[REGION_COUNT], vipMotorCount[REGION_COUNT];
+	for (int i = 0; i < REGION_COUNT; i++)
+	{
+		inFile >> normalMotorCount[i] >> frozenMotorCount[i] >> vipMotorCount[i];
+		//Enqueuing Motorcycles of each type in each region:
+		for (int j = 0; j < normalMotorCount[i]; j++)
+		{
+			Motorcycle* normalMotor = new Motorcycle(0, TYPE_NORMAL, normalMotorSpeed, REGION(i));
+			normalMotorQueue[i].enqueue(normalMotor);
+		}
+
+		for (int j = 0; j < frozenMotorCount[i]; j++)
+		{
+			Motorcycle* frozenMotor = new Motorcycle(0, TYPE_FROZEN, frozenMotorSpeed, REGION(i));
+			frozenMotorQueue[i].enqueue(frozenMotor);
+		}
+
+		for (int j = 0; j < vipMotorCount[i]; j++)
+		{
+			Motorcycle* vipMotor = new Motorcycle(0, TYPE_VIP, vipMotorSpeed, REGION(i));
+			vipMotorQueue[i].enqueue(vipMotor);
+		}
+	}
+
+	//Time spent for Auto-Promotion:
+	inFile >> autoPromotionLimit;
+
+	//Logging events into the queue:
+	int noOfEvents;
+	inFile >> noOfEvents;
+
+	for (int i = 0; i < noOfEvents; i++)
+	{
+		char eventType;
+		inFile >> eventType;
+		Event* toBeAdded;
+		switch (eventType)
+		{
+		case 'R':
+			toBeAdded = new ArrivalEvent;
+			break;
+
+		case 'X':
+			toBeAdded = new CancellationEvent;
+			break;
+
+		case 'P':
+			//toBeAdded = new PromotionEvent;
+			break;
+		}
+		toBeAdded->readData(inFile);
+		addEvent(toBeAdded);
+	}
+	inFile.close();
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void Restaurant::addToActiveQueue(Order * pOrd)
+{
+	REGION reg = pOrd->GetRegion();
+	switch (pOrd->GetType())
+	{
+	case TYPE_NORMAL:
+		normalQueue[reg].append(pOrd);
+		break;
+
+	case TYPE_FROZEN:
+		frozenQueue[reg].enqueue(pOrd);
+		break;
+
+	case TYPE_VIP:
+		vipQueue[reg].enqueue(pOrd);
+		break;
+	}
+}
+
+
+//	Shows all orders currently in queues.
+//	For each region, pops the order from its respectful queue, shows it on screen, and then appends it to the end of the list.
+//	PriorityQueue requires special treatment.
+
+void Restaurant::showActiveOrders()
+{
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		Order* pOrd = 0;
+
+		int nQLength = normalQueue[reg].getLength();
+		for (int i = 0; i < nQLength; i++)
+		{
+			if (normalQueue[reg].pop(pOrd))
+			{
+				pGUI->AddOrderForDrawing(pOrd);
+				normalQueue[reg].append(pOrd);
+			}
+		}
+
+		int fQLength = frozenQueue[reg].getLength();
+		for (int i = 0; i < fQLength; i++)
+		{
+			if (frozenQueue[reg].dequeue(pOrd))
+			{
+				pGUI->AddOrderForDrawing(pOrd);
+				frozenQueue[reg].enqueue(pOrd);
+			}
+		}
+
+		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
+		while (tempVIPQueue.dequeue(pOrd))
+			pGUI->AddOrderForDrawing(pOrd);
+	}
+}
+
 bool Restaurant::finished()
 {
 	for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -150,11 +271,58 @@ bool Restaurant::finished()
 	return true;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Order *& Restaurant::orderOfID(int i)
+{
+	return orderIdArray[i];
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
+{
+	Order* toBePromoted;
+	if (!normalQueue[reg].peekFront(toBePromoted))
+		return false;
+	if (currentTimeStep - toBePromoted->getArrivalTime() >= autoPromotionLimit)
+	{
+		normalQueue[reg].pop(toBePromoted);
+		toBePromoted->promote();
+		vipQueue[reg].enqueue(toBePromoted);
+		return true;
+	}
+	return false;
+}
+
+void Restaurant::autoPromoteAll(int currentTimeStep)
+{
+	for (int i = 0; i < REGION_COUNT; i++)
+		while (autoPromoteRegion(currentTimeStep, REGION(i)));
+}
+
+bool Restaurant::cancel(int id)
+{
+	Order* cancelledOrder = orderIdArray[id];
+	for (int i = 0; i < REGION_COUNT; i++)
+	{
+		if (normalQueue[i].remove(cancelledOrder))
+			return true;
+	}
+	return false;
+}
+
+
+/// ==> 
+///  DEMO-related functions. Should be removed in phases 1&2
+
 //This is just a demo function for project introductory phase
 //It should be removed starting phase 1
+/*
+
 void Restaurant::Just_A_Demo()
 {
-	/*
+	
 		//
 		// THIS IS JUST A DEMO FUNCTION
 		// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
@@ -227,172 +395,15 @@ void Restaurant::Just_A_Demo()
 		pGUI->PrintMessage("generation done, click to END program");
 		pGUI->waitForClick();
 
-		*/
+		
 }
-////////////////
+
 
 void Restaurant::AddtoDemoQueue(Order *pOrd)
 {
 	DEMO_Queue.enqueue(pOrd);
 }
 
-void Restaurant::addToActiveQueue(Order * pOrd)
-{
-	REGION reg = pOrd->GetRegion();
-	switch (pOrd->GetType())
-	{
-	case TYPE_NORMAL:
-		normalQueue[reg].append(pOrd);
-		break;
-
-	case TYPE_FROZEN:
-		frozenQueue[reg].enqueue(pOrd);
-		break;
-
-	case TYPE_VIP:
-		vipQueue[reg].enqueue(pOrd);
-		break;
-	}
-}
-
-void Restaurant::loadFromFile(string fileName)
-{
-	//Reading from the input file:
-	ifstream inFile;
-	inFile.open(fileName);
-
-	//Colecting Motorcycle data (((((((((((((((pre-bonus))))))))))))))):	
-	int normalMotorSpeed, frozenMotorSpeed, vipMotorSpeed;
-	inFile >> normalMotorSpeed >> frozenMotorSpeed >> vipMotorSpeed;
-
-	int normalMotorCount[REGION_COUNT], frozenMotorCount[REGION_COUNT], vipMotorCount[REGION_COUNT];
-	for (int i = 0; i < REGION_COUNT; i++)
-	{
-		inFile >> normalMotorCount[i] >> frozenMotorCount[i] >> vipMotorCount[i];
-		//Enqueuing Motorcycles of each type in each region:
-		for (int j = 0; j < normalMotorCount[i]; j++)
-		{
-			Motorcycle* normalMotor = new Motorcycle(0, TYPE_NORMAL, normalMotorSpeed, REGION(i));
-			normalMotorQueue[i].enqueue(normalMotor);
-		}
-
-		for (int j = 0; j < frozenMotorCount[i]; j++)
-		{
-			Motorcycle* frozenMotor = new Motorcycle(0, TYPE_FROZEN, frozenMotorSpeed, REGION(i));
-			frozenMotorQueue[i].enqueue(frozenMotor);
-		}
-
-		for (int j = 0; j < vipMotorCount[i]; j++)
-		{
-			Motorcycle* vipMotor = new Motorcycle(0, TYPE_VIP, vipMotorSpeed, REGION(i));
-			vipMotorQueue[i].enqueue(vipMotor);
-		}
-	}
-
-	//Time spent for Auto-Promotion:
-	inFile >> autoPromotionLimit;
-
-	//Logging events into the queue:
-	int noOfEvents;
-	inFile >> noOfEvents;
-
-	for (int i = 0; i < noOfEvents; i++)
-	{
-		char eventType;
-		inFile >> eventType;
-		Event* toBeAdded;
-		switch (eventType)
-		{
-		case 'R':
-			toBeAdded = new ArrivalEvent;
-			break;
-
-		case 'X':
-			toBeAdded = new CancellationEvent;
-			break;
-
-		case 'P':
-			//toBeAdded = new PromotionEvent;
-			break;
-		}
-		toBeAdded->readData(inFile);
-		addEvent(toBeAdded);
-	}
-	inFile.close();
-}
-
-//	Shows all orders currently in queues.
-//	For each region, pops the order from its respectful queue, shows it on screen, and then appends it to the end of the list.
-//	PriorityQueue requires special treatment.
-
-void Restaurant::showActiveOrders()
-{
-	for (int reg = 0; reg < REGION_COUNT; reg++)
-	{
-		Order* pOrd = 0;
-
-		int nQLength = normalQueue[reg].getLength();
-		for (int i = 0; i < nQLength; i++)
-		{
-			if (normalQueue[reg].pop(pOrd))
-			{
-				pGUI->AddOrderForDrawing(pOrd);
-				normalQueue[reg].append(pOrd);
-			}
-		}
-
-		int fQLength = frozenQueue[reg].getLength();
-		for (int i = 0; i < fQLength; i++)
-		{
-			if (frozenQueue[reg].dequeue(pOrd))
-			{
-				pGUI->AddOrderForDrawing(pOrd);
-				frozenQueue[reg].enqueue(pOrd);
-			}
-		}
-
-		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
-		while (tempVIPQueue.dequeue(pOrd))
-			pGUI->AddOrderForDrawing(pOrd);
-	}
-}
-
-Order *& Restaurant::orderOfID(int i)
-{
-	return orderIdArray[i];
-}
-
-bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
-{
-	Order* toBePromoted;
-	if (!normalQueue[reg].peekFront(toBePromoted))
-		return false;
-	if (currentTimeStep - toBePromoted->getArrivalTime() >= autoPromotionLimit)
-	{
-		normalQueue[reg].pop(toBePromoted);
-		toBePromoted->promote();
-		vipQueue[reg].enqueue(toBePromoted);
-		return true;
-	}
-	return false;
-}
-
-void Restaurant::autoPromoteAll(int currentTimeStep)
-{
-	for (int i = 0; i < REGION_COUNT; i++)
-		while (autoPromoteRegion(currentTimeStep, REGION(i)));
-}
-
-bool Restaurant::cancel(int id)
-{
-	Order* cancelledOrder = orderIdArray[id];
-	for (int i = 0; i < REGION_COUNT; i++)
-	{
-		if (normalQueue[i].remove(cancelledOrder))
-			return true;
-	}
-	return false;
-}
 
 Order* Restaurant::getDemoOrder()
 {
@@ -401,6 +412,8 @@ Order* Restaurant::getDemoOrder()
 	return pOrd;
 
 }
+*/
 
+/// ==> end of DEMO-related functions
 
-/// ==> end of DEMO-relat unction
+////////////////
