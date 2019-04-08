@@ -93,7 +93,8 @@ public:
 
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg) const; // prints a message in the status bar
-
+	void PrintTimestep(int time) const;
+	void PrintRegions(string data[REGION_COUNT]) const;
 
 	void UpdateInterface() const;
 	void AddOrderForDrawing(Order* pOrd);	//Adds a new order to the drawing list

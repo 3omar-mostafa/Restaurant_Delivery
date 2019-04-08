@@ -84,39 +84,53 @@ Restaurant::~Restaurant()
 void Restaurant::interactiveMode()
 {
 	loadFromFile("input.txt");
-	int currentTimeStep = 1;
+	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
 		//print current timestep
+		pGUI->PrintTimestep(currentTimestep);
 		/*char timestep[10];
 		itoa(currentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep);*/
 
 		//Execute all events at current time step
-		executeEvents(currentTimeStep);
+		executeEvents(currentTimestep);
 
 		//Show all active orders in each region
 		showActiveOrders();
 		pGUI->UpdateInterface();
+		pGUI->PrintTimestep(currentTimestep);
 
 		//Display region info on the status bar
-		string regionsData = to_string(currentTimeStep) + " --> ";
+		string regionsData[4] = { "" };
+		
 		for (int reg = 0; reg < REGION_COUNT; reg++)
 		{
-			int noActiveOrdersOf[TYPE_COUNT] = { 0, 0, 0 };
-			int noAvailableMotor = 0;
+			int noActiveOrdersOf[TYPE_COUNT] = { 0 };
+			int noAvailableMotor[TYPE_COUNT] = { 0 };
+			
 			noActiveOrdersOf[TYPE_NORMAL] += normalQueue[reg].getLength();
 			noActiveOrdersOf[TYPE_FROZEN] += frozenQueue[reg].getLength();
 			noActiveOrdersOf[TYPE_VIP] += vipQueue[reg].getLength();
-			noAvailableMotor += normalMotorQueue[reg].getLength() + frozenMotorQueue[reg].getLength() + vipMotorQueue[reg].getLength();
-			regionsData += "(";
-			regionsData += char('A' + reg);
-			regionsData += ") " + to_string(noActiveOrdersOf[TYPE_NORMAL]) + "N ";
-			regionsData += to_string(noActiveOrdersOf[TYPE_FROZEN]) + "F ";
-			regionsData += to_string(noActiveOrdersOf[TYPE_VIP]) + "V ";
-			regionsData += to_string(noAvailableMotor) + "Mc  ";
+			
+			noAvailableMotor[TYPE_NORMAL] += normalMotorQueue[reg].getLength();
+			noAvailableMotor[TYPE_FROZEN] += frozenMotorQueue[reg].getLength();
+			noAvailableMotor[TYPE_VIP] += vipMotorQueue[reg].getLength();
+			
+			regionsData[reg] += "(";
+			regionsData[reg] += char('A' + reg);
+			regionsData[reg] += ") ";
+					   
+			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders, ";
+			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders, ";
+			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders    ||    ";
+					   
+			regionsData[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles, ";
+			regionsData[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles, ";
+			regionsData[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
+
 		}
-		pGUI->PrintMessage(regionsData);
+		pGUI->PrintRegions(regionsData);
 
 		//Delete the top order in each queue
 		for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -129,8 +143,9 @@ void Restaurant::interactiveMode()
 
 		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
 		pGUI->UpdateInterface();
+		pGUI->PrintTimestep(currentTimestep);
 		pGUI->waitForClick();
-		currentTimeStep++;
+		currentTimestep++;
 		pGUI->ResetDrawingList();
 	}
 
@@ -285,6 +300,7 @@ bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
 	Order* toBePromoted;
 	if (!normalQueue[reg].peekFront(toBePromoted))
 		return false;
+
 	if (currentTimeStep - toBePromoted->getArrivalTime() >= autoPromotionLimit)
 	{
 		normalQueue[reg].pop(toBePromoted);

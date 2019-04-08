@@ -67,6 +67,29 @@ void GUI::PrintMessage(string msg) const	//Prints a message on status bar
 	pWind->DrawString(10, WindHeight - (int) (StatusBarHeight/1.5), msg); // You may need to change these coordinates later 
 	                                                                      // to be able to write multi-line
 }
+
+void GUI::PrintTimestep(int time) const
+{
+	pWind->SetPen(WHITE);
+	pWind->SetBrush(WHITE);
+	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
+	
+	DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
+}
+
+void GUI::PrintRegions(string data[REGION_COUNT]) const
+{
+	ClearStatusBar();	//First clear the status bar
+
+	pWind->SetPen(DARKRED);
+	pWind->SetFont(16, BOLD, BY_NAME, "Arial");
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		float factor = (reg + 1) / 5.0;
+		pWind->DrawString(10, WindHeight - (int)(15 + StatusBarHeight * factor), data[REGION_COUNT - 1 - reg]);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawString(const int iX, const int iY, const string Text) const
 {
@@ -128,7 +151,6 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(RestStartX + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "D");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), RestStartY + 5*L/12, "B");
 	pWind->DrawString(WindWidth/2 + (int)(0.44*L), YHalfDrawingArea + 5*L/12, "C"); 
-
 }
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount) const       // It is a private function

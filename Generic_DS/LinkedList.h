@@ -7,6 +7,8 @@
 //		A normal List ADT to handle orders.
 // TODO:
 //		Implement functions to operate on the List via an index.
+//      cpy cons
+//		priv getNodeAt
 
 template <typename T>
 class LinkedList
@@ -16,14 +18,17 @@ class LinkedList
 	int count;
 public:
 	LinkedList();
+	LinkedList(const LinkedList &copiedList);
+	void operator=(const LinkedList &copiedList);
 	int getLength() const;
 	bool isEmpty() const;
-	void append(T& newEntry);
-	bool peekFront(T& frontEntry);
-	bool pop(T& frontEntry);
 	void clear();
 	~LinkedList();
 
+	void append(T& newEntry);
+	bool pop(T& frontEntry);
+	bool peekFront(T& frontEntry);
+	
 	//Removes by element, returns false if the element wasn't found in the List
 	bool remove(T& removedEntry);	
 };
@@ -34,6 +39,31 @@ LinkedList<T>::LinkedList()
 {
 	frontPtr = backPtr = NULL;
 	count = 0;
+}
+
+template<typename T>
+LinkedList<T>::LinkedList(const LinkedList & copiedList)
+{
+	*this = copiedList;
+}
+
+template<typename T>
+void LinkedList<T>::operator=(const LinkedList & copiedList)
+{
+	frontPtr = backPtr = NULL;
+	count = 0;
+
+	if (copiedList.isEmpty())
+		return;
+	
+	Node<T> *copiedPtr = copiedList.frontPtr;
+	backPtr = frontPtr = new Node<T>(copiedPtr->getItem());
+	while (copiedPtr->getNext())
+	{
+		copiedPtr = copiedPtr->getNext();
+		T added = copiedPtr->getItem();
+		append(added);
+	}
 }
 
 template<typename T>
@@ -68,7 +98,6 @@ void LinkedList<T>::append(T & newEntry)
 		count++;
 	}
 
-	//El mafrood nedallet el ptr ??????
 
 }
 
@@ -91,7 +120,7 @@ bool LinkedList<T>::pop(T& frontEntry)
 	Node<T>* toRemovePtr = frontPtr;
 	frontEntry = frontPtr->getItem();
 	frontPtr = frontPtr->getNext();		
-	// Queue is not empty; remove front
+	// Queue is not empty, remove front
 	if (toRemovePtr == backPtr)	 // Special case: one node in queue
 		backPtr = nullptr;
 
