@@ -171,19 +171,19 @@ void Restaurant::loadFromFile(string fileName)
 		//Enqueuing Motorcycles of each type in each region:
 		for (int j = 0; j < normalMotorCount[i]; j++)
 		{
-			Motorcycle* normalMotor = new Motorcycle(0, TYPE_NORMAL, normalMotorSpeed, REGION(i));
+			Motorcycle* normalMotor = new Motorcycle(0, MOTOR_NORMAL, normalMotorSpeed, REGION(i));
 			normalMotorQueue[i].enqueue(normalMotor);
 		}
 
 		for (int j = 0; j < frozenMotorCount[i]; j++)
 		{
-			Motorcycle* frozenMotor = new Motorcycle(0, TYPE_FROZEN, frozenMotorSpeed, REGION(i));
+			Motorcycle* frozenMotor = new Motorcycle(0, MOTOR_FROZEN, frozenMotorSpeed, REGION(i));
 			frozenMotorQueue[i].enqueue(frozenMotor);
 		}
 
 		for (int j = 0; j < vipMotorCount[i]; j++)
 		{
-			Motorcycle* vipMotor = new Motorcycle(0, TYPE_VIP, vipMotorSpeed, REGION(i));
+			Motorcycle* vipMotor = new Motorcycle(0, MOTOR_FAST, vipMotorSpeed, REGION(i));
 			vipMotorQueue[i].enqueue(vipMotor);
 		}
 	}
@@ -326,6 +326,15 @@ bool Restaurant::cancel(int id)
 			return true;
 	}
 	return false;
+}
+
+void Restaurant::assignMotorcycle()
+{
+	
+}
+
+void Restaurant::returnMotorcycle()
+{
 }
 
 

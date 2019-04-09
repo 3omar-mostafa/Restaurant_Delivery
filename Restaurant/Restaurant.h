@@ -47,6 +47,10 @@ private:
 		vipMotorQueue[REGION_COUNT],
 		normalMotorQueue[REGION_COUNT],
 		frozenMotorQueue[REGION_COUNT];
+	LinkedList<Motorcycle*>
+		inServiceMotorcycle[REGION_COUNT];
+		
+		
 
 	//Array of Order* to handle cancellations.
 	Order* orderIdArray[MaxPossibleOrdCnt];
@@ -86,7 +90,10 @@ public:
 
 	// Cancellation functions:
 	bool cancel(int id);
-
+	
+	//Motorcycles Functions
+	void assignMotorcycle(); // TODO:It will be implemented in phase 2
+	void returnMotorcycle(); // TODO:It will be implemented in phase 2
 };
 
 #endif

@@ -43,6 +43,13 @@ enum PROGRAM_MODE	//mode of the program interface
 	MODE_COUNT	//number of possible modes
 };
 
+enum MOTOR_TYPE
+{
+	MOTOR_FAST,
+	MOTOR_FROZEN,
+	MOTOR_NORMAL,
+	MOTOR_COUNT
+};
 template <typename T>
 //Comparator function which has a specialization to deal with orders.
 bool isGreaterThan(T left, T right);

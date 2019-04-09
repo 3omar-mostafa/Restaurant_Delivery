@@ -5,7 +5,7 @@ Motorcycle::Motorcycle()
 {
 }
 
-Motorcycle::Motorcycle(int inID, ORDER_TYPE inType, int inSpeed, REGION inRegion)
+Motorcycle::Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion)
 {
 	ID = inID;
 	type = inType;
