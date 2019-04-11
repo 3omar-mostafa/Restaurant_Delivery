@@ -7,8 +7,6 @@
 //		A normal List ADT to handle orders.
 // TODO:
 //		Implement functions to operate on the List via an index.
-//      cpy cons
-//		priv getNodeAt
 
 template <typename T>
 class LinkedList
@@ -16,6 +14,7 @@ class LinkedList
 	Node<T>* frontPtr;
 	Node<T>* backPtr;
 	int count;
+	Node<T> *getNodeAt(int pos);
 public:
 	LinkedList();
 	LinkedList(const LinkedList &copiedList);
@@ -28,11 +27,29 @@ public:
 	void append(T& newEntry);
 	bool pop(T& frontEntry);
 	bool peekFront(T& frontEntry);
+
+	//Standard List Operations:
+	bool insertAt(int newPos, const T &newEntry);
+	bool removeAt(int pos);
+	bool getEntryAt(int pos, T &returnedEntry);
+	void setEntryAt(int pos, const T &newEntry);
 	
 	//Removes by element, returns false if the element wasn't found in the List
 	bool remove(T& removedEntry);	
 };
 
+
+template<typename T>
+Node<T>* LinkedList<T>::getNodeAt(int pos)
+{
+	if (pos >= count || isEmpty()) return 0;
+	Node<T> *currPtr = frontPtr;
+	for (int i = 0; i < pos; i++)
+	{
+		currPtr = currPtr ? currPtr->getNext() : 0;
+	}
+	return currPtr;
+}
 
 template<typename T>
 LinkedList<T>::LinkedList()
@@ -108,6 +125,68 @@ bool LinkedList<T>::peekFront(T & frontEntry)
 		return false;
 	frontEntry = frontPtr->getItem();
 	return true;
+}
+
+template<typename T>
+bool LinkedList<T>::insertAt(int newPos, const T & newEntry)
+{
+	if (newPos > count)
+		return false;
+
+	if (newPos == 0)
+	{
+		frontPtr = new Node<T>(newEntry, frontPtr);
+	}
+
+	else
+	{
+		Node<T> *newNodePtr = new Node<T>(newEntry, getNodeAt(newPos));
+		getNodeAt(newPos - 1)->setNext(newNodePtr);
+	}
+
+	count++;
+	backPtr = getNodeAt(count - 1);
+}
+
+template<typename T>
+bool LinkedList<T>::removeAt(int pos)
+{
+	if (pos >= count)
+		return false;
+
+	Node<T> *removedPtr = 0;
+	if (pos == 0)
+	{
+		removedPtr = frontPtr;
+		frontPtr = frontPtr->getNext();
+	}
+	else 
+	{
+		Node<T> *prevPtr = getNodeAt(pos - 1);
+		removedPtr = prevPtr->getNext();
+		prevPtr->setNext(removedPtr->getNext());
+	}
+
+	if (removedPtr)
+		delete removedPtr;
+	count--;
+	backPtr = getNodeAt(count - 1);
+	return true;
+}
+
+template<typename T>
+bool LinkedList<T>::getEntryAt(int pos, T& returnedEntry)
+{
+	Node<T> *returnedNodePtr = getNodeAt(pos);
+	returnedEntry = returnedNodePtr ? returnedNodePtr->getItem() : returnedEntry;
+	return returnedNodePtr;
+}
+
+template<typename T>
+void LinkedList<T>::setEntryAt(int pos, const T & newEntry)
+{
+	if (getNodeAt(pos))
+		getNodeAt(pos)->setItem(newEntry);
 }
 
 

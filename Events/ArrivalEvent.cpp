@@ -50,7 +50,7 @@ void ArrivalEvent::readData(ifstream & inFile)
 		break;
 
 	case 'F':
-		orderType = TYPE_FROZEN;	//kanet normal bardoo
+		orderType = TYPE_FROZEN;	
 		break;
 	}
 	orderRegion = REGION(charOrderRegion - 'A');
