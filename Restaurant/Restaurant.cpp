@@ -83,17 +83,19 @@ Restaurant::~Restaurant()
 //Simple simulator function for Phase 1:
 void Restaurant::interactiveMode()
 {
-	loadFromFile("input.txt");
+	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
+	string inputFile = pGUI->GetString();
+	loadFromFile(inputFile);
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
-		//print current timestep
+		//Print current timestep
 		pGUI->PrintTimestep(currentTimestep);
 		/*char timestep[10];
 		itoa(currentTimeStep, timestep, 10);
 		pGUI->PrintMessage(timestep);*/
 
-		//Execute all events at current time step
+		//Execute all events at current timestep
 		executeEvents(currentTimestep);
 
 		//Show all active orders in each region
