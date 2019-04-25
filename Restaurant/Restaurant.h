@@ -48,7 +48,7 @@ private:
 		normalMotorQueue[REGION_COUNT],
 		frozenMotorQueue[REGION_COUNT];
 	LinkedList<Motorcycle*>
-		inServiceMotorcycle[REGION_COUNT];
+		inServiceMotorcycles[REGION_COUNT];
 		
 		
 
@@ -94,6 +94,8 @@ public:
 	//Motorcycles Functions
 	void assignMotorcycle(); // TODO:It will be implemented in phase 2
 	void returnMotorcycle(); // TODO:It will be implemented in phase 2
+
+	void returnMotorcycles(int currentTimestep);
 };
 
 #endif

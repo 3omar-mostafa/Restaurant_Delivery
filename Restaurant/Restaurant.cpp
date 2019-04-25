@@ -407,6 +407,40 @@ void Restaurant::returnMotorcycle()
 {
 }
 
+void Restaurant::returnMotorcycles(int currentTimestep)
+{
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		int inServiceLength = inServiceMotorcycles[reg].getLength();
+
+		for (int i = 0; i < inServiceLength; i++)
+		{
+			Motorcycle *currentMotor = 0;
+			inServiceMotorcycles[reg].getEntryAt(i, currentMotor);
+			if (!currentMotor)
+				continue;
+
+			//Finish time = Start time + 2 * Speed (leaving and returning)
+			if (currentMotor->getStartTime() + 2 * currentMotor->getSpeed() <= currentTimestep)
+			{
+				inServiceMotorcycles[reg].remove(currentMotor);
+				currentMotor->setStatus(IDLE);
+
+				switch (currentMotor->getType())
+				{
+				case MOTOR_NORMAL:
+					normalMotorQueue[reg].enqueue(currentMotor);
+
+				case MOTOR_FROZEN:
+					frozenMotorQueue[reg].enqueue(currentMotor);
+
+				case MOTOR_FAST:
+					vipMotorQueue[reg].enqueue(currentMotor);
+				}
+			}
+		}
+	}
+}
 
 /// ==> 
 ///  DEMO-related functions. Should be removed in phases 1&2
