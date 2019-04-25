@@ -168,6 +168,12 @@ void Restaurant::interactiveMode()
 	// Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 	// Update the interface again, increase the timestep, reset the list of objects drawn on the screen	
 	*/
+	
+	/*
+	Statistics are required at the end of the program (please refer to the project document).
+	Ideas for calculating said statistics are yet to be decided on.
+	Where do we store the data for served orders?
+	*/
 }
 
 void Restaurant::loadFromFile(string fileName)
