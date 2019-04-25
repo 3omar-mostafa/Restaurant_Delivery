@@ -103,7 +103,7 @@ void Restaurant::interactiveMode()
 		pGUI->UpdateInterface();
 		pGUI->PrintTimestep(currentTimestep);
 
-		//Display region info on the status bar
+		//Display region info (on the status bar)
 		string regionsData[4] = { "" };
 		
 		for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -154,6 +154,20 @@ void Restaurant::interactiveMode()
 	pGUI->UpdateInterface();
 	pGUI->PrintMessage("Simulation over.");
 	pGUI->waitForClick();
+
+	/*
+	The function should work as follows:
+	// Print the current timestep (on the status bar?)
+	// Check all inServiceMotorcycles of each region, restore all ready ones
+	// Execute all events at current timestep
+	// Check for auto-promotion of orders
+	// Show active orders in each region on the screen (UpdateInterface)
+	// Display region info (on the status bar)
+	// Display assigned Motorcycles of the last timestep (on the status bar?)
+	// Display total amount of orders served of each type (on the status bar?)
+	// Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
+	// Update the interface again, increase the timestep, reset the list of objects drawn on the screen	
+	*/
 }
 
 void Restaurant::loadFromFile(string fileName)
@@ -189,6 +203,59 @@ void Restaurant::loadFromFile(string fileName)
 			vipMotorQueue[i].enqueue(vipMotor);
 		}
 	}
+	/*
+	Collecting Motorcycle Data (post-bonus):
+	// Suggested method is listing the number of motorcycles first for each type separately.
+	// Then listing the ID followed by speed of each individual motorcycle, motorcycles of the same type follow each other.
+	// This is repeated four times, one for each region.
+	// Example:
+	// 1 1 1
+	// 1 1 ---> Normal Motorcycle, Region A, ID 1, Speed 1
+	// 2 2
+	// 3 3
+	//
+	// 1 1 1
+	// 4 2
+	// 5 4
+	// 6 6
+	//
+	// 1 0 1
+	// 7 3
+	// 8 6 ---> Fast Motorcycle, Region C, ID 8, Speed 6
+	//
+	// 1 0 0
+	// 9 4
+
+	int normalMotorCount[REGION_COUNT], frozenMotorCount[REGION_COUNT], vipMotorCount[REGION_COUNT];
+
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		inFile >> normalMotorCount[reg] >> frozenMotorCount[reg] >> vipMotorCount[reg];
+				
+		int id, speed;
+
+		for (int j = 0; j < normalMotorCount[reg]; j++)
+		{
+			inFile >> id >> speed;
+			Motorcycle *normalMotor = new Motorcycle(id, MOTOR_NORMAL, speed, REGION(reg));
+			normalMotorQueue[reg].enqueue(normalMotor);
+		}
+
+		for (int j = 0; j < frozenMotorCount[reg]; j++)
+		{
+			inFile >> id >> speed;
+			Motorcycle *frozenMotor = new Motorcycle(id, MOTOR_FROZEN, speed, REGION(reg));
+			frozenMotorQueue[reg].enqueue(frozenMotor);
+		}
+
+		for (int j = 0; j < vipMotorCount[reg]; j++)
+		{
+			inFile >> id >> speed;
+			Motorcycle *vipMotor = new Motorcycle(id, MOTOR_FAST, speed, REGION(reg));
+			vipMotorQueue[reg].enqueue(vipMotor);
+		}
+	} 
+	*/
 
 	//Time spent for Auto-Promotion:
 	inFile >> autoPromotionLimit;
@@ -274,6 +341,7 @@ void Restaurant::showActiveOrders()
 			}
 		}
 
+		//TODO: Implement the toArray() function to prevent overhead
 		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
 		while (tempVIPQueue.dequeue(pOrd))
 			pGUI->AddOrderForDrawing(pOrd);
