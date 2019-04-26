@@ -1,6 +1,5 @@
 #include "Motorcycle.h"
 
-
 Motorcycle::Motorcycle()
 {
 }
@@ -11,15 +10,15 @@ Motorcycle::Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion
 	type = inType;
 	speed = inSpeed;
 	region = inRegion;
-	startTime=-1;
-	status=IDLE;
+	startTime = -1;
+	finishTime = -1;
+	status = IDLE;
 }
 
-bool Motorcycle::operator>(Motorcycle & right)
+bool Motorcycle::operator>(Motorcycle &right)
 {
 	return speed > right.speed;
 }
-
 
 Motorcycle::~Motorcycle()
 {
@@ -27,35 +26,45 @@ Motorcycle::~Motorcycle()
 
 void Motorcycle::setStatus(STATUS s)
 {
-	status=s;
+	status = s;
 }
 
 void Motorcycle::setStartTime(int time)
-	{
-		startTime=time;
-	}
+{
+	startTime = time;
+}
 
 MOTOR_TYPE Motorcycle::getType() const
 {
 	return type;
 }
 
-	int Motorcycle::getSpeed() const
-	{
-		return speed;
-	}
+int Motorcycle::getSpeed() const
+{
+	return speed;
+}
 
-	REGION Motorcycle::getRegion() const
-	{
-		return region;
-	}
+REGION Motorcycle::getRegion() const
+{
+	return region;
+}
 
-	STATUS Motorcycle::getStatus() const
-	{
-		return status;
-	}
+STATUS Motorcycle::getStatus() const
+{
+	return status;
+}
 
-	int Motorcycle::getStartTime() const
-	{
-       return startTime;
-	}
+int Motorcycle::getStartTime() const
+{
+	return startTime;
+}
+
+void Motorcycle::setFinishTime(int orderTime, int orderDistance)
+{
+	finishTime = orderTime + (orderDistance * 2) / speed;
+}
+
+int Motorcycle::getFinishTime() const
+{
+	return finishTime;
+}

@@ -12,20 +12,32 @@ class Motorcycle
 	int speed;		//meters it can move in one clock tick (in one timestep)
 	REGION	region;	//region of the motorcycle
 	STATUS	status;	//idle or in-service
-	int startTime; //the time which the motorcycle starts service 
-public:
+	int finishTime;	//The time which the motorcycle finishes service
+	
+	//Useless??
+	int startTime; //the time which the motorcycle starts service
+
+
+  public:
 	Motorcycle();
 	Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion);
 	bool operator>(Motorcycle& right);
 	virtual ~Motorcycle();
-	void setStatus(STATUS s);
-	void setStartTime(int time);
-	MOTOR_TYPE getType() const;
-	int getSpeed() const;
-	REGION getRegion() const;
-	STATUS getStatus() const;
-	int getStartTime() const;
 	
+	MOTOR_TYPE getType() const;	
+	REGION getRegion() const;	
+	int getSpeed() const;
+	
+	void setStatus(STATUS s);
+	STATUS getStatus() const;
+	
+	void setFinishTime(int startTime, int distance);
+	int getFinishTime() const;
+	
+	//Useless??
+	void setStartTime(int time);
+	int getStartTime() const;
+
 };
 
 #endif

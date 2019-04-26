@@ -420,8 +420,7 @@ void Restaurant::returnMotorcycles(int currentTimestep)
 			if (!currentMotor)
 				continue;
 
-			//Finish time = Start time + 2 * Speed (leaving and returning)
-			if (currentMotor->getStartTime() + 2 * currentMotor->getSpeed() <= currentTimestep)
+			if (currentMotor->getFinishTime() <= currentTimestep)
 			{
 				inServiceMotorcycles[reg].remove(currentMotor);
 				currentMotor->setStatus(IDLE);
