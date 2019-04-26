@@ -10,9 +10,10 @@ Motorcycle::Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion
 	type = inType;
 	speed = inSpeed;
 	region = inRegion;
-	startTime = -1;
 	finishTime = -1;
 	status = IDLE;
+	
+	//startTime = -1;
 }
 
 bool Motorcycle::operator>(Motorcycle &right)
@@ -29,10 +30,6 @@ void Motorcycle::setStatus(STATUS s)
 	status = s;
 }
 
-void Motorcycle::setStartTime(int time)
-{
-	startTime = time;
-}
 
 MOTOR_TYPE Motorcycle::getType() const
 {
@@ -54,17 +51,24 @@ STATUS Motorcycle::getStatus() const
 	return status;
 }
 
-int Motorcycle::getStartTime() const
-{
-	return startTime;
-}
 
-void Motorcycle::setFinishTime(int orderTime, int orderDistance)
+void Motorcycle::setFinishTime(int startTime, int distance)
 {
-	finishTime = orderTime + (orderDistance * 2) / speed;
+	finishTime = startTime + (distance * 2) / speed;
 }
 
 int Motorcycle::getFinishTime() const
 {
 	return finishTime;
 }
+
+
+//Useless
+/*void Motorcycle::setStartTime(int time)
+{
+	startTime = time;
+}
+int Motorcycle::getStartTime() const
+{
+	return startTime;
+}*/

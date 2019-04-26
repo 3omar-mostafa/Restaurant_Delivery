@@ -14,8 +14,8 @@ class Motorcycle
 	STATUS	status;	//idle or in-service
 	int finishTime;	//The time which the motorcycle finishes service
 	
-	//Useless??
-	int startTime; //the time which the motorcycle starts service
+	//Useless
+	//int startTime; //the time which the motorcycle starts service
 
 
   public:
@@ -34,9 +34,9 @@ class Motorcycle
 	void setFinishTime(int startTime, int distance);
 	int getFinishTime() const;
 	
-	//Useless??
-	void setStartTime(int time);
-	int getStartTime() const;
+	//Useless
+	//void setStartTime(int time);
+	//int getStartTime() const;
 
 };
 
