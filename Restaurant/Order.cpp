@@ -1,8 +1,12 @@
 #include "Order.h"
 
-void Order::setPriority()
+void Order::setPriority(int mode)
 {
-	priority = (type == TYPE_VIP) ? (400.0 / arrivalTime + 100.0 / distance + 0.1 * totalMoney) : -1;
+	if (mode == 0)
+		priority = (type == TYPE_VIP) ? (400.0 / arrivalTime + 100.0 / distance + 0.1 * totalMoney) : -1;
+
+	else if (mode == 1)
+		priority = finishTime;
 }
 
 void Order::setType(ORDER_TYPE newType)
@@ -62,6 +66,16 @@ REGION Order::GetRegion() const
 	return region;
 }
 
+void Order::setTimes(int startTime, int speed)
+{
+	finishTime = startTime + ceil(distance * 1.0 / speed);
+	waitTime = startTime - arrivalTime;
+	serviceTime = ceil(distance * 1.0 / speed);
+}
+
+
+
+
 void Order::SetDistance(int d)
 {
 	distance = d > 0 ? d : 0;
@@ -72,7 +86,22 @@ int Order::GetDistance() const
 	return distance;
 }
 
+int Order::getFinishTime() const
+{
+	return finishTime;
+}
+
 int Order::getArrivalTime() const
 {
 	return arrivalTime;
+}
+
+int Order::getWaitTime() const
+{
+	return waitTime;
+}
+
+int Order::getServiceTime() const
+{
+	return serviceTime;
 }

@@ -5,49 +5,52 @@
 
 class Order
 {
-	void setPriority();
+  protected:
+	int ID;			 //Each order has a unique ID (from 1 --> 999)
+	ORDER_TYPE type; //order type: Normal, Frozen, VIP
+	REGION region;   //Region of this order
+	int distance;	//The distance (in meters) between the order location and the restaurant
 
-protected:
-	int ID;         //Each order has a unique ID (from 1 --> 999)
-	ORDER_TYPE type;		//order type: Normal, Frozen, VIP
-	REGION region;  //Region of this order
-	int distance;	//The distance (in meters) between the order location and the restaurant 
-	                
-	double totalMoney;	//Total order money
+	double totalMoney; //Total order money
 
-	float priority;		//Used to sort the elements in the PriorityQueue
+	float priority; //Used to sort the elements in the PriorityQueue
 
-	int arrivalTime, serviceTime, finishTime;	//arrival, service start, and finish times
-	
-	
+	int arrivalTime, serviceTime, finishTime, waitTime; //arrival, service, finish, and wait times
+
 	//
 	// TODO: Add More Data Members As Needed
 	//
 
-public:
+  public:
 	Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Money, REGION r_region);
 	virtual ~Order();
 
 	int GetID();
 	bool operator==(int right);
+
 	// Used to sort the elements in the PriorityQueue
-	bool operator>(Order& right);
+	void setPriority(int mode = 0);
+	bool operator>(Order &right);
 
 	int GetType() const;
 	REGION GetRegion() const;
 
 	void SetDistance(int d);
 	int GetDistance() const;
-		
+
 	//
 	// TODO: Add More Member Functions As Needed
 	//
 
+	void setTimes(int startTime, int speed);
+
+	int getFinishTime() const;
+	int getWaitTime() const;
+	int getArrivalTime() const;
+	int getServiceTime() const;
 
 	void setType(ORDER_TYPE newType);
 	bool promote(int extraMoney = 0);
-	int getArrivalTime() const;
-
 };
 
 #endif

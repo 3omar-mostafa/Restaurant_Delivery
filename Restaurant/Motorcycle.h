@@ -7,15 +7,15 @@
 #pragma once
 class Motorcycle	
 {
-	int ID;
+	int ID, orderID;
 	MOTOR_TYPE type;	//for each order type there is a corresponding motorcycle type 
-	int speed;		//meters it can move in one clock tick (in one timestep)
-	REGION	region;	//region of the motorcycle
-	STATUS	status;	//idle or in-service
-	int finishTime;	//The time which the motorcycle finishes service
-	
+	int speed;			//meters it can move in one clock tick (in one timestep)
+	REGION	region;		//region of the motorcycle
+	STATUS	status;		//idle or in-service
+	int finishTime;		//The time which the motorcycle finishes service
+
 	//Useless
-	//int startTime; //the time which the motorcycle starts service
+	int startTime; 		//the time which the motorcycle starts service
 
 
   public:
@@ -27,7 +27,10 @@ class Motorcycle
 	MOTOR_TYPE getType() const;	
 	REGION getRegion() const;	
 	int getSpeed() const;
-	
+
+	void setOrderID(int oID);
+	int getOrderID() const;
+
 	void setStatus(STATUS s);
 	STATUS getStatus() const;
 	
@@ -35,8 +38,8 @@ class Motorcycle
 	int getFinishTime() const;
 	
 	//Useless
-	//void setStartTime(int time);
-	//int getStartTime() const;
+	void setStartTime(int time);
+	int getStartTime() const;
 
 };
 

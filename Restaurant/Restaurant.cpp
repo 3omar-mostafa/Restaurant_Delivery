@@ -79,24 +79,58 @@ Restaurant::~Restaurant()
 
 ////////////////////////////////////////////////////////////////////////////////
 
+void Restaurant::displayRegionsData()
+{
+	string regionsData[4] = {""};
 
-//Simple simulator function for Phase 1:
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		int noActiveOrdersOf[TYPE_COUNT] = {0};
+		int noAvailableMotor[TYPE_COUNT] = {0};
+
+		noActiveOrdersOf[TYPE_NORMAL] += normalQueue[reg].getLength();
+		noActiveOrdersOf[TYPE_FROZEN] += frozenQueue[reg].getLength();
+		noActiveOrdersOf[TYPE_VIP] += vipQueue[reg].getLength();
+
+		noAvailableMotor[TYPE_NORMAL] += normalMotorQueue[reg].getLength();
+		noAvailableMotor[TYPE_FROZEN] += frozenMotorQueue[reg].getLength();
+		noAvailableMotor[TYPE_VIP] += vipMotorQueue[reg].getLength();
+
+		regionsData[reg] += "(";
+		regionsData[reg] += char('A' + reg);
+		regionsData[reg] += ") ";
+
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders, ";
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders, ";
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders    ||    ";
+
+		regionsData[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles, ";
+		regionsData[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles, ";
+		regionsData[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
+	}
+	pGUI->PrintRegions(regionsData);
+}
+
+
 void Restaurant::interactiveMode()
 {
 	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
+	
 	string inputFile = pGUI->GetString();
 	loadFromFile(inputFile);
+	
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
 		//Print current timestep
 		pGUI->PrintTimestep(currentTimestep);
-		/*char timestep[10];
-		itoa(currentTimeStep, timestep, 10);
-		pGUI->PrintMessage(timestep);*/
+
+		returnMotorcycles(currentTimestep);
 
 		//Execute all events at current timestep
 		executeEvents(currentTimestep);
+
+		autoPromoteAll(currentTimestep);
 
 		//Show all active orders in each region
 		showActiveOrders();
@@ -104,48 +138,14 @@ void Restaurant::interactiveMode()
 		pGUI->PrintTimestep(currentTimestep);
 
 		//Display region info (on the status bar)
-		string regionsData[4] = { "" };
-		
-		for (int reg = 0; reg < REGION_COUNT; reg++)
-		{
-			int noActiveOrdersOf[TYPE_COUNT] = { 0 };
-			int noAvailableMotor[TYPE_COUNT] = { 0 };
-			
-			noActiveOrdersOf[TYPE_NORMAL] += normalQueue[reg].getLength();
-			noActiveOrdersOf[TYPE_FROZEN] += frozenQueue[reg].getLength();
-			noActiveOrdersOf[TYPE_VIP] += vipQueue[reg].getLength();
-			
-			noAvailableMotor[TYPE_NORMAL] += normalMotorQueue[reg].getLength();
-			noAvailableMotor[TYPE_FROZEN] += frozenMotorQueue[reg].getLength();
-			noAvailableMotor[TYPE_VIP] += vipMotorQueue[reg].getLength();
-			
-			regionsData[reg] += "(";
-			regionsData[reg] += char('A' + reg);
-			regionsData[reg] += ") ";
-					   
-			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders, ";
-			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders, ";
-			regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders    ||    ";
-					   
-			regionsData[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles, ";
-			regionsData[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles, ";
-			regionsData[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
+		displayRegionsData();
 
-		}
-		pGUI->PrintRegions(regionsData);
-
-		//Delete the top order in each queue
-		for (int reg = 0; reg < REGION_COUNT; reg++)
-		{
-			Order* pOrd = 0;
-			normalQueue[reg].pop(pOrd);
-			frozenQueue[reg].dequeue(pOrd);
-			vipQueue[reg].dequeue(pOrd);
-		}
+		assignMotorcycles(currentTimestep);
 
 		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
 		pGUI->UpdateInterface();
 		pGUI->PrintTimestep(currentTimestep);
+		
 		pGUI->waitForClick();
 		currentTimestep++;
 		pGUI->ResetDrawingList();
@@ -157,22 +157,26 @@ void Restaurant::interactiveMode()
 
 	/*
 	The function should work as follows:
-	// Print the current timestep (on the status bar?)
-	// Check all inServiceMotorcycles of each region, restore all ready ones
-	// Execute all events at current timestep
-	// Check for auto-promotion of orders
-	// Show active orders in each region on the screen (UpdateInterface)
+	Print the current timestep (on the status bar?)
+	Check all inServiceMotorcycles of each region, restore all ready ones
+	Execute all events at current timestep
+	Check for auto-promotion of orders
+	Show active orders in each region on the screen (UpdateInterface)
 	// Display region info (on the status bar)
 	// Display assigned Motorcycles of the last timestep (on the status bar?)
 	// Display total amount of orders served of each type (on the status bar?)
-	// Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
-	// Update the interface again, increase the timestep, reset the list of objects drawn on the screen	
+	Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
+	Update the interface again, increase the timestep, reset the list of objects drawn on the screen	
 	*/
 	
 	/*
 	Statistics are required at the end of the program (please refer to the project document).
 	Ideas for calculating said statistics are yet to be decided on.
 	Where do we store the data for served orders?
+
+	---> Universal PriorityQueue for all orders of all regions.
+	---> setPriority now takes 0 for VIP priority and 1 for finishTime.
+	---> Orders are added after being assigned to motorcycles.
 	*/
 }
 
@@ -181,36 +185,8 @@ void Restaurant::loadFromFile(string fileName)
 	//Reading from the input file:
 	ifstream inFile;
 	inFile.open(fileName);
-
-	//Colecting Motorcycle data (((((((((((((((pre-bonus))))))))))))))):	
-	int normalMotorSpeed, frozenMotorSpeed, vipMotorSpeed;
-	inFile >> normalMotorSpeed >> frozenMotorSpeed >> vipMotorSpeed;
-
-	int normalMotorCount[REGION_COUNT], frozenMotorCount[REGION_COUNT], vipMotorCount[REGION_COUNT];
-	for (int i = 0; i < REGION_COUNT; i++)
-	{
-		inFile >> normalMotorCount[i] >> frozenMotorCount[i] >> vipMotorCount[i];
-		//Enqueuing Motorcycles of each type in each region:
-		for (int j = 0; j < normalMotorCount[i]; j++)
-		{
-			Motorcycle* normalMotor = new Motorcycle(0, MOTOR_NORMAL, normalMotorSpeed, REGION(i));
-			normalMotorQueue[i].enqueue(normalMotor);
-		}
-
-		for (int j = 0; j < frozenMotorCount[i]; j++)
-		{
-			Motorcycle* frozenMotor = new Motorcycle(0, MOTOR_FROZEN, frozenMotorSpeed, REGION(i));
-			frozenMotorQueue[i].enqueue(frozenMotor);
-		}
-
-		for (int j = 0; j < vipMotorCount[i]; j++)
-		{
-			Motorcycle* vipMotor = new Motorcycle(0, MOTOR_FAST, vipMotorSpeed, REGION(i));
-			vipMotorQueue[i].enqueue(vipMotor);
-		}
-	}
-	/*
-	Collecting Motorcycle Data (post-bonus):
+	
+	// Collecting Motorcycle Data (post-bonus):
 	// Suggested method is listing the number of motorcycles first for each type separately.
 	// Then listing the ID followed by speed of each individual motorcycle, motorcycles of the same type follow each other.
 	// This is repeated four times, one for each region.
@@ -261,7 +237,6 @@ void Restaurant::loadFromFile(string fileName)
 			vipMotorQueue[reg].enqueue(vipMotor);
 		}
 	} 
-	*/
 
 	//Time spent for Auto-Promotion:
 	inFile >> autoPromotionLimit;
@@ -404,13 +379,21 @@ bool Restaurant::cancel(int id)
 	return false;
 }
 
-void Restaurant::assignMotorcycle()
+void Restaurant::assignOrderToMotorcycle(int currentTime, Order *pOrd, Motorcycle *pMotor)
 {
-	
-}
+	int orderDistance = -1, motorSpeed = -1;
+	if (pOrd && pMotor)
+	{
+		orderDistance = pOrd->GetDistance();
+		motorSpeed = pMotor->getSpeed();
+		
+		pOrd->setTimes(currentTime, motorSpeed);
+		pOrd->setPriority(1);
 
-void Restaurant::returnMotorcycle()
-{
+		pMotor->setFinishTime(currentTime, orderDistance);
+		pMotor->setOrderID(pOrd->GetID());
+		pMotor->setStatus(SERVICE);
+	}
 }
 
 void Restaurant::returnMotorcycles(int currentTimestep)
@@ -447,107 +430,99 @@ void Restaurant::returnMotorcycles(int currentTimestep)
 	}
 }
 
-/// ==> 
-///  DEMO-related functions. Should be removed in phases 1&2
-
-//This is just a demo function for project introductory phase
-//It should be removed starting phase 1
-/*
-
-void Restaurant::Just_A_Demo()
+void Restaurant::assignMotorcycles(int currentTimestep)
 {
-	
-		//
-		// THIS IS JUST A DEMO FUNCTION
-		// IT SHOULD BE REMOVED IN PHASE 1 AND PHASE 2
-
-		int EventCnt;
-		Order* pOrd;
-		Event* pEv;
-		srand(time(NULL));
-
-		pGUI->PrintMessage("Just a Demo. Enter EVENTS Count(next phases should read I/P filename):");
-		EventCnt = atoi(pGUI->GetString().c_str());	//get user input as a string then convert to integer
-
-		pGUI->UpdateInterface();
-
-		pGUI->PrintMessage("Generating orders randomly... In next phases, orders should be loaded from a file");
-
-		int EvTime = 0;
-
-		//Create Random events
-		//All generated event will be "ArrivalEvents" for the demo
-		for (int i = 0; i < EventCnt; i++)
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		//First the VIP orders:
+		while (!vipQueue[reg].isEmpty() && !vipMotorQueue[reg].isEmpty())
 		{
-			int O_id = i + 1;
+			Order *pOrd;
+			Motorcycle *pMotor;
 
-			//Rendomize order type
-			int OType;
-			if (i < EventCnt*0.2)	//let 1st 20% of orders be VIP (just for sake of demo)
-				OType = TYPE_VIP;
-			else if (i < EventCnt*0.5)
-				OType = TYPE_FROZEN;	//let next 30% be Frozen
-			else
-				OType = TYPE_NORMAL;	//let the rest be normal
+			vipQueue[reg].dequeue(pOrd);
+			vipMotorQueue[reg].dequeue(pMotor);
+			
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 
-
-			int reg = rand() % REGION_COUNT;	//randomize region
-
-
-			//Randomize event time
-			EvTime += rand() % 4;
-			pEv = new ArrivalEvent(EvTime, O_id, (ORDER_TYPE)OType, (REGION)reg);
-			addEvent(pEv);
-
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
 		}
 
-		int CurrentTimeStep = 1;
-		//as long as events queue is not empty yet
-		while (!eventsQueue.isEmpty())
+		while (!vipQueue[reg].isEmpty() && !normalMotorQueue[reg].isEmpty())
 		{
-			//print current timestep
-			char timestep[10];
-			itoa(CurrentTimeStep, timestep, 10);
-			pGUI->PrintMessage(timestep);
+			Order *pOrd;
+			Motorcycle *pMotor;
 
+			vipQueue[reg].dequeue(pOrd);
+			normalMotorQueue[reg].dequeue(pMotor);
 
-			executeEvents(CurrentTimeStep);	//execute all events at current time step
-			//The above line may add new orders to the DEMO_Queue
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 
-			//Let's draw all arrived orders by passing them to the GUI to draw
-
-			while (DEMO_Queue.dequeue(pOrd))
-			{
-				pGUI->AddOrderForDrawing(pOrd);
-				pGUI->UpdateInterface();
-			}
-			Sleep(1000);
-			CurrentTimeStep++;	//advance timestep
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
 		}
 
+		while (!vipQueue[reg].isEmpty() && !frozenMotorQueue[reg].isEmpty())
+		{
+			Order *pOrd;
+			Motorcycle *pMotor;
 
-		pGUI->PrintMessage("generation done, click to END program");
-		pGUI->waitForClick();
+			vipQueue[reg].dequeue(pOrd);
+			frozenMotorQueue[reg].dequeue(pMotor);
 
-		
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
+
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
+		}
+
+		/////////////////////////////////////////////////////////////////////////////
+
+		//Then the Frozen orders:
+		while (!frozenQueue[reg].isEmpty() && !frozenMotorQueue[reg].isEmpty())
+		{
+			Order *pOrd;
+			Motorcycle *pMotor;
+
+			frozenQueue[reg].dequeue(pOrd);
+			frozenMotorQueue[reg].dequeue(pMotor);
+
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
+
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
+		}
+
+		////////////////////////////////////////////////////////////////////////////
+
+		//And finally the Normal orders:
+		while (!normalQueue[reg].isEmpty() && !normalMotorQueue[reg].isEmpty())
+		{
+			Order *pOrd;
+			Motorcycle *pMotor;
+
+			normalQueue[reg].pop(pOrd);
+			normalMotorQueue[reg].dequeue(pMotor);
+
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
+
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
+		}
+
+		while (!normalQueue[reg].isEmpty() && !vipMotorQueue[reg].isEmpty())
+		{
+			Order *pOrd;
+			Motorcycle *pMotor;
+
+			normalQueue[reg].pop(pOrd);
+			vipMotorQueue[reg].dequeue(pMotor);
+
+			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
+
+			totalQueue.enqueue(pOrd);
+			inServiceMotorcycles[reg].append(pMotor);
+		}
+	}
 }
-
-
-void Restaurant::AddtoDemoQueue(Order *pOrd)
-{
-	DEMO_Queue.enqueue(pOrd);
-}
-
-
-Order* Restaurant::getDemoOrder()
-{
-	Order* pOrd;
-	DEMO_Queue.dequeue(pOrd);
-	return pOrd;
-
-}
-*/
-
-/// ==> end of DEMO-related functions
-
-////////////////
