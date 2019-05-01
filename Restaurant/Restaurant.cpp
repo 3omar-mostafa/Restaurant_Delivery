@@ -418,12 +418,15 @@ void Restaurant::returnMotorcycles(int currentTimestep)
 				{
 				case MOTOR_NORMAL:
 					normalMotorQueue[reg].enqueue(currentMotor);
+					break;
 
 				case MOTOR_FROZEN:
 					frozenMotorQueue[reg].enqueue(currentMotor);
+					break;
 
 				case MOTOR_FAST:
 					vipMotorQueue[reg].enqueue(currentMotor);
+					break;
 				}
 			}
 		}
