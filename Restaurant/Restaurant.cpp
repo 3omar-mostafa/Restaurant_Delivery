@@ -134,7 +134,7 @@ void Restaurant::interactiveMode()
 
 		//Show all active orders in each region
 		showActiveOrders();
-		pGUI->UpdateInterface();
+		pGUI->UpdateInterface(1);
 		pGUI->PrintTimestep(currentTimestep);
 
 		//Display region info (on the status bar)
