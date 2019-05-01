@@ -62,8 +62,9 @@ class GUI
 	// TODO: Add more members if needed
 	//
 
-	void DrawSingleOrder(Order *pO, int RegionCount) const; //draws ONE order
-	void DrawOrders() const;								//draws ALL orders in OrdListForDrawing
+	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
+	void DrawOrders(bool delet = 0) const;		//draws ALL orders in OrdListForDrawing
+	void Animate(int x, int y, int id, color colr, REGION reg) const;
 
 	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
 	void DrawRestArea() const;											  // draws the restaurant area
@@ -84,7 +85,7 @@ class GUI
 	void PrintTimestep(int time) const;
 	void PrintRegions(string data[REGION_COUNT]) const;
 
-	void UpdateInterface() const;
+	void UpdateInterface(bool del = 0) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list
 	void ResetDrawingList();			  //resets drawing list (should be called every timestep after drawing)
 

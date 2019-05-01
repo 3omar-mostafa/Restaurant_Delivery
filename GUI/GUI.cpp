@@ -111,8 +111,8 @@ void GUI::ClearStatusBar() const
 void GUI::ClearDrawingArea() const
 {
 	// Clearing the Drawing area
-	pWind->SetPen(KHAKI, 3);
-	pWind->SetBrush(KHAKI);
+	pWind->SetPen(WHITE, 3);
+	pWind->SetBrush(WHITE);
 	pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
 }
 ///////////////////////////////////////////////////////////////////////////////////
@@ -121,38 +121,44 @@ void GUI::DrawRestArea() const
 	int L = RestWidth / 2;
 
 	// 1- Drawing the brown square of the Rest
-	pWind->SetPen(BROWN);
-	pWind->SetBrush(BROWN);
-	pWind->DrawRectangle(RestStartX, RestStartY, RestEndX, RestEndY);
+	pWind->SetPen(GOLD);
+	pWind->SetBrush(GOLD);
+	pWind->DrawCircle((WindWidth / 2), YHalfDrawingArea, (WindWidth / 2) - RestStartX);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
-	pWind->SetPen(BROWN, 3);
+	pWind->SetPen(PALEVIOLETRED, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
-	pWind->DrawLine(WindWidth / 2, MenuBarHeight, WindWidth / 2, WindHeight - StatusBarHeight);
+	pWind->DrawLine(WindWidth / 2, 0, WindWidth / 2, WindHeight - StatusBarHeight);
+	image img("rest_del.jpg");
+	pWind->DrawImage(img, 0, 0);
 
-	// 3- Drawing the 2 white crossed lines (inside the Rest)
-	pWind->SetPen(WHITE);
-	pWind->DrawLine(WindWidth / 2, YHalfDrawingArea - RestWidth / 2, WindWidth / 2, YHalfDrawingArea + RestWidth / 2);
-	pWind->DrawLine(WindWidth / 2 - RestWidth / 2, YHalfDrawingArea, WindWidth / 2 + RestWidth / 2, YHalfDrawingArea);
-
-	// 4- Drawing the 4 white squares inside the Rest (one for each tower)
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
-	pWind->DrawRectangle(RestStartX + L / 3, RestStartY + L / 3, RestStartX + 2 * L / 3, RestStartY + 2 * L / 3);
-	pWind->DrawRectangle(RestStartX + L / 3, RestEndY - L / 3, RestStartX + 2 * L / 3, RestEndY - 2 * L / 3);
-	pWind->DrawRectangle(RestEndX - 2 * L / 3, RestStartY + L / 3, RestEndX - L / 3, RestStartY + 2 * L / 3);
-	pWind->DrawRectangle(RestEndX - 2 * L / 3, RestEndY - L / 3, RestEndX - L / 3, RestEndY - 2 * L / 3);
+	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
+	// 3- Drawing the 2 white crossed lines (inside the Rest)
+	/*pWind->SetPen(WHITE);
+	pWind->DrawLine(WindWidth/2, YHalfDrawingArea - RestWidth/2, WindWidth/2, YHalfDrawingArea + RestWidth/2);
+	pWind->DrawLine(WindWidth/2 - RestWidth/2, YHalfDrawingArea, WindWidth/2 + RestWidth/2, YHalfDrawingArea);
+	*/
 
+	// 4- Drawing the 4 white squares inside the Rest (one fo  r each tower)
+	/*pWind->SetPen(DODGERBLUE);
+	pWind->SetBrush(DODGERBLUE);
+	pWind->DrawEllipse(RestStartX + L/4, RestStartY + L/4 , RestStartX + 2*L/2 , RestStartY + 2*L/4 );
+	pWind->DrawEllipse(RestStartX + L/4, RestEndY - L/4, RestStartX + 2*L/2, RestEndY - 2*L/4);
+	pWind->DrawEllipse(RestEndX - 2*L/3, RestStartY + L/3, RestEndX - L/3, RestStartY + 2*L/3);
+	pWind->DrawEllipse(RestEndX - 2*L/3, RestEndY - L/3, RestEndX - L/3, RestEndY - 2*L/3);
+	*/
 	// 5- Writing the letter of each region (A, B, C, D)
-	pWind->SetPen(BROWN);
-	pWind->SetFont(25, BOLD, BY_NAME, "Arial");
-	pWind->DrawString(RestStartX + (int)(0.44 * L), RestStartY + 5 * L / 12, "A");
-	pWind->DrawString(RestStartX + (int)(0.44 * L), YHalfDrawingArea + 5 * L / 12, "D");
-	pWind->DrawString(WindWidth / 2 + (int)(0.44 * L), RestStartY + 5 * L / 12, "B");
-	pWind->DrawString(WindWidth / 2 + (int)(0.44 * L), YHalfDrawingArea + 5 * L / 12, "C");
+	pWind->SetPen(SLATEBLUE);
+	pWind->SetFont(40, ITALICIZED, ROMAN, "Arial");
+	pWind->DrawString(RestStartX + (int)(0.44*L), RestStartY + 5 * L / 12, "A");
+	pWind->DrawString(RestStartX + (int)(0.44*L), YHalfDrawingArea + 5 * L / 20, "D");
+	pWind->DrawString(RestStartX + L + (int)(0.36*L), RestStartY + 5 * L / 12, "B");
+	pWind->DrawString(RestStartX + L + (int)(0.36*L), YHalfDrawingArea + 5 * L / 20, "C");
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawSingleOrder(Order *pO, int RegionCount) const // It is a private function
+void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       // It is a private function
 {
 
 	if (RegionCount > MaxRegionOrderCount)
@@ -160,7 +166,7 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount) const // It is a private f
 
 	int DrawDistance = RegionCount;
 	int YPos = 1;
-	if (RegionCount >= MaxHorizOrders) //max no. of orders to draw in one line
+	if (RegionCount >= MaxHorizOrders)	//max no. of orders to draw in one line
 	{
 		DrawDistance = (RegionCount - 1) % MaxHorizOrders + 1;
 		YPos = (RegionCount - 1) / MaxHorizOrders + 1;
@@ -176,39 +182,95 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount) const // It is a private f
 	{
 	case A_REGION:
 		refX = (WindWidth / 2 - RestWidth / 2);
-		refY = YHalfDrawingArea - OrderHeight;				 //
+		refY = YHalfDrawingArea - OrderHeight; //
 		x = refX - DrawDistance * OrderWidth - DrawDistance; //(Distance)
-		y = refY - YPos * OrderHeight - YPos;				 // YPos
+		y = refY - YPos * OrderHeight - YPos; // YPos
 		break;
 	case B_REGION:
-		refX = (WindWidth / 2 + RestWidth / 2);
-		refY = YHalfDrawingArea - OrderHeight;					   //
-		x = refX + (DrawDistance - 1) * OrderWidth + DrawDistance; //(Distance)
-		y = refY - YPos * OrderHeight - YPos;					   // YPos
+		refX = (WindWidth / 2 + RestWidth / 2 + 15);
+		refY = YHalfDrawingArea - OrderHeight; //
+		x = refX + (DrawDistance - 1)*OrderWidth + DrawDistance; //(Distance)
+		y = refY - YPos * OrderHeight - YPos; // YPos
 		break;
 	case C_REGION:
-		refX = (WindWidth / 2 + RestWidth / 2);
-		refY = YHalfDrawingArea + OrderHeight;					   //
-		x = refX + (DrawDistance - 1) * OrderWidth + DrawDistance; //(Distance)
-		y = refY + (YPos - 1) * OrderHeight + YPos;				   // YPos
+		refX = (WindWidth / 2 + RestWidth / 2 + 15);
+		refY = YHalfDrawingArea + OrderHeight; //
+		x = refX + (DrawDistance - 1)*OrderWidth + DrawDistance; //(Distance)
+		y = refY + (YPos - 1)*OrderHeight + YPos; // YPos
 		break;
 	case D_REGION:
 		refX = (WindWidth / 2 - RestWidth / 2);
-		refY = YHalfDrawingArea + OrderHeight;				 //
+		refY = YHalfDrawingArea + OrderHeight; //
 		x = refX - DrawDistance * OrderWidth - DrawDistance; //(Distance)
-		y = refY + (YPos - 1) * OrderHeight + YPos;			 // YPos
+		y = refY + (YPos - 1)*OrderHeight + YPos; // YPos
 		break;
 	default:
 		break;
 	}
-
-	// Drawing the Order
-	pWind->SetPen(clr);
-	pWind->SetBrush(clr);
-	//pWind->DrawRectangle(x, y, x + OrderWidth, y + OrderHeight);
-	pWind->SetFont(20, BOLD, MODERN);
-	pWind->DrawInteger(x, y, pO->GetID());
+	if (deletes) {
+		pWind->SetPen(clr);
+		pWind->SetBrush(clr);
+		pWind->SetFont(20, BOLD, MODERN);
+		pWind->DrawInteger(x, y, pO->GetID());
+	}
+	else
+		Animate(x, y, pO->GetID(), clr, Region);
 }
+
+void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
+{
+
+	if (id % 3 == 1) {
+		pWind->SetPen(WHITE);
+		pWind->SetBrush(WHITE);
+		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
+		pWind->SetPen(DARKRED);
+		pWind->SetBrush(DARKRED);
+		pWind->DrawCircle(WindWidth / 2 - 10, YHalfDrawingArea, 2);
+	}
+	else if (id % 3 == 2) {
+		pWind->SetPen(WHITE);
+		pWind->SetBrush(WHITE);
+		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
+		pWind->SetPen(DARKRED);
+		pWind->SetBrush(DARKRED);
+		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 2);
+	}
+	else if (id % 3 == 0) {
+		pWind->SetPen(WHITE);
+		pWind->SetBrush(WHITE);
+		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
+		pWind->SetPen(DARKRED);
+		pWind->SetBrush(DARKRED);
+		pWind->DrawCircle(WindWidth / 2 + 10, YHalfDrawingArea, 2);
+	}
+	// Drawing the Order
+	for (int i = 90; i > 0; i--) {
+		pWind->SetPen(colr);
+		pWind->SetBrush(colr);
+		pWind->SetFont(20, BOLD, MODERN);
+		if (reg == A_REGION || reg == D_REGION) {
+			pWind->DrawInteger(x - i, y, id);
+			_sleep(1);
+			pWind->SetPen(WHITE);
+			pWind->SetBrush(WHITE);
+			pWind->DrawCircle(x - i + 10, y + 7, 20);
+		}
+		else {
+			pWind->DrawInteger(x + i, y, id);
+			_sleep(1);
+			pWind->SetPen(WHITE);
+			pWind->SetBrush(WHITE);
+			pWind->DrawCircle(x + i + 10, y + 7, 20);
+		}
+	}
+	pWind->SetPen(colr);
+	pWind->SetBrush(colr);
+	pWind->SetFont(20, BOLD, MODERN);
+	pWind->DrawInteger(x, y, id);
+
+}
+//////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////
 /* A function to draw a list of orders and ensure there is no overflow in the drawing*/
@@ -216,25 +278,25 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount) const // It is a private f
 // [Input Parameters]:
 //    orders [ ] : array of Order pointers (ALL orders from all regions in one array)
 //    TotalOrders : the size of the array (total no. of orders)
-void GUI::DrawOrders() const
+void GUI::DrawOrders(bool delet) const
 {
-
 	//Prepare counter for each region
-	int RegionsCounts[REGION_COUNT] = {0}; //initlaize all counters to zero
+	int RegionsCounts[REGION_COUNT] = { 0 };	//initlaize all counters to zero
 
 	for (int i = 0; i < OrderCount; i++)
 	{
 		int orderRegion = OrdListForDrawing[i]->GetRegion();
 		RegionsCounts[orderRegion]++;
-		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion]);
+		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet);
 	}
+
 }
 
-void GUI::UpdateInterface() const
+void GUI::UpdateInterface(bool del) const
 {
 	ClearDrawingArea();
 	DrawRestArea();
-	DrawOrders();
+	DrawOrders(del);
 }
 
 /*
