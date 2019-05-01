@@ -6,7 +6,7 @@ void Order::setPriority(int mode)
 		priority = (type == TYPE_VIP) ? (400.0 / arrivalTime + 100.0 / distance + 0.1 * totalMoney) : -1;
 
 	else if (mode == 1)
-		priority = finishTime;
+		priority = -finishTime;
 }
 
 void Order::setType(ORDER_TYPE newType)
@@ -56,7 +56,7 @@ bool Order::operator>(Order & right)
 	return priority > right.priority;
 }
 
-int Order::GetType() const
+ORDER_TYPE Order::GetType() const
 {
 	return type;
 }
@@ -104,4 +104,9 @@ int Order::getWaitTime() const
 int Order::getServiceTime() const
 {
 	return serviceTime;
+}
+
+void Order::writeData(ofstream & outFile)
+{
+	outFile << finishTime << "\t" << ID << "\t" << arrivalTime << "\t" << waitTime << "\t" << serviceTime << endl;
 }

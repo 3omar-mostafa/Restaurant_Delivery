@@ -34,9 +34,11 @@ void Restaurant::runSimulation()
 		break;
 
 	case MODE_STEP:
+		stepByStepMode();
 		break;
 
 	case MODE_SILENT:
+		silentMode();
 		break;
 
 	case MODE_DEMO:
@@ -111,25 +113,26 @@ void Restaurant::displayRegionsData()
 	pGUI->PrintRegions(regionsData);
 }
 
-
-void Restaurant::interactiveMode()
+void Restaurant::Operate(int mode)
 {
 	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
-	
+
 	string inputFile = pGUI->GetString();
 	loadFromFile(inputFile);
-	
+
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
 		//Print current timestep
 		pGUI->PrintTimestep(currentTimestep);
 
+		//Check all inServiceMotorcycles of each region, restore all ready ones
 		returnMotorcycles(currentTimestep);
 
 		//Execute all events at current timestep
 		executeEvents(currentTimestep);
 
+		//Check for auto-promotion of orders
 		autoPromoteAll(currentTimestep);
 
 		//Show all active orders in each region
@@ -140,20 +143,55 @@ void Restaurant::interactiveMode()
 		//Display region info (on the status bar)
 		displayRegionsData();
 
+		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 		assignMotorcycles(currentTimestep);
 
 		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
 		pGUI->UpdateInterface();
 		pGUI->PrintTimestep(currentTimestep);
-		
-		pGUI->waitForClick();
+
+		switch (mode)
+		{
+		case 1:
+			pGUI->waitForClick();
+			break;
+
+		case 2:
+			Sleep(1000);
+			break;
+		}
 		currentTimestep++;
 		pGUI->ResetDrawingList();
 	}
 
+
+
 	pGUI->UpdateInterface();
 	pGUI->PrintMessage("Simulation over.");
-	pGUI->waitForClick();
+	
+	switch (mode)
+	{
+	case 1:
+		pGUI->waitForClick();
+		break;
+
+	case 2:
+		Sleep(1000);
+		break;
+	}
+
+	//Return all motorcycles:
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		while (!inServiceMotorcycles[reg].isEmpty())
+			returnMotorcycles(++currentTimestep);
+	}
+
+
+	pGUI->PrintMessage("Enter the Output File Name (including .txt):");
+
+	string outputFile = pGUI->GetString();
+	writeToFile(outputFile);
 
 	/*
 	The function should work as follows:
@@ -166,9 +204,9 @@ void Restaurant::interactiveMode()
 	// Display assigned Motorcycles of the last timestep (on the status bar?)
 	// Display total amount of orders served of each type (on the status bar?)
 	Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
-	Update the interface again, increase the timestep, reset the list of objects drawn on the screen	
+	Update the interface again, increase the timestep, reset the list of objects drawn on the screen
 	*/
-	
+
 	/*
 	Statistics are required at the end of the program (please refer to the project document).
 	Ideas for calculating said statistics are yet to be decided on.
@@ -178,6 +216,78 @@ void Restaurant::interactiveMode()
 	---> setPriority now takes 0 for VIP priority and 1 for finishTime.
 	---> Orders are added after being assigned to motorcycles.
 	*/
+}
+
+void Restaurant::interactiveMode()
+{
+	Operate(1);
+}
+
+void Restaurant::stepByStepMode()
+{
+	Operate(2);
+}
+
+void Restaurant::silentMode()
+{
+	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
+
+	string inputFile = pGUI->GetString();
+	loadFromFile(inputFile);
+
+	int currentTimestep = 1;
+	while (!eventsQueue.isEmpty() || !finished())
+	{
+		//Print current timestep
+		//pGUI->PrintTimestep(currentTimestep);
+
+		//Check all inServiceMotorcycles of each region, restore all ready ones
+		returnMotorcycles(currentTimestep);
+
+		//Execute all events at current timestep
+		executeEvents(currentTimestep);
+
+		//Check for auto-promotion of orders
+		autoPromoteAll(currentTimestep);
+
+		//Show all active orders in each region
+		//showActiveOrders();
+		//pGUI->UpdateInterface(1);
+		//pGUI->PrintTimestep(currentTimestep);
+
+		//Display region info (on the status bar)
+		//displayRegionsData();
+
+		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
+		assignMotorcycles(currentTimestep);
+
+		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
+		//pGUI->UpdateInterface();
+		//pGUI->PrintTimestep(currentTimestep);
+
+		//pGUI->waitForClick();
+		//pGUI->ResetDrawingList();
+		currentTimestep++;
+	}
+
+
+
+	//pGUI->UpdateInterface();
+	pGUI->PrintMessage("Simulation over.");
+	//pGUI->waitForClick();
+
+	//Return all motorcycles:
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		while (!inServiceMotorcycles[reg].isEmpty())
+			returnMotorcycles(++currentTimestep);
+	}
+
+
+	pGUI->PrintMessage("Enter the Output File Name (including .txt):");
+
+	string outputFile = pGUI->GetString();
+	writeToFile(outputFile);
 }
 
 void Restaurant::loadFromFile(string fileName)
@@ -267,8 +377,92 @@ void Restaurant::loadFromFile(string fileName)
 		toBeAdded->readData(inFile);
 		addEvent(toBeAdded);
 	}
+
 	inFile.close();
 }
+
+void Restaurant::writeToFile(string filename)
+{
+	//Opening the file:
+	ofstream outFile;
+	outFile.open(filename);
+
+	//Storing Data for each region:
+	int vipOrderCount[REGION_COUNT] = { 0 };
+	int frozenOrderCount[REGION_COUNT] = { 0 };
+	int normalOrderCount[REGION_COUNT] = { 0 };
+	int totalOrderCount[REGION_COUNT] = { 0 };
+
+	int totalMotorCount[REGION_COUNT] = { 0 };
+	
+	int waitSum[REGION_COUNT] = { 0 };
+	int serviceSum[REGION_COUNT] = { 0 };
+
+	//Writing order info:
+	outFile << "FT\tID\tAT\tWT\tST\n";
+	while (!totalQueue.isEmpty())
+	{
+		Order* currentOrder = 0;
+		REGION orderRegion = REGION_COUNT;
+		ORDER_TYPE orderType = TYPE_COUNT;
+
+		//Write and collect the info to the file and remove the order:
+		if (totalQueue.dequeue(currentOrder))
+		{
+			currentOrder->writeData(outFile);
+			orderRegion = currentOrder->GetRegion();
+			orderType = currentOrder->GetType();
+			
+			waitSum[orderRegion] += currentOrder->getWaitTime();
+			serviceSum[orderRegion] += currentOrder->getServiceTime();
+
+			switch (orderType)
+			{
+			case TYPE_VIP:
+				vipOrderCount[orderRegion]++;
+				break;
+
+			case TYPE_FROZEN:
+				frozenOrderCount[orderRegion]++;
+				break;
+
+			case TYPE_NORMAL:
+				normalOrderCount[orderRegion]++;
+				break;
+			}
+
+			totalOrderCount[orderRegion]++;			
+		}
+	}
+
+	//Writing region info:
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		totalMotorCount[reg] = vipMotorQueue[reg].getLength() + frozenMotorQueue[reg].getLength() + normalMotorQueue[reg].getLength();
+
+		outFile << "\n\n\nRegion " << char('A' + reg) << ":\n";
+		
+		outFile << "\tOrders: " << totalOrderCount[reg] 
+			<< " [Normal: " << normalOrderCount[reg] 
+			<< ", Frozen: " << frozenOrderCount[reg] 
+			<< ", VIP: " << vipOrderCount[reg] << "]\n";
+		
+		outFile << "\tMotorC: " << totalMotorCount[reg]
+			<< " [Normal: " << normalMotorQueue[reg].getLength()
+			<< ", Frozen: " << frozenMotorQueue[reg].getLength()
+			<< ", VIP: " << vipMotorQueue[reg].getLength() << "]\n";
+
+		float averageWait = waitSum[reg] * 1.0 / totalOrderCount[reg];
+		float averageService = serviceSum[reg] * 1.0 / totalOrderCount[reg];
+
+		outFile << "\tAverage Wait = " << averageWait << ", " << "Average Service = " << averageService;
+	}
+	
+	//Closing the file:
+	outFile.close();
+}
+
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

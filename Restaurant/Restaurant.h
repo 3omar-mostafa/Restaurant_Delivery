@@ -60,7 +60,13 @@ class Restaurant
 	void executeEvents(int TimeStep); //executes all events at current timestep
 
 	void loadFromFile(string fileName);
+	void writeToFile(string filename);
+
+	
+	void Operate(int mode);
 	void interactiveMode();
+	void stepByStepMode();
+	void silentMode();
 
 	// Queue functions:
 	void showActiveOrders();

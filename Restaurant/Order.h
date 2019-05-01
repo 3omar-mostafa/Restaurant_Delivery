@@ -32,7 +32,7 @@ class Order
 	void setPriority(int mode = 0);
 	bool operator>(Order &right);
 
-	int GetType() const;
+	ORDER_TYPE GetType() const;
 	REGION GetRegion() const;
 
 	void SetDistance(int d);
@@ -48,6 +48,8 @@ class Order
 	int getWaitTime() const;
 	int getArrivalTime() const;
 	int getServiceTime() const;
+
+	void writeData(ofstream &outFile);
 
 	void setType(ORDER_TYPE newType);
 	bool promote(int extraMoney = 0);
