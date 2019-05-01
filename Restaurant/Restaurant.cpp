@@ -1,7 +1,7 @@
 #include "Restaurant.h"
 #include "..\Events\ArrivalEvent.h"
 #include "..\Events\CancellationEvent.h"
-
+#include "..\Events\PromotionEvent.h"
 
 template <typename T>
 bool isGreaterThan(T left, T right)
@@ -261,7 +261,7 @@ void Restaurant::loadFromFile(string fileName)
 			break;
 
 		case 'P':
-			//toBeAdded = new PromotionEvent;
+			toBeAdded = new PromotionEvent;
 			break;
 		}
 		toBeAdded->readData(inFile);
@@ -368,12 +368,27 @@ void Restaurant::autoPromoteAll(int currentTimeStep)
 		while (autoPromoteRegion(currentTimeStep, REGION(i)));
 }
 
+bool Restaurant::promote(int id, int extraMoney)
+{
+	Order *promotedOrder = orderIdArray[id];
+	for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		if (normalQueue[reg].remove(promotedOrder))
+		{
+			promotedOrder->promote(extraMoney);
+			vipQueue[reg].enqueue(promotedOrder);
+			return true;
+		}
+	}
+	return false;
+}
+
 bool Restaurant::cancel(int id)
 {
 	Order* cancelledOrder = orderIdArray[id];
-	for (int i = 0; i < REGION_COUNT; i++)
+	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		if (normalQueue[i].remove(cancelledOrder))
+		if (normalQueue[reg].remove(cancelledOrder))
 			return true;
 	}
 	return false;

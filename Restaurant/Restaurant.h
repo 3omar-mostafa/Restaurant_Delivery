@@ -71,6 +71,7 @@ class Restaurant
 	Order *&orderOfID(int i);
 
 	// Promotion functions:
+	bool promote(int id, int extraMoney);
 	bool autoPromoteRegion(int currentTimeStep, REGION reg); //Handles auto-promotion of Normal orders to VIP orders
 	void autoPromoteAll(int currentTimeStep);
 
