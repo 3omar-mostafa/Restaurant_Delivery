@@ -42,7 +42,8 @@ class Restaurant
 	PriorityQueue<Motorcycle *>
 		vipMotorQueue[REGION_COUNT],
 		normalMotorQueue[REGION_COUNT],
-		frozenMotorQueue[REGION_COUNT];
+		frozenMotorQueue[REGION_COUNT],
+		damagedMotorQueue[REGION_COUNT];
 
 	LinkedList<Motorcycle*>
 		inServiceMotorcycles[REGION_COUNT];
@@ -62,11 +63,15 @@ class Restaurant
 	void loadFromFile(string fileName);
 	void writeToFile(string filename);
 
-	
+<<<<<<< HEAD
 	void Operate(int mode);
 	void interactiveMode();
 	void stepByStepMode();
 	void silentMode();
+=======
+	
+	void Operate(PROGRAM_MODE mode);
+>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
 
 	// Queue functions:
 	void showActiveOrders();

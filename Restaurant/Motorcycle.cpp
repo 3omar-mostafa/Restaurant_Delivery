@@ -6,6 +6,7 @@ Motorcycle::Motorcycle()
 
 Motorcycle::Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion)
 {
+	hp = 5;
 	ID = inID;
 	orderID = -1;
 	type = inType;
@@ -21,10 +22,14 @@ Motorcycle::~Motorcycle()
 {
 }
 
-
 bool Motorcycle::operator>(Motorcycle &right)
 {
 	return speed > right.speed;
+}
+
+bool Motorcycle::getState() const
+{
+	return isDamaged;
 }
 
 void Motorcycle::setStatus(STATUS s)
@@ -74,6 +79,16 @@ void Motorcycle::setOrderID(int oID)
 int Motorcycle::getOrderID() const
 {
 	return orderID;
+}
+
+void Motorcycle::setHP(int Hp)
+{
+	hp = Hp;
+}
+
+int Motorcycle::getHP() const
+{
+	return hp;
 }
 
 //Useless

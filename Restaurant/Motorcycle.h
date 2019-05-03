@@ -13,6 +13,8 @@ class Motorcycle
 	REGION	region;		//region of the motorcycle
 	STATUS	status;		//idle or in-service
 	int finishTime;		//The time which the motorcycle finishes service
+	int hp;
+	bool isDamaged;
 
 	//Useless
 	int startTime; 		//the time which the motorcycle starts service
@@ -30,6 +32,10 @@ class Motorcycle
 
 	void setOrderID(int oID);
 	int getOrderID() const;
+
+	void setHP(int Hp);
+	int getHP() const;
+	bool getState()const;
 
 	void setStatus(STATUS s);
 	STATUS getStatus() const;

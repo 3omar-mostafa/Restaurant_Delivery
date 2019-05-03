@@ -64,7 +64,7 @@ void GUI::PrintMessage(string msg) const //Prints a message on status bar
 	pWind->SetPen(DARKRED);
 	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
 	pWind->DrawString(10, WindHeight - StatusBarHeight + 10, msg); // You may need to change these coordinates later
-																		   // to be able to write multi-line
+																   // to be able to write multi-line
 }
 
 void GUI::PrintTimestep(int time) const
@@ -72,7 +72,8 @@ void GUI::PrintTimestep(int time) const
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
-	if (time < 10) {
+	if (time < 10)
+	{
 		DrawString(WindWidth / 2 - 4, YHalfDrawingArea - 8, to_string(time));
 	}
 	else
@@ -86,10 +87,10 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 	pWind->DrawLine(0, WindHeight - StatusBarHeight / 2 - 10, WindWidth, WindHeight - StatusBarHeight / 2 - 10);
 	pWind->DrawLine(WindWidth / 2, WindHeight - StatusBarHeight, WindWidth / 2, WindHeight);
 
-
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		switch (reg) {
+		switch (reg)
+		{
 		case 0:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
@@ -130,15 +131,19 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 35, dataMotor[reg]);
 			break;
 
-		default: return;
+		default:
+			return;
 		}
 	}
+<<<<<<< HEAD
+	
+=======
 	/*for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
 		int factor = reg * 20;
 		pWind->DrawString(10, WindHeight - StatusBarHeight + factor + 5, data[reg]);
 	*/
-
+>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -181,8 +186,8 @@ void GUI::DrawRestArea() const
 	pWind->SetPen(PALEVIOLETRED, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
 	pWind->DrawLine(WindWidth / 2, 0, WindWidth / 2, WindHeight - StatusBarHeight);
-	image img("rest_del.jpg");
-	pWind->DrawImage(img, 0, 0);
+	//image img("rest_del.jpg");
+	//pWind->DrawImage(img, 0, 0);
 
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
@@ -204,13 +209,13 @@ void GUI::DrawRestArea() const
 	// 5- Writing the letter of each region (A, B, C, D)
 	pWind->SetPen(SLATEBLUE);
 	pWind->SetFont(40, ITALICIZED, ROMAN, "Arial");
-	pWind->DrawString(RestStartX + (int)(0.44*L), RestStartY + 5 * L / 12, "A");
-	pWind->DrawString(RestStartX + (int)(0.44*L), YHalfDrawingArea + 5 * L / 20, "D");
-	pWind->DrawString(RestStartX + L + (int)(0.36*L), RestStartY + 5 * L / 12, "B");
-	pWind->DrawString(RestStartX + L + (int)(0.36*L), YHalfDrawingArea + 5 * L / 20, "C");
+	pWind->DrawString(RestStartX + (int)(0.44 * L), RestStartY + 5 * L / 12, "A");
+	pWind->DrawString(RestStartX + (int)(0.44 * L), YHalfDrawingArea + 5 * L / 20, "D");
+	pWind->DrawString(RestStartX + L + (int)(0.36 * L), RestStartY + 5 * L / 12, "B");
+	pWind->DrawString(RestStartX + L + (int)(0.36 * L), YHalfDrawingArea + 5 * L / 20, "C");
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       // It is a private function
+void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes) const // It is a private function
 {
 	color clr = OrdersClrs[pO->GetType()];
 	REGION Region = pO->GetRegion();
@@ -220,7 +225,7 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 
 	int DrawDistance = RegionCount;
 	int YPos = 1;
-	if (RegionCount >= MaxHorizOrders)	//max no. of orders to draw in one line
+	if (RegionCount >= MaxHorizOrders) //max no. of orders to draw in one line
 	{
 		DrawDistance = (RegionCount - 1) % MaxHorizOrders + 1;
 		YPos = (RegionCount - 1) / MaxHorizOrders + 1;
@@ -234,32 +239,33 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 	{
 	case A_REGION:
 		refX = (WindWidth / 2 - RestWidth / 2);
-		refY = YHalfDrawingArea - OrderHeight; //
+		refY = YHalfDrawingArea - OrderHeight;				 //
 		x = refX - DrawDistance * OrderWidth - DrawDistance; //(Distance)
-		y = refY - YPos * OrderHeight - YPos; // YPos
+		y = refY - YPos * OrderHeight - YPos;				 // YPos
 		break;
 	case B_REGION:
 		refX = (WindWidth / 2 + RestWidth / 2 + 15);
-		refY = YHalfDrawingArea - OrderHeight; //
-		x = refX + (DrawDistance - 1)*OrderWidth + DrawDistance; //(Distance)
-		y = refY - YPos * OrderHeight - YPos; // YPos
+		refY = YHalfDrawingArea - OrderHeight;					   //
+		x = refX + (DrawDistance - 1) * OrderWidth + DrawDistance; //(Distance)
+		y = refY - YPos * OrderHeight - YPos;					   // YPos
 		break;
 	case C_REGION:
 		refX = (WindWidth / 2 + RestWidth / 2 + 15);
-		refY = YHalfDrawingArea + OrderHeight; //
-		x = refX + (DrawDistance - 1)*OrderWidth + DrawDistance; //(Distance)
-		y = refY + (YPos - 1)*OrderHeight + YPos; // YPos
+		refY = YHalfDrawingArea + OrderHeight;					   //
+		x = refX + (DrawDistance - 1) * OrderWidth + DrawDistance; //(Distance)
+		y = refY + (YPos - 1) * OrderHeight + YPos;				   // YPos
 		break;
 	case D_REGION:
 		refX = (WindWidth / 2 - RestWidth / 2);
-		refY = YHalfDrawingArea + OrderHeight; //
+		refY = YHalfDrawingArea + OrderHeight;				 //
 		x = refX - DrawDistance * OrderWidth - DrawDistance; //(Distance)
-		y = refY + (YPos - 1)*OrderHeight + YPos; // YPos
+		y = refY + (YPos - 1) * OrderHeight + YPos;			 // YPos
 		break;
 	default:
 		break;
 	}
-	if (deletes) {
+	if (deletes)
+	{
 		pWind->SetPen(clr);
 		pWind->SetBrush(clr);
 		pWind->SetFont(20, BOLD, MODERN);
@@ -271,7 +277,8 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 
 void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 {
-	if (id % 3 == 1) {
+	if (id % 3 == 1)
+	{
 		pWind->SetPen(WHITE);
 		pWind->SetBrush(WHITE);
 		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
@@ -279,7 +286,8 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->SetBrush(DARKRED);
 		pWind->DrawCircle(WindWidth / 2 - 10, YHalfDrawingArea, 2);
 	}
-	else if (id % 3 == 2) {
+	else if (id % 3 == 2)
+	{
 		pWind->SetPen(WHITE);
 		pWind->SetBrush(WHITE);
 		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
@@ -287,7 +295,8 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->SetBrush(DARKRED);
 		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 2);
 	}
-	else if (id % 3 == 0) {
+	else if (id % 3 == 0)
+	{
 		pWind->SetPen(WHITE);
 		pWind->SetBrush(WHITE);
 		pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 25);
@@ -296,24 +305,27 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->DrawCircle(WindWidth / 2 + 10, YHalfDrawingArea, 2);
 	}
 	// Drawing the Order
-	for (int i = 90; i > 0; i--) {
+	for (int i = 90; i > 0; i--)
+	{
 		pWind->SetPen(colr);
 		pWind->SetBrush(colr);
 		pWind->SetFont(20, BOLD, MODERN);
-		if (reg == A_REGION || reg == D_REGION) {
+		if (reg == A_REGION || reg == D_REGION)
+		{
 			pWind->DrawInteger(x - i, y, id);
-			Sleep(1); 
+			Sleep(1);
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
-			pWind->DrawRectangle(x-i,y,x-i+OrderWidth-10,y+15);
+			pWind->DrawRectangle(x - i, y, x - i + OrderWidth - 10, y + 15);
 			//pWind->DrawCircle(x - i + 10, y + 7, 20);
 		}
-		else {
+		else
+		{
 			pWind->DrawInteger(x + i, y, id);
 			Sleep(1);
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
-			pWind->DrawRectangle(x+i, y, x + i + OrderWidth - 10 , y+15);
+			pWind->DrawRectangle(x + i, y, x + i + OrderWidth - 10, y + 15);
 			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
 	}
@@ -321,7 +333,6 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);
 	pWind->DrawInteger(x, y, id);
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -335,7 +346,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 void GUI::DrawOrders(bool delet) const
 {
 	//Prepare counter for each region
-	int RegionsCounts[REGION_COUNT] = { 0 };	//initlaize all counters to zero
+	int RegionsCounts[REGION_COUNT] = {0}; //initlaize all counters to zero
 
 	for (int i = 0; i < OrderCount; i++)
 	{
@@ -343,7 +354,6 @@ void GUI::DrawOrders(bool delet) const
 		RegionsCounts[orderRegion]++;
 		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet);
 	}
-
 }
 
 void GUI::UpdateInterface(bool del) const
@@ -376,7 +386,7 @@ PROGRAM_MODE GUI::getGUIMode() const
 	PROGRAM_MODE Mode;
 	do
 	{
-		PrintMessage("Please select GUI mode: (1)Interactive, (2)StepByStep, (3)Silent, (4)DEMO... ");
+		PrintMessage("Please select GUI mode: (1) Interactive, (2) StepByStep, (3) Silent");
 		string S = GetString();
 		Mode = (PROGRAM_MODE)(atoi(S.c_str()) - 1);
 	} while (Mode < 0 || Mode >= MODE_COUNT);
