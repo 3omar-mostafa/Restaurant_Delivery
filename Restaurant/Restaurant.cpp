@@ -125,9 +125,6 @@ void Restaurant::Operate(int mode)
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
-		//Print current timestep
-		pGUI->PrintTimestep(currentTimestep);
-
 		//Check all inServiceMotorcycles of each region, restore all ready ones
 		returnMotorcycles(currentTimestep);
 
@@ -137,37 +134,45 @@ void Restaurant::Operate(int mode)
 		//Check for auto-promotion of orders
 		autoPromoteAll(currentTimestep);
 
-		//Show all active orders in each region
-		showActiveOrders();
-		pGUI->UpdateInterface();
-		pGUI->PrintTimestep(currentTimestep);
+		if (mode != 3)
+		{
+			//Print current timestep
+			pGUI->PrintTimestep(currentTimestep);
+			
+			//Display region info (on the status bar)
+			displayRegionsData();
 
-		//Display region info (on the status bar)
-		displayRegionsData();
+			//Show all active orders in each region
+			showActiveOrders();
+			pGUI->UpdateInterface();
+			pGUI->PrintTimestep(currentTimestep);
+		}
 
 		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 		assignMotorcycles(currentTimestep);
 
 		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
-		pGUI->UpdateInterface(1);
-		pGUI->PrintTimestep(currentTimestep);
+		//pGUI->UpdateInterface(1);
+		//pGUI->PrintTimestep(currentTimestep);
 
 		switch (mode)
 		{
 		case 1:
 			pGUI->waitForClick();
+			pGUI->ResetDrawingList();
 			break;
+
 		case 2:
 			Sleep(1000);
+			pGUI->ResetDrawingList();
 			break;
 		}
 		currentTimestep++;
-		pGUI->ResetDrawingList();
 	}
+	
+	if (mode != 3)
+		pGUI->UpdateInterface();
 
-
-
-	pGUI->UpdateInterface();
 	pGUI->PrintMessage("Simulation over.");
 	
 	switch (mode)
@@ -231,7 +236,8 @@ void Restaurant::stepByStepMode()
 
 void Restaurant::silentMode()
 {
-	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
+	Operate(3);
+	/*pGUI->PrintMessage("Enter the Input File Name (including .txt):");
 
 	string inputFile = pGUI->GetString();
 	loadFromFile(inputFile);
@@ -288,7 +294,7 @@ void Restaurant::silentMode()
 	pGUI->PrintMessage("Enter the Output File Name (including .txt):");
 
 	string outputFile = pGUI->GetString();
-	writeToFile(outputFile);
+	writeToFile(outputFile);*/
 }
 
 void Restaurant::loadFromFile(string fileName)
