@@ -308,7 +308,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->DrawCircle(WindWidth / 2 + 10, YHalfDrawingArea, 2);
 	}
 	// Drawing the Order
-	for (int i = 90; i > 0; i--)
+	for (int i = 120; i > 0; i-=2)
 	{
 		pWind->SetPen(colr);
 		pWind->SetBrush(colr);
