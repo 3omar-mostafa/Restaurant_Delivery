@@ -271,7 +271,6 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 
 void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 {
-	image img("rest_del.jpg");
 	if (id % 3 == 1) {
 		pWind->SetPen(WHITE);
 		pWind->SetBrush(WHITE);
@@ -301,7 +300,6 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->SetPen(colr);
 		pWind->SetBrush(colr);
 		pWind->SetFont(20, BOLD, MODERN);
-		
 		if (reg == A_REGION || reg == D_REGION) {
 			pWind->DrawInteger(x - i, y, id);
 			Sleep(1); 
@@ -319,7 +317,6 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
 	}
-	if (reg == A_REGION)pWind->DrawImage(img, 0, 0);
 	pWind->SetPen(colr);
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);
