@@ -99,14 +99,9 @@ void Restaurant::displayRegionsData()
 		noAvailableMotor[TYPE_FROZEN] += frozenMotorQueue[reg].getLength();
 		noAvailableMotor[TYPE_VIP] += vipMotorQueue[reg].getLength();
 
-		//regionsData[reg] += "(";
-		//regionsData[reg] += char('A' + reg);
-		//regionsData[reg] += ") ";
-
 		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders             ";
 		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders             ";
 		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders ";
-																		//'   ||   '
 
 		regionsData2[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles     ";
 		regionsData2[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles     ";
@@ -150,10 +145,6 @@ void Restaurant::Operate(int mode)
 
 		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 		assignMotorcycles(currentTimestep);
-
-		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
-		//pGUI->UpdateInterface(1);
-		//pGUI->PrintTimestep(currentTimestep);
 
 		switch (mode)
 		{
@@ -237,64 +228,6 @@ void Restaurant::stepByStepMode()
 void Restaurant::silentMode()
 {
 	Operate(3);
-	/*pGUI->PrintMessage("Enter the Input File Name (including .txt):");
-
-	string inputFile = pGUI->GetString();
-	loadFromFile(inputFile);
-
-	int currentTimestep = 1;
-	while (!eventsQueue.isEmpty() || !finished())
-	{
-		//Print current timestep
-		//pGUI->PrintTimestep(currentTimestep);
-
-		//Check all inServiceMotorcycles of each region, restore all ready ones
-		returnMotorcycles(currentTimestep);
-
-		//Execute all events at current timestep
-		executeEvents(currentTimestep);
-
-		//Check for auto-promotion of orders
-		autoPromoteAll(currentTimestep);
-
-		//Show all active orders in each region
-		//showActiveOrders();
-		//pGUI->UpdateInterface(1);
-		//pGUI->PrintTimestep(currentTimestep);
-
-		//Display region info (on the status bar)
-		//displayRegionsData();
-
-		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
-		assignMotorcycles(currentTimestep);
-
-		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
-		//pGUI->UpdateInterface();
-		//pGUI->PrintTimestep(currentTimestep);
-
-		//pGUI->waitForClick();
-		//pGUI->ResetDrawingList();
-		currentTimestep++;
-	}
-
-
-
-	//pGUI->UpdateInterface();
-	pGUI->PrintMessage("Simulation over.");
-	//pGUI->waitForClick();
-
-	//Return all motorcycles:
-	for (int reg = 0; reg < REGION_COUNT; reg++)
-	{
-		while (!inServiceMotorcycles[reg].isEmpty())
-			returnMotorcycles(++currentTimestep);
-	}
-
-
-	pGUI->PrintMessage("Enter the Output File Name (including .txt):");
-
-	string outputFile = pGUI->GetString();
-	writeToFile(outputFile);*/
 }
 
 void Restaurant::loadFromFile(string fileName)
