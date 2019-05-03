@@ -63,10 +63,7 @@ class Restaurant
 	void writeToFile(string filename);
 
 	
-	void Operate(int mode);
-	void interactiveMode();
-	void stepByStepMode();
-	void silentMode();
+	void Operate(PROGRAM_MODE mode);
 
 	// Queue functions:
 	void showActiveOrders();

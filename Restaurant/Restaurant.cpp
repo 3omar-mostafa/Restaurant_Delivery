@@ -27,25 +27,7 @@ void Restaurant::runSimulation()
 	pGUI = new GUI;
 	PROGRAM_MODE mode = pGUI->getGUIMode();
 
-	switch (mode)	//Add a function for each mode in next phases
-	{
-	case MODE_INTERACTIVE:
-		interactiveMode();
-		break;
-
-	case MODE_STEP:
-		stepByStepMode();
-		break;
-
-	case MODE_SILENT:
-		silentMode();
-		break;
-
-	case MODE_DEMO:
-		//Just_A_Demo();
-		break;
-	};
-
+	Operate(mode);
 }
 
 
@@ -110,11 +92,11 @@ void Restaurant::displayRegionsData()
 	pGUI->PrintRegions(regionsData, regionsData2);
 }
 
-void Restaurant::Operate(int mode)
+void Restaurant::Operate(PROGRAM_MODE mode)
 {
-	pGUI->PrintMessage("Enter the Input File Name (including .txt):");
+	pGUI->PrintMessage("Enter the Input File Name:");
 
-	string inputFile = pGUI->GetString();
+	string inputFile = pGUI->GetString() + ".txt";
 	loadFromFile(inputFile);
 
 	int currentTimestep = 1;
@@ -129,7 +111,7 @@ void Restaurant::Operate(int mode)
 		//Check for auto-promotion of orders
 		autoPromoteAll(currentTimestep);
 
-		if (mode != 3)
+		if (mode != MODE_SILENT)
 		{
 			//Print current timestep
 			pGUI->PrintTimestep(currentTimestep);
@@ -148,12 +130,12 @@ void Restaurant::Operate(int mode)
 
 		switch (mode)
 		{
-		case 1:
+		case MODE_INTERACTIVE:
 			pGUI->waitForClick();
 			pGUI->ResetDrawingList();
 			break;
 
-		case 2:
+		case MODE_STEP:
 			Sleep(1000);
 			pGUI->ResetDrawingList();
 			break;
@@ -161,18 +143,18 @@ void Restaurant::Operate(int mode)
 		currentTimestep++;
 	}
 	
-	if (mode != 3)
+	if (mode != MODE_SILENT)
 		pGUI->UpdateInterface();
 
 	pGUI->PrintMessage("Simulation over.");
 	
 	switch (mode)
 	{
-	case 1:
+	case MODE_INTERACTIVE:
 		pGUI->waitForClick();
 		break;
 
-	case 2:
+	case MODE_STEP:
 		Sleep(1000);
 		break;
 	}
@@ -185,9 +167,9 @@ void Restaurant::Operate(int mode)
 	}
 
 
-	pGUI->PrintMessage("Enter the Output File Name (including .txt):");
+	pGUI->PrintMessage("Enter the Output File Name:");
 
-	string outputFile = pGUI->GetString();
+	string outputFile = pGUI->GetString() + ".txt";
 	writeToFile(outputFile);
 
 	/*
@@ -213,21 +195,6 @@ void Restaurant::Operate(int mode)
 	---> setPriority now takes 0 for VIP priority and 1 for finishTime.
 	---> Orders are added after being assigned to motorcycles.
 	*/
-}
-
-void Restaurant::interactiveMode()
-{
-	Operate(1);
-}
-
-void Restaurant::stepByStepMode()
-{
-	Operate(2);
-}
-
-void Restaurant::silentMode()
-{
-	Operate(3);
 }
 
 void Restaurant::loadFromFile(string fileName)
