@@ -63,7 +63,7 @@ void GUI::PrintMessage(string msg) const //Prints a message on status bar
 
 	pWind->SetPen(DARKRED);
 	pWind->SetFont(18, BOLD, BY_NAME, "Arial");
-	pWind->DrawString(10, WindHeight - (int)(StatusBarHeight / 1.5), msg); // You may need to change these coordinates later
+	pWind->DrawString(10, WindHeight - StatusBarHeight +10, msg); // You may need to change these coordinates later
 																		   // to be able to write multi-line
 }
 
@@ -72,21 +72,69 @@ void GUI::PrintTimestep(int time) const
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
-
-	DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
+	if (time < 10) {
+		DrawString(WindWidth / 2 - 4, YHalfDrawingArea - 8, to_string(time));
+	}
+	else 
+		DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
 }
 
-void GUI::PrintRegions(string data[REGION_COUNT]) const
+void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]) const
 {
 	ClearStatusBar(); //First clear the status bar
-
-	pWind->SetPen(DARKRED);
-	pWind->SetFont(16, BOLD, BY_NAME, "Arial");
+	pWind->SetPen(PALEVIOLETRED,3);
+	pWind->DrawLine(0, WindHeight - StatusBarHeight/2 -10,WindWidth, WindHeight - StatusBarHeight / 2 -10);
+	pWind->DrawLine(WindWidth/2, WindHeight - StatusBarHeight , WindWidth/2, WindHeight);
+	
+	
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		float factor = (reg + 1) / 5.0;
-		pWind->DrawString(10, WindHeight - (int)(15 + StatusBarHeight * factor), data[REGION_COUNT - 1 - reg]);
+	switch (reg) {
+	case 0:
+		pWind->SetPen(TOMATO);
+		pWind->SetFont(20, BOLD, BY_NAME, "Arial");
+		pWind->DrawString(200, WindHeight - StatusBarHeight + 5, "A");
+		pWind->SetPen(OLIVEDRAB);
+		pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
+		pWind->DrawString(10, WindHeight - StatusBarHeight  + 25, data[reg]);
+		pWind->DrawString(10, WindHeight - StatusBarHeight  + 45, dataMotor[reg]);
+		break;
+	case 1:
+		pWind->SetPen(TOMATO);
+		pWind->SetFont(20, BOLD, BY_NAME, "Arial");
+		pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight + 5, "B");
+		pWind->SetPen(DIMGREY);
+		pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
+		pWind->DrawString(WindWidth/2  +10, WindHeight - StatusBarHeight + 25, data[reg]);
+		pWind->DrawString(WindWidth/2  +10, WindHeight - StatusBarHeight + 45, dataMotor[reg]);
+		break;
+	case 2:
+		pWind->SetPen(TOMATO);
+		pWind->SetFont(20, BOLD, BY_NAME, "Arial");
+		pWind->DrawString(200, WindHeight - StatusBarHeight /2 - 5   , "C");
+		pWind->SetPen(DARKCYAN);
+		pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
+		pWind->DrawString(10,  WindHeight - StatusBarHeight / 2 + 15 , data[reg]);
+		pWind->DrawString(10,  WindHeight - StatusBarHeight / 2 + 35 , dataMotor[reg]);
+		break;
+	case 3:
+		pWind->SetPen(TOMATO);
+		pWind->SetFont(20, BOLD, BY_NAME, "Arial");
+		pWind->DrawString(WindWidth/2  +200, WindHeight - StatusBarHeight / 2 - 5, "D");
+		pWind->SetPen(GOLDENROD);
+		pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
+		pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 15, data[reg]);
+		pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 35, dataMotor[reg]);
+		break;
+	default: return;
 	}
+	}
+	/*for (int reg = 0; reg < REGION_COUNT; reg++)
+	{
+		int factor = reg * 20;
+		pWind->DrawString(10, WindHeight - StatusBarHeight + factor + 5, data[reg]);
+	*/
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -160,10 +208,12 @@ void GUI::DrawRestArea() const
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       // It is a private function
 {
+	color clr = OrdersClrs[pO->GetType()];
+	REGION Region = pO->GetRegion();
 
 	if (RegionCount > MaxRegionOrderCount)
 		return; //no more orders can be drawn in this region
-
+	
 	int DrawDistance = RegionCount;
 	int YPos = 1;
 	if (RegionCount >= MaxHorizOrders)	//max no. of orders to draw in one line
@@ -172,12 +222,10 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 		YPos = (RegionCount - 1) / MaxHorizOrders + 1;
 	}
 
-	color clr = OrdersClrs[pO->GetType()];
-	REGION Region = pO->GetRegion();
-
 	int x, y, refX, refY;
 	//First calculate x,y position of the order on the output screen
 	//It depends on the region and the order distance
+	
 	switch (Region)
 	{
 	case A_REGION:
@@ -251,14 +299,14 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->SetFont(20, BOLD, MODERN);
 		if (reg == A_REGION || reg == D_REGION) {
 			pWind->DrawInteger(x - i, y, id);
-			_sleep(1);
+			Sleep(1);
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
 			pWind->DrawCircle(x - i + 10, y + 7, 20);
 		}
 		else {
 			pWind->DrawInteger(x + i, y, id);
-			_sleep(1);
+			Sleep(1);
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
 			pWind->DrawCircle(x + i + 10, y + 7, 20);
@@ -270,6 +318,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 	pWind->DrawInteger(x, y, id);
 
 }
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////////////////////

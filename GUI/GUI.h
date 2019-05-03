@@ -21,8 +21,8 @@ class GUI
 	static const int
 		WindWidth = 1200,
 		WindHeight = 650,	  //Window width and height
-		StatusBarHeight = 150, //Status Bar Height
-		MenuBarHeight = 50,	//Menu Bar Height (distance from top of window to bottom line of menu bar)
+		StatusBarHeight = 195, //Status Bar Height
+		MenuBarHeight = 20,	//Menu Bar Height (distance from top of window to bottom line of menu bar)
 		MenuItemWidth = 80,	//Width of each item in menu bar menu
 
 		DrawingAreaHeight = WindHeight - MenuBarHeight - StatusBarHeight,
@@ -62,9 +62,10 @@ class GUI
 	// TODO: Add more members if needed
 	//
 
-	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
+	
 	void DrawOrders(bool delet = 0) const;		//draws ALL orders in OrdListForDrawing
 	void Animate(int x, int y, int id, color colr, REGION reg) const;
+	
 
 	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
 	void DrawRestArea() const;											  // draws the restaurant area
@@ -83,7 +84,8 @@ class GUI
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg) const; // prints a message in the status bar
 	void PrintTimestep(int time) const;
-	void PrintRegions(string data[REGION_COUNT]) const;
+	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]) const;
+	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
 
 	void UpdateInterface(bool del = 0) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list

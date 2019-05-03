@@ -84,6 +84,7 @@ Restaurant::~Restaurant()
 void Restaurant::displayRegionsData()
 {
 	string regionsData[4] = {""};
+	string regionsData2[4] = {""};
 
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
@@ -98,19 +99,20 @@ void Restaurant::displayRegionsData()
 		noAvailableMotor[TYPE_FROZEN] += frozenMotorQueue[reg].getLength();
 		noAvailableMotor[TYPE_VIP] += vipMotorQueue[reg].getLength();
 
-		regionsData[reg] += "(";
-		regionsData[reg] += char('A' + reg);
-		regionsData[reg] += ") ";
+		//regionsData[reg] += "(";
+		//regionsData[reg] += char('A' + reg);
+		//regionsData[reg] += ") ";
 
-		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders, ";
-		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders, ";
-		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders    ||    ";
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_NORMAL]) + " Normal Orders             ";
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_FROZEN]) + " Frozen Orders             ";
+		regionsData[reg] += to_string(noActiveOrdersOf[TYPE_VIP]) + " VIP Orders ";
+																		//'   ||   '
 
-		regionsData[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles, ";
-		regionsData[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles, ";
-		regionsData[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
+		regionsData2[reg] += to_string(noAvailableMotor[TYPE_NORMAL]) + " Normal Motorcycles     ";
+		regionsData2[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles     ";
+		regionsData2[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
 	}
-	pGUI->PrintRegions(regionsData);
+	pGUI->PrintRegions(regionsData, regionsData2);
 }
 
 void Restaurant::Operate(int mode)
@@ -137,7 +139,7 @@ void Restaurant::Operate(int mode)
 
 		//Show all active orders in each region
 		showActiveOrders();
-		pGUI->UpdateInterface(1);
+		pGUI->UpdateInterface();
 		pGUI->PrintTimestep(currentTimestep);
 
 		//Display region info (on the status bar)
@@ -147,7 +149,7 @@ void Restaurant::Operate(int mode)
 		assignMotorcycles(currentTimestep);
 
 		//Update the interface again, increase the timestep while resetting the list of objects drawn on the screen
-		pGUI->UpdateInterface();
+		pGUI->UpdateInterface(1);
 		pGUI->PrintTimestep(currentTimestep);
 
 		switch (mode)
@@ -155,7 +157,6 @@ void Restaurant::Operate(int mode)
 		case 1:
 			pGUI->waitForClick();
 			break;
-
 		case 2:
 			Sleep(1000);
 			break;
@@ -531,6 +532,7 @@ bool Restaurant::finished()
 	return true;
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Order *& Restaurant::orderOfID(int i)
@@ -578,12 +580,14 @@ bool Restaurant::promote(int id, int extraMoney)
 }
 
 bool Restaurant::cancel(int id)
-{
+{ 
 	Order* cancelledOrder = orderIdArray[id];
+	
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		if (normalQueue[reg].remove(cancelledOrder))
+		if (normalQueue[reg].remove(cancelledOrder)) {
 			return true;
+		}
 	}
 	return false;
 }
