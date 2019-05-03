@@ -271,7 +271,7 @@ void GUI::DrawSingleOrder(Order* pO, int RegionCount, bool deletes) const       
 
 void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 {
-
+	image img("rest_del.jpg");
 	if (id % 3 == 1) {
 		pWind->SetPen(WHITE);
 		pWind->SetBrush(WHITE);
@@ -297,25 +297,29 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		pWind->DrawCircle(WindWidth / 2 + 10, YHalfDrawingArea, 2);
 	}
 	// Drawing the Order
-	for (int i = 90; i > 0; i--) {
+	for (int i = 140; i > 0; i--) {
 		pWind->SetPen(colr);
 		pWind->SetBrush(colr);
 		pWind->SetFont(20, BOLD, MODERN);
+		
 		if (reg == A_REGION || reg == D_REGION) {
 			pWind->DrawInteger(x - i, y, id);
-			Sleep(1);
+			Sleep(1); 
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
-			pWind->DrawCircle(x - i + 10, y + 7, 20);
+			pWind->DrawRectangle(x-i,y,x-i+OrderWidth-10,y+15);
+			//pWind->DrawCircle(x - i + 10, y + 7, 20);
 		}
 		else {
 			pWind->DrawInteger(x + i, y, id);
 			Sleep(1);
 			pWind->SetPen(WHITE);
 			pWind->SetBrush(WHITE);
-			pWind->DrawCircle(x + i + 10, y + 7, 20);
+			pWind->DrawRectangle(x+i, y, x + i + OrderWidth - 10 , y+15);
+			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
 	}
+	if (reg == A_REGION)pWind->DrawImage(img, 0, 0);
 	pWind->SetPen(colr);
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);

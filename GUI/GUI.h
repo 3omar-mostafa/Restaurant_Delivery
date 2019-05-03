@@ -62,7 +62,7 @@ class GUI
 	// TODO: Add more members if needed
 	//
 
-	
+	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
 	void DrawOrders(bool delet = 0) const;		//draws ALL orders in OrdListForDrawing
 	void Animate(int x, int y, int id, color colr, REGION reg) const;
 	
@@ -85,7 +85,7 @@ class GUI
 	void PrintMessage(string msg) const; // prints a message in the status bar
 	void PrintTimestep(int time) const;
 	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]) const;
-	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
+	
 
 	void UpdateInterface(bool del = 0) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list
