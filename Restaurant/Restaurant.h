@@ -63,15 +63,18 @@ class Restaurant
 	void loadFromFile(string fileName);
 	void writeToFile(string filename);
 
-<<<<<<< HEAD
-	void Operate(int mode);
-	void interactiveMode();
-	void stepByStepMode();
-	void silentMode();
-=======
+//<<<<<<< HEAD
+//<<<<<<< HEAD
+
+
+//=======
+	
+	//void Operate(PROGRAM_MODE mode);
+//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
+//=======
 	
 	void Operate(PROGRAM_MODE mode);
->>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
+//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
 
 	// Queue functions:
 	void showActiveOrders();

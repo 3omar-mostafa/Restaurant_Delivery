@@ -135,15 +135,18 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			return;
 		}
 	}
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	
-=======
+//=======
 	/*for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
 		int factor = reg * 20;
 		pWind->DrawString(10, WindHeight - StatusBarHeight + factor + 5, data[reg]);
 	*/
->>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
+//<<<<<<< HEAD
+//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
+//=======
+//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
