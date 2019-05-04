@@ -127,7 +127,7 @@ string Restaurant::assignedMotorcyclesData(Motorcycle* pMotor, Order* pOrd) cons
 		break;
 	}
 
-	s += to_string(pMotor->getID()) + "\t";
+	s += to_string(pMotor->getID()) + "    ";
 
 	return s;
 }
@@ -641,7 +641,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP()-1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor,pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor,pOrd);
 			totalOrdersServed[reg]++;
 		}
 
@@ -662,7 +662,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor, pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
 			totalOrdersServed[reg]++;
 		}
 
@@ -683,7 +683,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor, pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
 			totalOrdersServed[reg]++;
 		}
 
@@ -707,7 +707,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor, pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
 			totalOrdersServed[reg]++;
 		}
 
@@ -731,7 +731,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor, pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
 			totalOrdersServed[reg]++;
 		}
 
@@ -752,7 +752,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
-			assignedMotorcyclesLastTimestep[reg] = assignedMotorcyclesData(pMotor, pOrd);
+			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
 			totalOrdersServed[reg]++;
 		}
 	}
