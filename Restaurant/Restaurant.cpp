@@ -165,7 +165,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			//Show all active orders in each region
 			showActiveOrders();
 			if (normalQueue->getLength() + vipQueue->getLength() + frozenQueue->getLength() > 20) {
-				pGUI->UpdateInterface(1);
+				pGUI->UpdateInterface(true);
 			}
 			else 
 				pGUI->UpdateInterface();
