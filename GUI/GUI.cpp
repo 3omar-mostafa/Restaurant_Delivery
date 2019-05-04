@@ -14,7 +14,7 @@ GUI::GUI()
 	OrdersClrs[TYPE_VIP] = RED;			//VIP-order color
 
 	ClearStatusBar();
-	ClearDrawingArea();
+	ClearDrawingArea(0);
 	DrawRestArea();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -184,9 +184,9 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
 		pWind->SetPen(WHITESMOKE);
 		pWind->SetBrush(WHITESMOKE);
-		for (int i = 10; i < WindHeight;i+=100) {
-			for (int j = 10; j < WindWidth;j+=50) {
-				pWind->DrawCircle(i,j,5);
+		for (int i = 10; i < WindHeight;i+=30) {
+			for (int j = (i/10)%2?10:20; j < WindWidth;j+=30) {
+				pWind->DrawCircle(j,i,1);
 			}
 		}
 		
@@ -221,7 +221,7 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(RestStartX + L + (int)(0.36 * L), YHalfDrawingArea + 5 * L / 20, "C");
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes) const // It is a private function
+void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes,int time) const // It is a private function
 {
 	color clr = OrdersClrs[pO->getType()];
 	REGION Region = pO->getRegion();
@@ -278,11 +278,15 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes) const // It 
 		pWind->DrawInteger(x, y, pO->getID());
 	}
 	else
-		Animate(x, y, pO->getID(), clr, Region);
+		Animate(x, y, pO->getID(), clr, Region,time);
 }
 
-void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
+void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
 {
+	color BG;
+	if (time < 10) BG = WHITE;
+	else if (time >= 10 && time < 20) BG = DARKGRAY;
+	else BG = DARKBLUE;
 	if (id % 3 == 1)
 	{
 		pWind->SetPen(WHITE);
@@ -320,8 +324,8 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		{
 			pWind->DrawInteger(x - i, y, id);
 			Sleep(1);
-			pWind->SetPen(WHITE);
-			pWind->SetBrush(WHITE);
+			pWind->SetPen(BG);
+			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x - i, y, x - i + OrderWidth - 10, y + 15);
 			//pWind->DrawCircle(x - i + 10, y + 7, 20);
 		}
@@ -329,8 +333,8 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 		{
 			pWind->DrawInteger(x + i, y, id);
 			Sleep(1);
-			pWind->SetPen(WHITE);
-			pWind->SetBrush(WHITE);
+			pWind->SetPen(BG);
+			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x + i, y, x + i + OrderWidth - 10, y + 15);
 			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
@@ -349,7 +353,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
 // [Input Parameters]:
 //    orders [ ] : array of Order pointers (ALL orders from all regions in one array)
 //    TotalOrders : the size of the array (total no. of orders)
-void GUI::DrawOrders(bool delet) const
+void GUI::DrawOrders(bool delet,int time) const
 {
 	//Prepare counter for each region
 	int RegionsCounts[REGION_COUNT] = {0}; //initlaize all counters to zero
@@ -358,7 +362,7 @@ void GUI::DrawOrders(bool delet) const
 	{
 		int orderRegion = OrdListForDrawing[i]->getRegion();
 		RegionsCounts[orderRegion]++;
-		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet);
+		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet,time);
 	}
 }
 
@@ -366,7 +370,7 @@ void GUI::UpdateInterface(bool del,int time) const
 {
 	ClearDrawingArea(time);
 	DrawRestArea();
-	DrawOrders(del);
+	DrawOrders(del,time);
 }
 
 /*
