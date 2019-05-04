@@ -165,13 +165,34 @@ void GUI::ClearStatusBar() const
 	pWind->DrawLine(0, WindHeight - StatusBarHeight, WindWidth, WindHeight - StatusBarHeight);
 }
 ///////////////////////////////////////////////////////////////////////////////////
-void GUI::ClearDrawingArea() const
+void GUI::ClearDrawingArea(int time) const
 {
 	// Clearing the Drawing area
-	pWind->SetPen(WHITE, 3);
-	pWind->SetBrush(WHITE);
-	pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+	if (time < 10) {
+		pWind->SetPen(WHITE, 3);
+		pWind->SetBrush(WHITE);
+		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+	}
+	else if(time >= 10 && time <20) {
+		pWind->SetPen(DARKGRAY, 3);
+		pWind->SetBrush(DARKGRAY);
+		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+	}
+	else {
+		pWind->SetPen(DARKBLUE, 3);
+		pWind->SetBrush(DARKBLUE);
+		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		pWind->SetPen(WHITESMOKE);
+		pWind->SetBrush(WHITESMOKE);
+		for (int i = 10; i < WindHeight;i+=100) {
+			for (int j = 10; j < WindWidth;j+=50) {
+				pWind->DrawCircle(i,j,5);
+			}
+		}
+		
+	}
 }
+	
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawRestArea() const
 {
@@ -341,9 +362,9 @@ void GUI::DrawOrders(bool delet) const
 	}
 }
 
-void GUI::UpdateInterface(bool del) const
+void GUI::UpdateInterface(bool del,int time) const
 {
-	ClearDrawingArea();
+	ClearDrawingArea(time);
 	DrawRestArea();
 	DrawOrders(del);
 }
