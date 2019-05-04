@@ -84,7 +84,7 @@ class GUI
 	// Output Functions  ---------------------------
 	void PrintMessage(string msg) const; // prints a message in the status bar
 	void PrintTimestep(int time) const;
-	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], int servedOrders[REGION_COUNT][TYPE_COUNT]) const;
+	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT]) const;
 	
 
 	void UpdateInterface(bool del = 0) const;

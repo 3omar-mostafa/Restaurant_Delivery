@@ -70,6 +70,7 @@ void Restaurant::displayRegionsData()
 {
 	string regionsOrderData[REGION_COUNT] = {""};
 	string regionsMotorCyclesData[REGION_COUNT] = {""};
+	string ordersServed[REGION_COUNT] = {""};
 
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
@@ -92,28 +93,17 @@ void Restaurant::displayRegionsData()
 		regionsMotorCyclesData[reg] += to_string(noAvailableMotor[TYPE_FROZEN]) + " Frozen Motorcycles     ";
 		regionsMotorCyclesData[reg] += to_string(noAvailableMotor[TYPE_VIP]) + " VIP Motorcycles";
 
+		ordersServed[reg] += "Total Served Orders : ";
+		ordersServed[reg] += to_string(totalOrdersServed[reg][TYPE_NORMAL]) + " Normal    ";
+		ordersServed[reg] += to_string(totalOrdersServed[reg][TYPE_FROZEN]) + " Frozen    ";
+		ordersServed[reg] += to_string(totalOrdersServed[reg][TYPE_VIP]) + " VIP    ";
 	}
-	pGUI->PrintRegions(regionsOrderData, regionsMotorCyclesData , assignedMotorcyclesLastTimestep , totalOrdersServed);
+	pGUI->PrintRegions(regionsOrderData, regionsMotorCyclesData , assignedMotorcyclesLastTimestep , ordersServed);
 }
 
 string Restaurant::assignedMotorcyclesData(Motorcycle* pMotor, Order* pOrd) const
 {
 	string s;
-
-	switch (pOrd->GetType())
-	{
-	case TYPE_VIP:
-		s += "V";
-		break;
-	case TYPE_NORMAL:
-		s += "N";
-		break;
-	case TYPE_FROZEN:
-		s += "F";
-		break;
-	}
-
-	s += to_string(pOrd->getID()) + " -> ";
 
 	switch (pMotor->getType())
 	{
@@ -128,7 +118,22 @@ string Restaurant::assignedMotorcyclesData(Motorcycle* pMotor, Order* pOrd) cons
 		break;
 	}
 
-	s += to_string(pMotor->getID()) + "    ";
+	s += to_string(pMotor->getID()) + "(";
+
+	switch (pOrd->getType())
+	{
+	case TYPE_VIP:
+		s += "V";
+		break;
+	case TYPE_NORMAL:
+		s += "N";
+		break;
+	case TYPE_FROZEN:
+		s += "F";
+		break;
+	}
+
+	s += to_string(pOrd->getID()) + ")    ";
 
 	return s;
 }
@@ -365,8 +370,8 @@ void Restaurant::writeToFile(string filename)
 		if (totalQueue.dequeue(currentOrder))
 		{
 			currentOrder->writeData(outFile);
-			orderRegion = currentOrder->GetRegion();
-			orderType = currentOrder->GetType();
+			orderRegion = currentOrder->getRegion();
+			orderType = currentOrder->getType();
 			
 			waitSum[orderRegion] += currentOrder->getWaitTime();
 			serviceSum[orderRegion] += currentOrder->getServiceTime();
@@ -423,8 +428,8 @@ void Restaurant::writeToFile(string filename)
 
 void Restaurant::addToActiveQueue(Order * pOrd)
 {
-	REGION reg = pOrd->GetRegion();
-	switch (pOrd->GetType())
+	REGION reg = pOrd->getRegion();
+	switch (pOrd->getType())
 	{
 	case TYPE_NORMAL:
 		normalQueue[reg].append(pOrd);

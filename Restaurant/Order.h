@@ -33,8 +33,8 @@ class Order
 	void setPriority(int mode = 0);
 	bool operator>(Order &right) const;
 
-	ORDER_TYPE GetType() const;
-	REGION GetRegion() const;
+	ORDER_TYPE getType() const;
+	REGION getRegion() const;
 
 	void setDistance(int d);
 	int getDistance() const;

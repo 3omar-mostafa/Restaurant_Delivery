@@ -57,12 +57,12 @@ bool Order::operator>(Order & right) const
 	return priority > right.priority;
 }
 
-ORDER_TYPE Order::GetType() const
+ORDER_TYPE Order::getType() const
 {
 	return type;
 }
 
-REGION Order::GetRegion() const
+REGION Order::getRegion() const
 {
 	return region;
 }
