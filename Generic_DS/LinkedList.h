@@ -5,8 +5,6 @@
 
 // 2nd idea:
 //		A normal List ADT to handle orders.
-// TODO:
-//		Implement functions to operate on the List via an index.
 
 template <typename T>
 class LinkedList
@@ -42,11 +40,11 @@ public:
 template<typename T>
 Node<T>* LinkedList<T>::getNodeAt(int pos)
 {
-	if (pos >= count || isEmpty()) return 0;
+	if (pos >= count || isEmpty()) return nullptr;
 	Node<T> *currPtr = frontPtr;
 	for (int i = 0; i < pos; i++)
 	{
-		currPtr = currPtr ? currPtr->getNext() : 0;
+		currPtr = currPtr ? currPtr->getNext() : nullptr;
 	}
 	return currPtr;
 }
@@ -67,7 +65,7 @@ LinkedList<T>::LinkedList(const LinkedList & copiedList)
 template<typename T>
 void LinkedList<T>::operator=(const LinkedList & copiedList)
 {
-	frontPtr = backPtr = NULL;
+	frontPtr = backPtr = nullptr;
 	count = 0;
 
 	if (copiedList.isEmpty())
@@ -93,7 +91,7 @@ int LinkedList<T>::getLength() const
 template<typename T>
 bool LinkedList<T>::isEmpty() const
 {
-	return frontPtr == NULL;
+	return frontPtr == nullptr;
 }
 
 
@@ -146,6 +144,7 @@ bool LinkedList<T>::insertAt(int newPos, const T & newEntry)
 
 	count++;
 	backPtr = getNodeAt(count - 1);
+	return true;
 }
 
 template<typename T>
@@ -214,8 +213,6 @@ template<typename T>
 void LinkedList<T>::clear()
 {
 	T clearPlace;
-	/*while (!isEmpty())
-		pop(clearPlace);*/
 	while (pop(clearPlace));
 	count = 0;
 }
@@ -251,7 +248,7 @@ bool LinkedList<T>::remove(T & removedEntry)
 			curPtr->setNext(deletedPtr->getNext());
 			if (backPtr == deletedPtr)						
 				backPtr = curPtr;
-			deletedPtr->setNext(NULL);
+			deletedPtr->setNext(nullptr);
 			delete deletedPtr;
 			count--;
 			return true;

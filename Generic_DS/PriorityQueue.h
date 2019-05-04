@@ -14,7 +14,6 @@ bool isGreaterThan(T* left, T* right);
 template <typename T>
 class PriorityQueue
 {
-private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
 	int count;
@@ -25,7 +24,8 @@ public:
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
-	int getLength() const;	
+	int getLength() const;
+	T* toArray() const;
 	~PriorityQueue();
 };
 
@@ -70,10 +70,7 @@ Output: True if the PriorityQueue is empty; otherwise false.
 template <typename T>
 bool PriorityQueue<T>::isEmpty() const
 {
-	if (frontPtr == nullptr)
-		return true;
-	else
-		return false;
+	return frontPtr == nullptr;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -188,6 +185,21 @@ template<typename T>
 int PriorityQueue<T>::getLength() const
 {
 	return count;
+}
+
+template <typename T>
+T* PriorityQueue<T>::toArray() const
+{
+	T* arr = new T[count];
+	Node<T>* currentPtr = frontPtr;
+
+	for (int i = 0; i < count; ++i)
+	{
+		arr[i] = currentPtr->getItem();
+		currentPtr = currentPtr->getNext();
+	}
+
+	return arr;
 }
 
 template <typename T>

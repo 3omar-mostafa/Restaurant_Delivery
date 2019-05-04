@@ -23,7 +23,7 @@ class Motorcycle
   public:
 	Motorcycle();
 	Motorcycle(int inID, MOTOR_TYPE inType, int inSpeed, REGION inRegion);
-	bool operator>(Motorcycle& right);
+	bool operator>(Motorcycle& right) const;
 	virtual ~Motorcycle();
 	
 	MOTOR_TYPE getType() const;	

@@ -113,7 +113,7 @@ string Restaurant::assignedMotorcyclesData(Motorcycle* pMotor, Order* pOrd) cons
 		break;
 	}
 
-	s += to_string(pOrd->GetID()) + " -> ";
+	s += to_string(pOrd->getID()) + " -> ";
 
 	switch (pMotor->getType())
 	{
@@ -449,7 +449,7 @@ void Restaurant::showActiveOrders()
 {
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		Order* pOrd = 0;
+		Order* pOrd = nullptr;
 
 		int nQLength = normalQueue[reg].getLength();
 		for (int i = 0; i < nQLength; i++)
@@ -471,14 +471,15 @@ void Restaurant::showActiveOrders()
 			}
 		}
 
-		//TODO: Implement the toArray() function to prevent overhead
-		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
-		while (tempVIPQueue.dequeue(pOrd))
-			pGUI->AddOrderForDrawing(pOrd);
+		Order** arr = vipQueue[reg].toArray();
+		int length = vipQueue[reg].getLength();
+		for (int i = 0; i < length; ++i)
+			pGUI->AddOrderForDrawing(arr[i]);
+
 	}
 }
 
-bool Restaurant::finished()
+bool Restaurant::finished() const
 {
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 		if (!(normalQueue[reg].isEmpty() && frozenQueue[reg].isEmpty() && vipQueue[reg].isEmpty()))
@@ -546,19 +547,19 @@ bool Restaurant::cancel(int id)
 	return false;
 }
 
-void Restaurant::assignOrderToMotorcycle(int currentTime, Order *pOrd, Motorcycle *pMotor)
+void Restaurant::assignOrderToMotorcycle(int currentTime, Order *pOrd, Motorcycle *pMotor) const
 {
 	int orderDistance = -1, motorSpeed = -1;
 	if (pOrd && pMotor)
 	{
-		orderDistance = pOrd->GetDistance();
+		orderDistance = pOrd->getDistance();
 		motorSpeed = pMotor->getSpeed();
 		
 		pOrd->setTimes(currentTime, motorSpeed);
 		pOrd->setPriority(1);
 
 		pMotor->setFinishTime(currentTime, orderDistance);
-		pMotor->setOrderID(pOrd->GetID());
+		pMotor->setOrderID(pOrd->getID());
 		pMotor->setStatus(SERVICE);
 	}
 }
