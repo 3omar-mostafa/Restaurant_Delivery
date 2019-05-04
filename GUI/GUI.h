@@ -62,9 +62,9 @@ class GUI
 	// TODO: Add more members if needed
 	//
 
-	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0,int time=0) const;		//draws ONE order 
-	void DrawOrders(bool delet = 0,int time=0) const;		//draws ALL orders in OrdListForDrawing
-	void Animate(int x, int y, int id, color colr, REGION reg,int time=0) const;
+	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0) const;		//draws ONE order 
+	void DrawOrders(bool delet = 0) const;		//draws ALL orders in OrdListForDrawing
+	void Animate(int x, int y, int id, color colr, REGION reg) const;
 	
 
 	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
