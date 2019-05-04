@@ -171,10 +171,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			//Show all active orders in each region
 			showActiveOrders();
 			if (normalQueue->getLength() + vipQueue->getLength() + frozenQueue->getLength() > 20) {
-				pGUI->UpdateInterface(true,currentTimestep);
+				pGUI->UpdateInterface(true);
 			}
 			else 
-				pGUI->UpdateInterface(false,currentTimestep);
+				pGUI->UpdateInterface();
 			pGUI->PrintTimestep(currentTimestep);
 		}
 
@@ -238,7 +238,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 	Update the interface again, increase the timestep, reset the list of objects drawn on the screen
 	*/
-
+	
 	/*
 	Statistics are required at the end of the program (please refer to the project document).
 	Ideas for calculating said statistics are yet to be decided on.
@@ -359,7 +359,7 @@ void Restaurant::writeToFile(string filename)
 	int serviceSum[REGION_COUNT] = { 0 };
 
 	//Writing order info:
-	outFile << "FT   ID   AT   WT   ST \n";
+	outFile << "FT\tID\tAT\tWT\tST\n";
 	while (!totalQueue.isEmpty())
 	{
 		Order* currentOrder = 0;
@@ -642,13 +642,14 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			vipQueue[reg].dequeue(pOrd);
 			vipMotorQueue[reg].dequeue(pMotor);
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
 				pMotor->setHP(5);
 				continue;
 			}
+
+			vipQueue[reg].dequeue(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP()-1);
 			totalQueue.enqueue(pOrd);
@@ -662,14 +663,14 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			vipQueue[reg].dequeue(pOrd);
 			normalMotorQueue[reg].dequeue(pMotor);
-
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
 				pMotor->setHP(5);
 				continue;
 			}
+
+			vipQueue[reg].dequeue(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
@@ -683,7 +684,6 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			vipQueue[reg].dequeue(pOrd);
 			frozenMotorQueue[reg].dequeue(pMotor);
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
@@ -691,6 +691,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 				continue;
 			}
 
+			vipQueue[reg].dequeue(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
@@ -707,7 +708,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			frozenQueue[reg].dequeue(pOrd);
+			
 			frozenMotorQueue[reg].dequeue(pMotor);
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
@@ -715,6 +716,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 				continue;
 			}
 
+			frozenQueue[reg].dequeue(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
@@ -731,7 +733,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			normalQueue[reg].pop(pOrd);
+			
 			normalMotorQueue[reg].dequeue(pMotor);
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
@@ -739,6 +741,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 				continue;
 			}
 
+			normalQueue[reg].pop(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);
@@ -752,7 +755,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			Order *pOrd;
 			Motorcycle *pMotor;
 
-			normalQueue[reg].pop(pOrd);
+			
 			vipMotorQueue[reg].dequeue(pMotor);
 			if (pMotor->getHP() == 0) {
 				damagedMotorQueue[reg].enqueue(pMotor);
@@ -760,6 +763,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 				continue;
 			}
 
+			normalQueue[reg].pop(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
 			totalQueue.enqueue(pOrd);

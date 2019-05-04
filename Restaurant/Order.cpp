@@ -119,14 +119,5 @@ int Order::getServiceTime() const
 
 void Order::writeData(ofstream & outFile) const
 {
-	outFile.width(5);
-	outFile << left << finishTime;
-	outFile.width(5);
-	outFile << ID ;
-	outFile.width(5);
-	outFile << arrivalTime ;
-	outFile.width(5);
-	outFile << waitTime ;
-	outFile.width(5);
-	outFile << serviceTime << endl;
+	outFile << finishTime << "\t" << ID << "\t" << arrivalTime << "\t" << waitTime << "\t" << serviceTime << endl;
 }
