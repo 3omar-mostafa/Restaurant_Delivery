@@ -12,7 +12,7 @@ public:
 
 
 	void execute(Restaurant *pRest) override;
-	void readData(ifstream &inFile);
+	void readData(ifstream &inFile) override;
 	~PromotionEvent();
 };
 

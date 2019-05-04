@@ -26,19 +26,19 @@ class Order
 	Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Money, REGION r_region);
 	virtual ~Order();
 
-	int GetID();
-	bool operator==(int right);
+	int getID() const;
+	bool operator ==(int id) const;
 
 	// Used to sort the elements in the PriorityQueue
 	void setPriority(int mode = 0);
-	bool operator>(Order &right);
+	bool operator>(Order &right) const;
 
 	ORDER_TYPE GetType() const;
 	REGION GetRegion() const;
 
-	void SetDistance(int d);
-	int GetDistance() const;
-	bool isDeleted();
+	void setDistance(int d);
+	int getDistance() const;
+	bool isDeleted() const;
 	void deleteIt(bool del);
 
 	//
@@ -52,7 +52,7 @@ class Order
 	int getArrivalTime() const;
 	int getServiceTime() const;
 
-	void writeData(ofstream &outFile);
+	void writeData(ofstream &outFile) const;
 
 	void setType(ORDER_TYPE newType);
 	bool promote(int extraMoney = 0);

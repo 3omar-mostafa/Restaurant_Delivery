@@ -22,7 +22,7 @@ Motorcycle::~Motorcycle()
 {
 }
 
-bool Motorcycle::operator>(Motorcycle &right)
+bool Motorcycle::operator>(Motorcycle &right) const
 {
 	return speed > right.speed;
 }

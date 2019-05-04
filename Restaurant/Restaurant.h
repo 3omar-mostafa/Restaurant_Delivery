@@ -65,24 +65,13 @@ class Restaurant
 
 	void loadFromFile(string fileName);
 	void writeToFile(string filename);
-
-//<<<<<<< HEAD
-//<<<<<<< HEAD
-
-
-//=======
-	
-	//void Operate(PROGRAM_MODE mode);
-//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
-//=======
 	
 	void Operate(PROGRAM_MODE mode);
-//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
 
 	// Queue functions:
 	void showActiveOrders();
 	void addToActiveQueue(Order *pOrd); //Adds the order to its proper Queue
-	bool finished();
+	bool finished() const;
 
 	// Order functions:
 	Order *&orderOfID(int i);
@@ -96,7 +85,7 @@ class Restaurant
 	bool cancel(int id);
 
 	// Motorcycle functions:
-	void assignOrderToMotorcycle(int currentTimestep, Order *pOrd, Motorcycle *pMotor);
+	void assignOrderToMotorcycle(int currentTimestep, Order *pOrd, Motorcycle *pMotor) const;
 	void assignMotorcycles(int currentTimestep);
 	void returnMotorcycles(int currentTimestep);
 	string assignedMotorcyclesData(Motorcycle*, Order*) const; // get data of order and its motorcycle to display it later

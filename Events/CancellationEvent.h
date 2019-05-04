@@ -5,10 +5,9 @@ class CancellationEvent :
 {
 public:
 	CancellationEvent(int eTime = -1, int ordID = -1);
-	//CancellationEvent();
 	~CancellationEvent();
 
-	void readData(ifstream& inFile);
-	void execute(Restaurant* pRest);
+	void readData(ifstream& inFile) override;
+	void execute(Restaurant* pRest) override;
 };
 

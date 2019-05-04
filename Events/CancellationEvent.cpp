@@ -7,11 +7,6 @@ CancellationEvent::CancellationEvent(int eTime, int ordID) :Event(eTime, ordID)
 {
 }
 
-/*CancellationEvent::CancellationEvent():Event(-1, -1)
-{
-}*/
-
-
 CancellationEvent::~CancellationEvent()
 {
 }

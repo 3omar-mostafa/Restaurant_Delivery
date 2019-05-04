@@ -284,10 +284,10 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes) const // It 
 		pWind->SetPen(clr);
 		pWind->SetBrush(clr);
 		pWind->SetFont(20, BOLD, MODERN);
-		pWind->DrawInteger(x, y, pO->GetID());
+		pWind->DrawInteger(x, y, pO->getID());
 	}
 	else
-		Animate(x, y, pO->GetID(), clr, Region);
+		Animate(x, y, pO->getID(), clr, Region);
 }
 
 void GUI::Animate(int x, int y, int id, color colr, REGION reg) const
