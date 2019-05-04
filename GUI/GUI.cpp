@@ -97,11 +97,35 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(200, WindHeight - StatusBarHeight + 5, "A");
 			pWind->SetPen(OLIVEDRAB);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 20, data[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 65, "Total Served Orders: ");
-			// pWind->DrawInteger(130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 22, data[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 39, dataMotor[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 56, dataAssignedMotors[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 73, "Total Served Orders: ");
+			for (int i = 0; i < 3; i++) {
+				pWind->DrawInteger(130 + i * 70, WindHeight - StatusBarHeight + 73, servedOrders[reg][i]);
+				int len = servedOrders[reg][i];
+				switch (i)  {
+				case 0:
+					if(len<10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "Normal");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Normal");
+					break;
+				case 1:
+					if (len < 10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "Frozen");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Frozen");
+					break;
+				case 2:
+					if (len < 10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "VIP");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "VIP");
+					break;
+				}
+					
+			}
 			break;
 
 		case 1:
@@ -110,11 +134,35 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight + 5, "B");
 			pWind->SetPen(DIMGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 20, data[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 65, "Total Served Orders: ");
-			// pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 22, data[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 39, dataMotor[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 56, dataAssignedMotors[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 73, "Total Served Orders: ");
+			for (int i = 0; i < 3; i++) {
+				pWind->DrawInteger(WindWidth / 2 + 130 + i * 70, WindHeight - StatusBarHeight + 73, servedOrders[reg][i]);
+				int len = servedOrders[reg][i];
+				switch (i) {
+				case 0:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "Normal");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Normal");
+					break;
+				case 1:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "Frozen");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Frozen");
+					break;
+				case 2:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "VIP");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "VIP");
+					break;
+				}
+
+			}
 			break;
 
 		case 2:
@@ -123,11 +171,36 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight / 2 - 5, "C");
 			pWind->SetPen(GOLDENROD);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 55, "Total Served Orders: ");
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 12, data[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 29, dataMotor[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 46, dataAssignedMotors[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 63, "Total Served Orders: ");
 			// pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			for (int i = 0; i < 3; i++) {
+				pWind->DrawInteger(WindWidth / 2 + 130 + i * 70, WindHeight - StatusBarHeight/2 + 63, servedOrders[reg][i]);
+				int len = servedOrders[reg][i];
+				switch (i) {
+				case 0:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Normal");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "Normal");
+					break;
+				case 1:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight / 2  + 63 , "Frozen");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "Frozen");
+					break;
+				case 2:
+					if (len < 10)
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight / 2  + 63 , "VIP");
+					else
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "VIP");
+					break;
+				}
+
+			}
 			break;
 
 		case 3:
@@ -136,11 +209,36 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(200, WindHeight - StatusBarHeight / 2 - 5, "D");
 			pWind->SetPen(DARKCYAN);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 55, "Total Served Orders: ");
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 12, data[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 29, dataMotor[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 46, dataAssignedMotors[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 63, "Total Served Orders: ");
 			// pWind->DrawInteger(130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			for (int i = 0; i < 3; i++) {
+				pWind->DrawInteger(130 + i * 70, WindHeight - StatusBarHeight/2 + 63, servedOrders[reg][i]);
+				int len = servedOrders[reg][i];
+				switch (i) {
+				case 0:
+					if (len < 10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Normal");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "Normal");
+					break;
+				case 1:
+					if (len < 10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Frozen");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "Frozen");
+					break;
+				case 2:
+					if (len < 10)
+						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "VIP");
+					else
+						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "VIP");
+					break;
+				}
+
+			}
 			break;
 
 		default:
