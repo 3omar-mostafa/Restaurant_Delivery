@@ -10,6 +10,7 @@ class Order
 	ORDER_TYPE type; //order type: Normal, Frozen, VIP
 	REGION region;   //Region of this order
 	int distance;	//The distance (in meters) between the order location and the restaurant
+	bool toBeDeleted;
 
 	double totalMoney; //Total order money
 
@@ -37,6 +38,8 @@ class Order
 
 	void SetDistance(int d);
 	int GetDistance() const;
+	bool isDeleted();
+	void deleteIt(bool del);
 
 	//
 	// TODO: Add More Member Functions As Needed

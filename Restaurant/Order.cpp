@@ -33,6 +33,7 @@ Order::Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Mone
 	distance = r_Distance;
 	totalMoney = r_Money;
 	region = r_region;
+	toBeDeleted = 0;
 	setPriority();
 }
 
@@ -84,6 +85,16 @@ void Order::SetDistance(int d)
 int Order::GetDistance() const
 {
 	return distance;
+}
+
+bool Order::isDeleted()
+{
+	return toBeDeleted;
+}
+
+void Order::deleteIt(bool del)
+{
+	toBeDeleted = del;
 }
 
 int Order::getFinishTime() const

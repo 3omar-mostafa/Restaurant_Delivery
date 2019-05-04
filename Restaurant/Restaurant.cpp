@@ -488,10 +488,9 @@ bool Restaurant::promote(int id, int extraMoney)
 bool Restaurant::cancel(int id)
 { 
 	Order* cancelledOrder = orderIdArray[id];
-	
+	//cancelledOrder->deleteIt(1);
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
-		
 		if (normalQueue[reg].remove(cancelledOrder)) {
 			return true;
 		}
