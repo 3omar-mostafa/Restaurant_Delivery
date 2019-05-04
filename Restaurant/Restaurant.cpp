@@ -476,6 +476,7 @@ void Restaurant::showActiveOrders()
 		for (int i = 0; i < length; ++i)
 			pGUI->AddOrderForDrawing(arr[i]);
 
+		delete [] arr;
 	}
 }
 
