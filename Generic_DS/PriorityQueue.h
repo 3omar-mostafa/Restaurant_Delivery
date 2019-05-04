@@ -26,6 +26,7 @@ public:
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
 	int getLength() const;	
+	T* toArray() const;
 	~PriorityQueue();
 };
 
@@ -188,6 +189,21 @@ template<typename T>
 int PriorityQueue<T>::getLength() const
 {
 	return count;
+}
+
+template <typename T>
+T* PriorityQueue<T>::toArray() const
+{
+	T* arr = new T[count];
+	Node<T>* currentPtr = frontPtr;
+
+	for (int i = 0; i < count; ++i)
+	{
+		arr[i] = currentPtr->getItem();
+		currentPtr = currentPtr->getNext();
+	}
+
+	return arr;
 }
 
 template <typename T>

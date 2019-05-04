@@ -471,10 +471,11 @@ void Restaurant::showActiveOrders()
 			}
 		}
 
-		//TODO: Implement the toArray() function to prevent overhead
-		PriorityQueue<Order*> tempVIPQueue = PriorityQueue<Order*>(vipQueue[reg]);
-		while (tempVIPQueue.dequeue(pOrd))
-			pGUI->AddOrderForDrawing(pOrd);
+		Order** arr = vipQueue[reg].toArray();
+		int length = vipQueue[reg].getLength();
+		for (int i = 0; i < length; ++i)
+			pGUI->AddOrderForDrawing(arr[i]);
+
 	}
 }
 
