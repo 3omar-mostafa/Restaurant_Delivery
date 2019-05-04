@@ -80,7 +80,7 @@ void GUI::PrintTimestep(int time) const
 		DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
 }
 
-void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]) const
+void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], int servedOrders[REGION_COUNT] ) const
 {
 	ClearStatusBar(); //First clear the status bar
 	pWind->SetPen(PALEVIOLETRED, 3);

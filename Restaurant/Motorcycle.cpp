@@ -81,6 +81,11 @@ int Motorcycle::getOrderID() const
 	return orderID;
 }
 
+int Motorcycle::getID() const
+{
+	return ID;
+}
+
 void Motorcycle::setHP(int Hp)
 {
 	hp = Hp;

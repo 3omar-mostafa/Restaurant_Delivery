@@ -48,6 +48,9 @@ class Restaurant
 	LinkedList<Motorcycle*>
 		inServiceMotorcycles[REGION_COUNT];
 
+	int totalOrdersServed[REGION_COUNT];
+	string assignedMotorcyclesLastTimestep[REGION_COUNT];
+
 	//Array of Order* to handle cancellations.
 	Order *orderIdArray[MaxPossibleOrdCnt];
 
@@ -96,6 +99,7 @@ class Restaurant
 	void assignOrderToMotorcycle(int currentTimestep, Order *pOrd, Motorcycle *pMotor);
 	void assignMotorcycles(int currentTimestep);
 	void returnMotorcycles(int currentTimestep);
+	string assignedMotorcyclesData(Motorcycle*, Order*) const; // get data of order and its motorcycle to display it later
 
 	// GUI functions:
 	void displayRegionsData();
