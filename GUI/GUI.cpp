@@ -143,18 +143,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			return;
 		}
 	}
-//<<<<<<< HEAD
-	
-//=======
-	/*for (int reg = 0; reg < REGION_COUNT; reg++)
-	{
-		int factor = reg * 20;
-		pWind->DrawString(10, WindHeight - StatusBarHeight + factor + 5, data[reg]);
-	*/
-//<<<<<<< HEAD
-//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
-//=======
-//>>>>>>> 502e7f286fe068678b80f84eb497505c03a640b9
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -197,27 +186,12 @@ void GUI::DrawRestArea() const
 	pWind->SetPen(PALEVIOLETRED, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
 	pWind->DrawLine(WindWidth / 2, 0, WindWidth / 2, WindHeight - StatusBarHeight);
-	//image img("rest_del.jpg");
-	//pWind->DrawImage(img, 0, 0);
 
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
-	// 3- Drawing the 2 white crossed lines (inside the Rest)
-	/*pWind->SetPen(WHITE);
-	pWind->DrawLine(WindWidth/2, YHalfDrawingArea - RestWidth/2, WindWidth/2, YHalfDrawingArea + RestWidth/2);
-	pWind->DrawLine(WindWidth/2 - RestWidth/2, YHalfDrawingArea, WindWidth/2 + RestWidth/2, YHalfDrawingArea);
-	*/
 
-	// 4- Drawing the 4 white squares inside the Rest (one fo  r each tower)
-	/*pWind->SetPen(DODGERBLUE);
-	pWind->SetBrush(DODGERBLUE);
-	pWind->DrawEllipse(RestStartX + L/4, RestStartY + L/4 , RestStartX + 2*L/2 , RestStartY + 2*L/4 );
-	pWind->DrawEllipse(RestStartX + L/4, RestEndY - L/4, RestStartX + 2*L/2, RestEndY - 2*L/4);
-	pWind->DrawEllipse(RestEndX - 2*L/3, RestStartY + L/3, RestEndX - L/3, RestStartY + 2*L/3);
-	pWind->DrawEllipse(RestEndX - 2*L/3, RestEndY - L/3, RestEndX - L/3, RestEndY - 2*L/3);
-	*/
-	// 5- Writing the letter of each region (A, B, C, D)
+	// 3- Writing the letter of each region (A, B, C, D)
 	pWind->SetPen(SLATEBLUE);
 	pWind->SetFont(40, ITALICIZED, ROMAN, "Arial");
 	pWind->DrawString(RestStartX + (int)(0.44 * L), RestStartY + 5 * L / 12, "A");
@@ -399,7 +373,7 @@ PROGRAM_MODE GUI::getGUIMode() const
 	{
 		PrintMessage("Please select GUI mode: (1) Interactive, (2) StepByStep, (3) Silent");
 		string S = GetString();
-		Mode = (PROGRAM_MODE)(atoi(S.c_str()) - 1);
+		Mode = (PROGRAM_MODE)(stoi(S) - 1);
 	} while (Mode < 0 || Mode >= MODE_COUNT);
 
 	return Mode;
