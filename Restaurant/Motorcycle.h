@@ -33,6 +33,8 @@ class Motorcycle
 	void setOrderID(int oID);
 	int getOrderID() const;
 
+	int getID() const;
+
 	void setHP(int Hp);
 	int getHP() const;
 	bool getState()const;
