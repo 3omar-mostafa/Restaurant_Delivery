@@ -48,7 +48,7 @@ class Restaurant
 	LinkedList<Motorcycle*>
 		inServiceMotorcycles[REGION_COUNT];
 
-	int totalOrdersServed[REGION_COUNT];
+	int totalOrdersServed[REGION_COUNT][TYPE_COUNT];
 	string assignedMotorcyclesLastTimestep[REGION_COUNT];
 
 	//Array of Order* to handle cancellations.

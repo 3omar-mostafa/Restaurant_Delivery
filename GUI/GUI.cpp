@@ -80,7 +80,7 @@ void GUI::PrintTimestep(int time) const
 		DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
 }
 
-void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], int servedOrders[REGION_COUNT] ) const
+void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], int servedOrders[REGION_COUNT][TYPE_COUNT] ) const
 {
 	ClearStatusBar(); //First clear the status bar
 	pWind->SetPen(PALEVIOLETRED, 3);
@@ -101,7 +101,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 65, "Total Served Orders: ");
-			pWind->DrawInteger(130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			// pWind->DrawInteger(130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
 			break;
 
 		case 1:
@@ -114,7 +114,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 65, "Total Served Orders: ");
-			pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			// pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
 			break;
 
 		case 2:
@@ -127,7 +127,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 55, "Total Served Orders: ");
-			pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			// pWind->DrawInteger(WindWidth / 2 + 130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
 			break;
 
 		case 3:
@@ -140,7 +140,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 55, "Total Served Orders: ");
-			pWind->DrawInteger(130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			// pWind->DrawInteger(130, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
 			break;
 
 		default:

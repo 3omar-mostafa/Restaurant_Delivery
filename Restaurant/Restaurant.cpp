@@ -21,7 +21,8 @@ Restaurant::Restaurant()
 {
 	pGUI = nullptr;
 	for (int reg = 0; reg < REGION_COUNT; ++reg)
-		totalOrdersServed[reg] = 0;
+		for (int type = 0; type < TYPE_COUNT; ++type)
+			totalOrdersServed[reg][type] = 0;
 }
 
 void Restaurant::runSimulation()
@@ -646,7 +647,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor,pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_VIP]++;
 		}
 
 		while (!vipQueue[reg].isEmpty() && !normalMotorQueue[reg].isEmpty())
@@ -667,7 +668,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_VIP]++;
 		}
 
 		while (!vipQueue[reg].isEmpty() && !frozenMotorQueue[reg].isEmpty())
@@ -688,7 +689,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_VIP]++;
 		}
 
 		/////////////////////////////////////////////////////////////////////////////
@@ -712,7 +713,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_FROZEN]++;
 		}
 
 		////////////////////////////////////////////////////////////////////////////
@@ -736,7 +737,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_NORMAL]++;
 		}
 
 		while (!normalQueue[reg].isEmpty() && !vipMotorQueue[reg].isEmpty())
@@ -757,7 +758,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 			totalQueue.enqueue(pOrd);
 			inServiceMotorcycles[reg].append(pMotor);
 			assignedMotorcyclesLastTimestep[reg] += assignedMotorcyclesData(pMotor, pOrd);
-			totalOrdersServed[reg]++;
+			totalOrdersServed[reg][TYPE_NORMAL]++;
 		}
 	}
 }
