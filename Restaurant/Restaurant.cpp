@@ -225,6 +225,9 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	string outputFile = pGUI->GetString() + ".txt";
 	writeToFile(outputFile);
 
+	outputFile = "start " + outputFile;
+	system(outputFile.c_str());
+
 	/*
 	The function should work as follows:
 	Print the current timestep (on the status bar?)
@@ -407,7 +410,7 @@ void Restaurant::writeToFile(string filename)
 			<< ", Frozen: " << frozenOrderCount[reg] 
 			<< ", VIP: " << vipOrderCount[reg] << "]\n";
 		
-		outFile << "\tMotorC: " << totalMotorCount[reg]
+		outFile << "\tMotorcycles: " << totalMotorCount[reg]
 			<< " [Normal: " << normalMotorQueue[reg].getLength()
 			<< ", Frozen: " << frozenMotorQueue[reg].getLength()
 			<< ", VIP: " << vipMotorQueue[reg].getLength() << "]\n";

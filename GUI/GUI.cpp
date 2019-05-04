@@ -14,7 +14,7 @@ GUI::GUI()
 	OrdersClrs[TYPE_VIP] = RED;			//VIP-order color
 
 	ClearStatusBar();
-	ClearDrawingArea();
+	ClearDrawingArea(0);
 	DrawRestArea();
 }
 //////////////////////////////////////////////////////////////////////////////////////////
