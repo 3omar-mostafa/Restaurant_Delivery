@@ -107,19 +107,19 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 				switch (i)  {
 				case 0:
 					if(len<10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "Normal");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight + 73, "Normal");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Normal");
 					break;
 				case 1:
 					if (len < 10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "Frozen");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight + 73, "Frozen");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Frozen");
 					break;
 				case 2:
 					if (len < 10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight + 73, "VIP");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight + 73, "VIP");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "VIP");
 					break;
@@ -144,19 +144,19 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 				switch (i) {
 				case 0:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "Normal");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight + 73 , "Normal");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Normal");
 					break;
 				case 1:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "Frozen");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight + 73 , "Frozen");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "Frozen");
 					break;
 				case 2:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight + 73 , "VIP");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight + 73 , "VIP");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight + 73, "VIP");
 					break;
@@ -182,19 +182,19 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 				switch (i) {
 				case 0:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Normal");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight/2 + 63, "Normal");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "Normal");
 					break;
 				case 1:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight / 2  + 63 , "Frozen");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight / 2  + 63 , "Frozen");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "Frozen");
 					break;
 				case 2:
 					if (len < 10)
-						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 8, WindHeight - StatusBarHeight / 2  + 63 , "VIP");
+						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 10, WindHeight - StatusBarHeight / 2  + 63 , "VIP");
 					else
 						pWind->DrawString(WindWidth / 2 + 130 + 70 * i + 17, WindHeight - StatusBarHeight / 2 + 63, "VIP");
 					break;
@@ -220,19 +220,19 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 				switch (i) {
 				case 0:
 					if (len < 10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Normal");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight/2 + 63, "Normal");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "Normal");
 					break;
 				case 1:
 					if (len < 10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "Frozen");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight/2 + 63, "Frozen");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "Frozen");
 					break;
 				case 2:
 					if (len < 10)
-						pWind->DrawString(130 + 70 * i + 8, WindHeight - StatusBarHeight/2 + 63, "VIP");
+						pWind->DrawString(130 + 70 * i + 10, WindHeight - StatusBarHeight/2 + 63, "VIP");
 					else
 						pWind->DrawString(130 + 70 * i + 17, WindHeight - StatusBarHeight/2 + 63, "VIP");
 					break;
