@@ -72,12 +72,14 @@ void GUI::PrintTimestep(int time) const
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
-	if (time < 10)
-	{
-		DrawString(WindWidth / 2 - 4, YHalfDrawingArea - 8, to_string(time));
-	}
-	else
-		DrawString(WindWidth / 2 - 8, YHalfDrawingArea - 8, to_string(time));
+	string strTime = "";
+	strTime += to_string(time / 24) + "/";
+	
+	if (time % 24 < 10) 
+		strTime += "0";
+	strTime += to_string(time % 24);
+
+	DrawString(WindWidth / 2 - 14, YHalfDrawingArea - 8, strTime);
 }
 
 void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT] ) const
@@ -91,11 +93,11 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 	{
 		switch (reg)
 		{
-		case 0:
+		case A_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
 			pWind->DrawString(200, WindHeight - StatusBarHeight + 5, "A");
-			pWind->SetPen(OLIVEDRAB);
+			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 20, data[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
@@ -103,11 +105,11 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(10, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
 			break;
 
-		case 1:
+		case B_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
 			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight + 5, "B");
-			pWind->SetPen(DIMGREY);
+			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 20, data[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
@@ -115,11 +117,11 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
 			break;
 
-		case 2:
+		case C_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
 			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight / 2 - 5, "C");
-			pWind->SetPen(GOLDENROD);
+			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
@@ -127,11 +129,11 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
 			break;
 
-		case 3:
+		case D_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
 			pWind->DrawString(200, WindHeight - StatusBarHeight / 2 - 5, "D");
-			pWind->SetPen(DARKCYAN);
+			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
 			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
@@ -167,29 +169,39 @@ void GUI::ClearStatusBar() const
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearDrawingArea(int time) const
 {
+	int t = time % 24;
 	// Clearing the Drawing area
-	if (time < 10) {
-		pWind->SetPen(WHITE, 3);
-		pWind->SetBrush(WHITE);
+	if (t >= 3 && t < 11) {
+		pWind->SetPen(EARLYMORNING, 3);
+		pWind->SetBrush(EARLYMORNING);
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
 	}
-	else if(time >= 10 && time <20) {
-		pWind->SetPen(DARKGRAY, 3);
-		pWind->SetBrush(DARKGRAY);
+
+	else if (t >= 11 && t < 19) {
+		pWind->SetPen(AFTERNOON, 3);
+		pWind->SetBrush(AFTERNOON);
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
 	}
+
 	else {
-		pWind->SetPen(DARKBLUE, 3);
-		pWind->SetBrush(DARKBLUE);
+		pWind->SetPen(NIGHT, 3);
+		pWind->SetBrush(NIGHT);
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
-		pWind->SetPen(WHITESMOKE);
-		pWind->SetBrush(WHITESMOKE);
-		for (int i = 10; i < WindHeight;i+=30) {
-			for (int j = (i / 10) % 2 ? 10 : 20; j < WindWidth;j+=30) {
-				pWind->DrawCircle(j,i,1);
-			}
+		if (time % 2) {
+			pWind->SetPen(DARKSTAR);
+			pWind->SetBrush(DARKSTAR);
 		}
-		
+
+		else {
+			pWind->SetPen(WHITE);
+			pWind->SetBrush(WHITE);
+		}
+
+		for (int i = MenuBarHeight + 2; i < WindHeight - StatusBarHeight; i += 30) {
+			for (int j = (i / 10) % 2 ? 10 : 20; j < WindWidth; j += 30) {
+				pWind->DrawCircle(j, i, 1);
+			}
+		}		
 	}
 }
 	
@@ -198,22 +210,23 @@ void GUI::DrawRestArea() const
 {
 	int L = RestWidth / 2;
 
-	// 1- Drawing the brown square of the Rest
-	pWind->SetPen(GOLD);
-	pWind->SetBrush(GOLD);
+	// 1- Drawing the brown circle of the Rest
+	pWind->SetPen(DARKRED);
+	pWind->SetBrush(DARKRED);
 	pWind->DrawCircle((WindWidth / 2), YHalfDrawingArea, (WindWidth / 2) - RestStartX);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
-	pWind->SetPen(PALEVIOLETRED, 3);
+	pWind->SetPen(TEXTGREY, 3);
+	//pWind->SetPen(BARGREEN, 3);
 	pWind->DrawLine(0, YHalfDrawingArea, WindWidth, YHalfDrawingArea);
-	pWind->DrawLine(WindWidth / 2, 0, WindWidth / 2, WindHeight - StatusBarHeight);
+	pWind->DrawLine(WindWidth / 2, MenuBarHeight, WindWidth / 2, WindHeight - StatusBarHeight);
 
 	pWind->SetPen(WHITE);
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
 
 	// 3- Writing the letter of each region (A, B, C, D)
-	pWind->SetPen(SLATEBLUE);
+	pWind->SetPen(BRIGHTYELLOW);
 	pWind->SetFont(40, ITALICIZED, ROMAN, "Arial");
 	pWind->DrawString(RestStartX + (int)(0.44 * L), RestStartY + 5 * L / 12, "A");
 	pWind->DrawString(RestStartX + (int)(0.44 * L), YHalfDrawingArea + 5 * L / 20, "D");
@@ -371,6 +384,14 @@ void GUI::UpdateInterface(bool del,int time) const
 	ClearDrawingArea(time);
 	DrawRestArea();
 	DrawOrders(del,time);
+}
+
+void GUI::UpdateInterface(color newColor) const
+{
+	pWind->SetPen(newColor, 3);
+	pWind->SetBrush(newColor);
+	pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+	DrawRestArea();
 }
 
 /*

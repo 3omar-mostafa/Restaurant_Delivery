@@ -58,6 +58,7 @@ class Restaurant
 	Restaurant();
 	~Restaurant();
 	void runSimulation();
+	void readColor();
 
 	// Event functions:
 	void addEvent(Event *pE);		  //adds a new event to the queue of events

@@ -88,6 +88,7 @@ class GUI
 	
 
 	void UpdateInterface(bool del = 0,int time=0) const;
+	void UpdateInterface(color newColor) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list
 	void ResetDrawingList();			  //resets drawing list (should be called every timestep after drawing)
 

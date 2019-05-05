@@ -28,9 +28,19 @@ Restaurant::Restaurant()
 void Restaurant::runSimulation()
 {
 	pGUI = new GUI;
-	PROGRAM_MODE mode = pGUI->getGUIMode();
+	Operate(MODE_INTERACTIVE);
+	while (1)
+		readColor();
 
-	Operate(mode);
+	//PROGRAM_MODE mode = pGUI->getGUIMode();
+}
+
+void Restaurant::readColor()
+{
+	pGUI->PrintMessage("Enter Hex Code:");
+	string hexCode = pGUI->GetString();
+	color newColor(hexCode);
+	pGUI->UpdateInterface(newColor);
 }
 
 
@@ -171,10 +181,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			//Show all active orders in each region
 			showActiveOrders();
 			if (normalQueue->getLength() + vipQueue->getLength() + frozenQueue->getLength() > 20) {
-				pGUI->UpdateInterface(true);
+				pGUI->UpdateInterface(true, currentTimestep);
 			}
 			else 
-				pGUI->UpdateInterface();
+				pGUI->UpdateInterface(true, currentTimestep);
 			pGUI->PrintTimestep(currentTimestep);
 		}
 

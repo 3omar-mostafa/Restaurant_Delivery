@@ -7,6 +7,7 @@ This file was last modified on 05.16.1999
 #define COLORS_H
 
 #include "version.h"
+#include <string>
 
 class color {
 
@@ -17,7 +18,7 @@ class color {
         ucRed = Red;  ucGreen = Green;  ucBlue = Blue; 
     }
 
-
+	color(std::string hexCode);
     // Color components.  0 = no intensity, 255 = full intensity
     unsigned char ucRed;
     unsigned char ucGreen;
@@ -181,6 +182,14 @@ const color DARKCYAN = color(0, 139, 139);
 const color DARKMAGENTA = color(139, 0, 139);
 const color DARKRED = color(139, 0, 0);
 const color LIGHTGREEN = color(144, 238, 144);
+
+const color EARLYMORNING = color("9ed3ff");
+const color AFTERNOON = color("fffc51");
+const color NIGHT = color("000010");
+const color DARKSTAR = color("878787");
+const color BRIGHTYELLOW = color("fffb28");
+const color TEXTGREY = color("303030");
+const color BARGREEN = color("10510f");
 
 
 #endif //COLOR_H
