@@ -188,16 +188,16 @@ void GUI::ClearDrawingArea(int time) const
 		if(Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_early_morning.jpg", 0, 0);
 		for (int i = 0; i < 2; i++) {
-			pWind->DrawCircle(55 + t * i * 35 + t * 10, 40, 19);
-			pWind->DrawCircle(70 + t * i * 35 + t * 10, 40, 25);
-			pWind->DrawCircle(100 + t * i * 35 + t * 10, 40, 25);
-			pWind->DrawCircle(115 + t * i * 35 + t * 10, 40 , 19);
+			pWind->DrawCircle(55 + t * i * 35 + t * 10, 70, 19);
+			pWind->DrawCircle(70 + t * i * 35 + t * 10, 70, 25);
+			pWind->DrawCircle(100 + t * i * 35 + t * 10, 70, 25);
+			pWind->DrawCircle(115 + t * i * 35 + t * 10, 70 , 19);
 		}
 		for (int i = 0; i < 2; i++) {
-			pWind->DrawCircle(85 + t * i * 45 + t * 10 + WindWidth / 2, 40, 19);
-			pWind->DrawCircle(100 + t * i * 45 + t * 10 + WindWidth / 2, 40, 25);
-			pWind->DrawCircle(130 + t * i * 45 + t * 10 + WindWidth / 2, 40, 25);
-			pWind->DrawCircle(145 + t * i * 45 + t * 10 + WindWidth / 2, 40, 19);
+			pWind->DrawCircle(85 + t * i * 45 + t * 10 + WindWidth / 2, 70, 19);
+			pWind->DrawCircle(100 + t * i * 45 + t * 10 + WindWidth / 2, 70, 25);
+			pWind->DrawCircle(130 + t * i * 45 + t * 10 + WindWidth / 2, 70, 25);
+			pWind->DrawCircle(145 + t * i * 45 + t * 10 + WindWidth / 2, 70, 19);
 		}
 	}
 
