@@ -74,18 +74,18 @@ void GUI::PrintTimestep(int time) const
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);
 	string strTime = "";
 	strTime += to_string(time / 24) + "/";
-	
-	if (time % 24 < 10) 
+
+	if (time % 24 < 10)
 		strTime += "0";
 	strTime += to_string(time % 24);
 
 	DrawString(WindWidth / 2 - 14, YHalfDrawingArea - 8, strTime);
 }
 
-void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT] ) const
+void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT]) const
 {
 	ClearStatusBar(); //First clear the status bar
-	pWind->SetPen(PALEVIOLETRED, 3);
+	pWind->SetPen(TEXTGREY, 3);
 	pWind->DrawLine(0, WindHeight - StatusBarHeight / 2 - 10, WindWidth, WindHeight - StatusBarHeight / 2 - 10);
 	pWind->DrawLine(WindWidth / 2, WindHeight - StatusBarHeight, WindWidth / 2, WindHeight);
 
@@ -187,24 +187,10 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->SetPen(NIGHT, 3);
 		pWind->SetBrush(NIGHT);
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
-		if (time % 2) {
-			pWind->SetPen(DARKSTAR);
-			pWind->SetBrush(DARKSTAR);
-		}
-
-		else {
-			pWind->SetPen(WHITE);
-			pWind->SetBrush(WHITE);
-		}
-
-		for (int i = MenuBarHeight + 2; i < WindHeight - StatusBarHeight; i += 30) {
-			for (int j = (i / 10) % 2 ? 10 : 20; j < WindWidth; j += 30) {
-				pWind->DrawCircle(j, i, 1);
-			}
-		}		
+		DrawStars(time);
 	}
 }
-	
+
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawRestArea() const
 {
@@ -233,10 +219,36 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(RestStartX + L + (int)(0.36 * L), RestStartY + 5 * L / 12, "B");
 	pWind->DrawString(RestStartX + L + (int)(0.36 * L), YHalfDrawingArea + 5 * L / 20, "C");
 }
+
+void GUI::DrawStars(int time, bool flip) const
+{
+	if (time % 24 >= 3 && time % 24 < 19)
+		return;
+
+	if (flip) {
+		pWind->SetPen(DARKSTAR);
+		pWind->SetBrush(DARKSTAR);
+	}
+
+	else {
+		pWind->SetPen(WHITE);
+		pWind->SetBrush(WHITE);
+	}
+
+	for (int i = MenuBarHeight + 25; i < WindHeight - StatusBarHeight; i += 30) {
+		for (int j = (i / 10) % 2 ? 10 : 20; j < WindWidth; j += 30) {
+			if ((j - (WindWidth) / 2) * (j - (WindWidth) / 2) + (i - YHalfDrawingArea) * (i - YHalfDrawingArea) > ((WindWidth / 2) - RestStartX) * ((WindWidth / 2) - RestStartX))
+				pWind->DrawCircle(j, i, 1);
+		}
+	}
+}
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes,int time) const // It is a private function
+void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes, int time) const // It is a private function
 {
 	color clr = OrdersClrs[pO->getType()];
+	if (pO->getType() == TYPE_NORMAL && (time % 24 >= 19 || time % 24 < 3))
+		clr = color("3c829e"); //009bd8, 39b4e5, 4a9ebf, 3c829e[NIGHTNORMAL]?
+
 	REGION Region = pO->getRegion();
 
 	if (RegionCount > MaxRegionOrderCount)
@@ -291,15 +303,18 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes,int time) con
 		pWind->DrawInteger(x, y, pO->getID());
 	}
 	else
-		Animate(x, y, pO->getID(), clr, Region,time);
+		Animate(x, y, pO->getID(), clr, Region, time);
 }
 
-void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
+void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 {
 	color BG;
-	if (time < 10) BG = WHITE;
-	else if (time >= 10 && time < 20) BG = DARKGRAY;
-	else BG = DARKBLUE;
+	int t = time % 24;
+	if (t >= 3 && t < 11)
+		BG = EARLYMORNING;
+	else if (t >= 11 && t < 19)
+		BG = AFTERNOON;
+	else BG = NIGHT;
 	if (id % 3 == 1)
 	{
 		pWind->SetPen(WHITE);
@@ -328,7 +343,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
 		pWind->DrawCircle(WindWidth / 2 + 10, YHalfDrawingArea, 2);
 	}
 	// Drawing the Order
-	for (int i = 120; i > 0; i-=2)
+	for (int i = 120; i > 0; i -= 2)
 	{
 		pWind->SetPen(colr);
 		pWind->SetBrush(colr);
@@ -336,7 +351,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
 		if (reg == A_REGION || reg == D_REGION)
 		{
 			pWind->DrawInteger(x - i, y, id);
-			Sleep(1);
+			Sleep(2);
 			pWind->SetPen(BG);
 			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x - i, y, x - i + OrderWidth - 10, y + 15);
@@ -345,13 +360,15 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
 		else
 		{
 			pWind->DrawInteger(x + i, y, id);
-			Sleep(1);
+			Sleep(2);
 			pWind->SetPen(BG);
 			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x + i, y, x + i + OrderWidth - 10, y + 15);
 			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
 	}
+
+	//DrawStars(time);
 	pWind->SetPen(colr);
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);
@@ -366,24 +383,25 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg,int time) const
 // [Input Parameters]:
 //    orders [ ] : array of Order pointers (ALL orders from all regions in one array)
 //    TotalOrders : the size of the array (total no. of orders)
-void GUI::DrawOrders(bool delet,int time) const
+void GUI::DrawOrders(bool delet, int time) const
 {
 	//Prepare counter for each region
-	int RegionsCounts[REGION_COUNT] = {0}; //initlaize all counters to zero
+	int RegionsCounts[REGION_COUNT] = { 0 }; //initlaize all counters to zero
 
 	for (int i = 0; i < OrderCount; i++)
 	{
 		int orderRegion = OrdListForDrawing[i]->getRegion();
 		RegionsCounts[orderRegion]++;
-		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet,time);
+		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet, time);
+		DrawStars(time, i % 8 < 4);
 	}
 }
 
-void GUI::UpdateInterface(bool del,int time) const
+void GUI::UpdateInterface(bool del, int time) const
 {
 	ClearDrawingArea(time);
 	DrawRestArea();
-	DrawOrders(del,time);
+	DrawOrders(del, time);
 }
 
 void GUI::UpdateInterface(color newColor) const

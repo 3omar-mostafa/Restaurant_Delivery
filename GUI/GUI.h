@@ -68,7 +68,9 @@ class GUI
 	
 
 	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
-	void DrawRestArea() const;											  // draws the restaurant area
+	void DrawRestArea() const;	// draws the restaurant area
+	void DrawStars(int time, bool flip = 0) const;
+	
 
 	void ClearStatusBar() const;   // clears the status bar
 	void ClearDrawingArea(int time) const; // clears the Drawing area from all drawings
