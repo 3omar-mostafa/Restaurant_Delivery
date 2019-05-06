@@ -175,6 +175,15 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->SetPen(EARLYMORNING, 3);
 		pWind->SetBrush(EARLYMORNING);
 		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		pWind->SetBrush(WHITESMOKE);
+		pWind->SetPen(WHITESMOKE, 3);
+		//pWind->DrawEllipse(30, 40, 150,80);
+		for (int i = 0; i < 4; i++) {
+			pWind->DrawCircle(85 + t * i * 45 + t * 10, 70, 19);
+			pWind->DrawCircle(100 + t * i * 45 + t * 10, 70, 25);
+			pWind->DrawCircle(130 + t * i * 45 + t * 10, 70, 25);
+			pWind->DrawCircle(145 + t * i * 45 + t * 10, 70 , 19);
+		}
 	}
 
 	else if (t >= 11 && t < 19) {
