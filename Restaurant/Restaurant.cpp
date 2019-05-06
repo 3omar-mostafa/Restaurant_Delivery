@@ -694,7 +694,7 @@ void Restaurant::assignMotorcycles(int currentTimestep)
 				pMotor->setHP(5);
 				continue;
 			}
-
+			 
 			vipQueue[reg].dequeue(pOrd);
 			assignOrderToMotorcycle(currentTimestep, pOrd, pMotor);
 			pMotor->setHP(pMotor->getHP() - 1);
