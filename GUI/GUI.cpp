@@ -239,8 +239,9 @@ void GUI::DrawRestArea() const
 	int L = RestWidth / 2;
 
 	// 1- Drawing the brown circle of the Rest
-	pWind->SetPen(DARKRED);
-	pWind->SetBrush(DARKRED);
+	color redDark= color(178, 7, 7);
+	pWind->SetPen(redDark);
+	pWind->SetBrush(redDark);
 	pWind->DrawCircle((WindWidth / 2), YHalfDrawingArea, (WindWidth / 2) - RestStartX);
 
 	// 2- Drawing the 2 brown crossed lines (for making 4 regions)
@@ -253,7 +254,7 @@ void GUI::DrawRestArea() const
 	pWind->SetBrush(WHITE);
 	pWind->DrawCircle(WindWidth / 2, YHalfDrawingArea, 30);*/
 
-	pWind->SetPen(BLACK, 4);
+	pWind->SetPen(BLACK, 3);
 	pWind->SetBrush(DARKRED);
 	pWind->DrawRectangle(WindWidth / 2 - 30, YHalfDrawingArea - 20, WindWidth / 2 + 30, YHalfDrawingArea + 20);
 
@@ -417,6 +418,64 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);
 	pWind->DrawInteger(x, y, id);
+}
+
+void GUI::OrderOut(int time)
+{
+	int t = time % 24;
+	if (t >= 4 && t < 11) {
+		image img("Restaurant\\delivery_man_morning.jpg");
+		for (int i = 0; i < 300;i+=25) {
+			drawImage(img, WindWidth - 350 + i, WindHeight - StatusBarHeight - 80);
+			Sleep(50);
+			pWind->SetPen(EARLYMORNING);
+			pWind->SetBrush(EARLYMORNING);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight);
+		}
+		
+	}
+		
+	else if (t >= 11 && t < 19) {
+		image img("Restaurant\\delivery_man_afternoon.jpg");
+		for (int i = 0; i < 300; i += 25) {
+			drawImage(img, WindWidth - 350 + i, WindHeight - StatusBarHeight - 90);
+			Sleep(50);
+			color afterNoonGrad = color(255, 165 + 3 * 3, 10 + 2 * 3);
+			pWind->SetPen(afterNoonGrad);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 90, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight-40);
+			afterNoonGrad = color(255, 165, 10);
+			pWind->SetPen(afterNoonGrad);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 40, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight);
+		}
+	}
+	else {
+		image img("Restaurant\\delivery_man_night.jpg");
+		for (int i = 0; i < 300; i += 25) {
+			drawImage(img, WindWidth - 350 + i, WindHeight - StatusBarHeight - 80);
+			Sleep(50);
+			pWind->SetPen(NIGHT);
+			pWind->SetBrush(NIGHT);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i+50, WindHeight - StatusBarHeight );	
+			bool flip = t % 2;
+			if (!flip) {
+				pWind->SetPen(DARKSTAR);
+				pWind->SetBrush(DARKSTAR);
+			}
+			else {
+				pWind->SetPen(WHITE);
+				pWind->SetBrush(WHITE);
+			}
+
+			for (int j = WindHeight - StatusBarHeight - 75; j < WindHeight - StatusBarHeight; j += 30) {
+				for (int k = (j / 10) % 2 ? 10+ WindWidth - 350 + i : 22+ WindWidth - 350 + i; k < WindWidth - 350 + i + 50; k += 30) {
+						pWind->DrawCircle(k, j, 1);
+				}
+			}
+		}
+	}
+		
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

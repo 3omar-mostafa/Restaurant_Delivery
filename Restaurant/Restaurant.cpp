@@ -248,6 +248,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			pGUI->ResetDrawingList();
 			break;
 		}
+		pGUI->OrderOut(currentTimestep);
 		currentTimestep++;
 	}
 
