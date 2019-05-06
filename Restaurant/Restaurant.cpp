@@ -157,7 +157,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 	if (mode == MODE_RAMADAN) {
 		pGUI->PrintMessage("No Orders will be served between Fajr and Maghreb - Ramadan Kareem");
-		Sleep(5000);
+		PlaySound("Restaurant\\Ramadan\\Wahawy_ya_wahawy.wav", nullptr, SND_FILENAME);
 	}
 
 	int currentTimestep = 1;
@@ -183,37 +183,45 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 			//Show all active orders in each region
 			showActiveOrders();
-			//TODO: mistake in this condition: it will check only queues of Region A  
-			//DONE
-			int  totalOrders = 0;
 
-			for (int reg = 0; reg < REGION_COUNT;reg++) {
+			int totalOrders = 0;
+			for (int reg = 0; reg < REGION_COUNT; reg++)
 				totalOrders += normalQueue[reg].getLength() + vipQueue[reg].getLength() + frozenQueue[reg].getLength();
-			}
 
-			if (totalOrders >= 20) {
+			if (totalOrders >= 20)
 				pGUI->UpdateInterface(true, currentTimestep);
-			}
 			else
 				pGUI->UpdateInterface(false, currentTimestep);
+
 			pGUI->PrintTimestep(currentTimestep);
 		}
 
-		if (mode == MODE_RAMADAN && currentTimestep % 24 == 19) {
-			image img("Restaurant\\Ramadan\\maghreb.jpg");
-			pGUI->drawImage(img, 0, 0);
-			PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Maghreb.wav"), nullptr, SND_ASYNC);
-			Sleep(7000);
+		if (mode == MODE_RAMADAN)
+		{
+			if (currentTimestep % 24 == 19) {
+				image img("Restaurant\\Ramadan\\maghreb.jpg");
+				pGUI->drawImage(img, 0, 0);
+				PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Maghreb.wav"), nullptr, SND_SYNC);
+			}
+
+			else if (currentTimestep % 24 == 20) {
+				PlaySound(TEXT("Restaurant\\Ramadan\\Aho_geh_ya_wlad.wav"), nullptr, SND_ASYNC);
+			}
+
+			else if (currentTimestep % 24 == 3) {
+				image img("Restaurant\\Ramadan\\fajr.jpg");
+				pGUI->drawImage(img, 0, 0);
+				PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Fajr.wav"), nullptr, SND_SYNC);
+			}
+
+			else if (currentTimestep % 24 == 5) {
+				PlaySound(TEXT("Restaurant\\Ramadan\\Ramadan_gana.wav"), nullptr, SND_ASYNC);
+			}
+
+			
 		}
 
-		if (mode == MODE_RAMADAN && currentTimestep % 24 == 3) {
-			image img("Restaurant\\Ramadan\\fajr.jpg");
-			pGUI->drawImage(img, 0, 0);
-			PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Fajr.wav"), nullptr, SND_ASYNC);
-			Sleep(2000);
-		}
-
-		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 <= 3)) {
+		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 < 3)) {
 			//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 			assignMotorcycles(currentTimestep);
 		}
@@ -234,8 +242,8 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			Sleep(2000);
 
 			// Delay Time between Asr and Maghreb Athan as we feel in real life
-			if (currentTimestep % 24 >= 15 && currentTimestep % 24 <= 19)
-				Sleep(4000);
+			if (currentTimestep % 24 >= 15 && currentTimestep % 24 < 19)
+				Sleep(2000);
 
 			pGUI->ResetDrawingList();
 			break;
