@@ -182,16 +182,16 @@ void GUI::ClearDrawingArea(int time) const
 		if(Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_early_morning.jpg", 0, 0);
 		for (int i = 0; i < 2; i++) {
-			pWind->DrawCircle(55 + t * i * 35 + t * 10, 70, 19);
-			pWind->DrawCircle(70 + t * i * 35 + t * 10, 70, 25);
-			pWind->DrawCircle(100 + t * i * 35 + t * 10, 70, 25);
-			pWind->DrawCircle(115 + t * i * 35 + t * 10, 70 , 19);
+			pWind->DrawCircle(55 + t * i * 35 + t * 10, 40, 19);
+			pWind->DrawCircle(70 + t * i * 35 + t * 10, 40, 25);
+			pWind->DrawCircle(100 + t * i * 35 + t * 10, 40, 25);
+			pWind->DrawCircle(115 + t * i * 35 + t * 10, 40 , 19);
 		}
 		for (int i = 0; i < 2; i++) {
-			pWind->DrawCircle(85 + t * i * 45 + t * 10 + WindWidth / 2, 70, 19);
-			pWind->DrawCircle(100 + t * i * 45 + t * 10 + WindWidth / 2, 70, 25);
-			pWind->DrawCircle(130 + t * i * 45 + t * 10 + WindWidth / 2, 70, 25);
-			pWind->DrawCircle(145 + t * i * 45 + t * 10 + WindWidth / 2, 70, 19);
+			pWind->DrawCircle(85 + t * i * 45 + t * 10 + WindWidth / 2, 40, 19);
+			pWind->DrawCircle(100 + t * i * 45 + t * 10 + WindWidth / 2, 40, 25);
+			pWind->DrawCircle(130 + t * i * 45 + t * 10 + WindWidth / 2, 40, 25);
+			pWind->DrawCircle(145 + t * i * 45 + t * 10 + WindWidth / 2, 40, 19);
 		}
 	}
 
@@ -271,6 +271,7 @@ void GUI::DrawStars(int time, bool flip) const
 //////////////////////////////////////////////////////////////////////////////////////////
 void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes, int time) const // It is a private function
 {
+	
 	color clr = OrdersClrs[pO->getType()];
 	if (pO->getType() == TYPE_NORMAL && (time % 24 >= 19 || time % 24 < 4))
 		clr = color("3c829e"); //009bd8, 39b4e5, 4a9ebf, 3c829e[NIGHTNORMAL]?
@@ -407,6 +408,14 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 //    TotalOrders : the size of the array (total no. of orders)
 void GUI::DrawOrders(bool delet, int time) const
 {
+	string strTime = "";
+	if (time % 24 < 10)
+		strTime += "0";
+	strTime += to_string(time % 24);
+	strTime += " : ";
+	strTime += "00";
+	DrawString(WindWidth / 2 - 22, YHalfDrawingArea - 8, strTime);
+
 	//Prepare counter for each region
 	int RegionsCounts[REGION_COUNT] = { 0 }; //initlaize all counters to zero
 
