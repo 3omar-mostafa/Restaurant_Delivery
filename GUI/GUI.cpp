@@ -171,6 +171,12 @@ void GUI::ClearStatusBar() const
 ///////////////////////////////////////////////////////////////////////////////////
 void GUI::ClearDrawingArea(int time) const
 {
+	pWind->SetPen(WHITE);
+	pWind->SetFont(20, ITALICIZED, ROMAN, "Arial");
+	string s = "Day ";
+	s += to_string(time / 24 + 1);
+	pWind->DrawString(20, 40, s);
+
 	int t = time % 24;
 	// Clearing the Drawing area
 	if (t >= 4 && t < 11) {
@@ -244,6 +250,7 @@ void GUI::DrawRestArea() const
 	pWind->DrawString(RestStartX + (int)(0.44 * L), YHalfDrawingArea + 5 * L / 20, "D");
 	pWind->DrawString(RestStartX + L + (int)(0.36 * L), RestStartY + 5 * L / 12, "B");
 	pWind->DrawString(RestStartX + L + (int)(0.36 * L), YHalfDrawingArea + 5 * L / 20, "C");
+
 }
 
 void GUI::DrawStars(int time, bool flip) const
@@ -408,6 +415,20 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 //    TotalOrders : the size of the array (total no. of orders)
 void GUI::DrawOrders(bool delet, int time) const
 {
+	color penColor;
+	int t = time % 24;
+	if (t >= 4 && t < 11)
+		penColor = ORANGERED;
+	else if (t >= 11 && t < 19)
+		penColor = DARKBLUE;
+	else penColor = FLORALWHITE;
+
+	pWind->SetPen(penColor);
+	pWind->SetFont(25, ITALICIZED, ROMAN, "Arial");
+	string s = "Day ";
+	s += to_string(time / 24 + 1);
+	pWind->DrawString(10, 50, s);
+
 	string strTime = "";
 	if (time % 24 < 10)
 		strTime += "0";
