@@ -455,6 +455,8 @@ void Restaurant::writeToFile(string filename)
 
 			totalOrderCount[orderRegion]++;
 		}
+
+		delete currentOrder;
 	}
 
 	//Writing region info:
