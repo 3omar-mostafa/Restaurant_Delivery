@@ -13,6 +13,7 @@ GUI::GUI()
 	OrdersClrs[TYPE_FROZEN] = VIOLET;   //Frozen-order color
 	OrdersClrs[TYPE_VIP] = RED;			//VIP-order color
 
+	Mode = PROGRAM_MODE(-1);
 	ClearStatusBar();
 	ClearDrawingArea(0);
 	DrawRestArea();
@@ -178,7 +179,8 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
 		pWind->SetBrush(WHITESMOKE);
 		pWind->SetPen(WHITESMOKE, 3);
-		//pWind->DrawEllipse(30, 40, 150,80);
+		if(Mode == MODE_RAMADAN)
+			pWind->DrawImage("Restaurant\\Ramadan\\decoration_early_morning.jpg", 0, 0);
 		for (int i = 0; i < 2; i++) {
 			pWind->DrawCircle(55 + t * i * 35 + t * 10, 70, 19);
 			pWind->DrawCircle(70 + t * i * 35 + t * 10, 70, 25);
@@ -197,12 +199,16 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->SetPen(AFTERNOON, 3);
 		pWind->SetBrush(AFTERNOON);
 		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
+		if (Mode == MODE_RAMADAN)
+			pWind->DrawImage("Restaurant\\Ramadan\\decoration_afternoon.jpg", 0, 0);
 	}
 
 	else {
 		pWind->SetPen(NIGHT, 3);
 		pWind->SetBrush(NIGHT);
 		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
+		if (Mode == MODE_RAMADAN)
+			pWind->DrawImage("Restaurant\\Ramadan\\decoration_night.jpg", 0, 0);
 		DrawStars(time);
 	}
 }
@@ -451,9 +457,8 @@ void GUI::drawImage(image img , int x , int y) const
 	pWind->DrawImage(img, x, y);
 }
 
-PROGRAM_MODE GUI::getGUIMode() const
+PROGRAM_MODE GUI::getGUIMode()
 {
-	PROGRAM_MODE Mode;
 	do
 	{
 		PrintMessage("Please select GUI mode: (1) Interactive, (2) StepByStep, (3) Silent , (4) Ramadan");
