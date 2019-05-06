@@ -187,6 +187,7 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->SetPen(WHITESMOKE, 3);
 		if(Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_early_morning.jpg", 0, 0);
+
 		for (int i = 0; i < 2; i++) {
 			pWind->DrawCircle(55 + t * i * 35 + t * 10, 40, 19);
 			pWind->DrawCircle(70 + t * i * 35 + t * 10, 40, 25);
@@ -199,12 +200,20 @@ void GUI::ClearDrawingArea(int time) const
 			pWind->DrawCircle(130 + t * i * 45 + t * 10 + WindWidth / 2, 40, 25);
 			pWind->DrawCircle(145 + t * i * 45 + t * 10 + WindWidth / 2, 40, 19);
 		}
+		
 	}
 
 	else if (t >= 11 && t < 19) {
-		pWind->SetPen(AFTERNOON, 3);
-		pWind->SetBrush(AFTERNOON);
-		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
+		color afterNoonGrad=AFTERNOON;
+		for (int i = 0; i < 12; i++) {
+			afterNoonGrad = color(255,165+i*3,10+2*i);
+			pWind->SetPen(afterNoonGrad, 3);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(0, 10 * i, WindWidth, 10 * i + 10); 
+		}
+		pWind->SetPen(afterNoonGrad, 3); 
+		pWind->SetBrush(afterNoonGrad);
+		pWind->DrawRectangle(0, 10*11+10, WindWidth, WindHeight - StatusBarHeight);
 		if (Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_afternoon.jpg", 0, 0);
 	}
@@ -347,7 +356,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 	if (t >= 4 && t < 11)
 		BG = EARLYMORNING;
 	else if (t >= 11 && t < 19)
-		BG = AFTERNOON;
+		BG = color(255, 165 + 11 * 3, 10 + 2 * 11);
 	else BG = NIGHT;
 	/*if (id % 3 == 1)
 	{
