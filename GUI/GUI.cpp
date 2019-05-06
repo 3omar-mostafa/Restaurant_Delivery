@@ -171,10 +171,10 @@ void GUI::ClearDrawingArea(int time) const
 {
 	int t = time % 24;
 	// Clearing the Drawing area
-	if (t >= 3 && t < 11) {
+	if (t >= 4 && t < 11) {
 		pWind->SetPen(EARLYMORNING, 3);
 		pWind->SetBrush(EARLYMORNING);
-		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
 		pWind->SetBrush(WHITESMOKE);
 		pWind->SetPen(WHITESMOKE, 3);
 		//pWind->DrawEllipse(30, 40, 150,80);
@@ -195,13 +195,13 @@ void GUI::ClearDrawingArea(int time) const
 	else if (t >= 11 && t < 19) {
 		pWind->SetPen(AFTERNOON, 3);
 		pWind->SetBrush(AFTERNOON);
-		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
 	}
 
 	else {
 		pWind->SetPen(NIGHT, 3);
 		pWind->SetBrush(NIGHT);
-		pWind->DrawRectangle(0, MenuBarHeight, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
 		DrawStars(time);
 	}
 }
@@ -237,7 +237,7 @@ void GUI::DrawRestArea() const
 
 void GUI::DrawStars(int time, bool flip) const
 {
-	if (time % 24 >= 3 && time % 24 < 19)
+	if (time % 24 >= 4 && time % 24 < 19)
 		return;
 
 	if (flip) {
@@ -443,12 +443,17 @@ void GUI::ResetDrawingList()
 	OrderCount = 0; //resets the orders count to be ready for next timestep updates
 }
 
+void GUI::drawImage(image img , int x , int y) const
+{
+	pWind->DrawImage(img, x, y);
+}
+
 PROGRAM_MODE GUI::getGUIMode() const
 {
 	PROGRAM_MODE Mode;
 	do
 	{
-		PrintMessage("Please select GUI mode: (1) Interactive, (2) StepByStep, (3) Silent");
+		PrintMessage("Please select GUI mode: (1) Interactive, (2) StepByStep, (3) Silent , (4) Ramadan");
 		string S = GetString();
 		Mode = (PROGRAM_MODE)(stoi(S) - 1);
 	} while (Mode < 0 || Mode >= MODE_COUNT);

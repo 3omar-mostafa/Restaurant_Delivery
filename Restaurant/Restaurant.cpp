@@ -155,11 +155,14 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	string inputFile = pGUI->GetString() + ".txt";
 	loadFromFile(inputFile);
 
+	if (mode == MODE_RAMADAN) {
+		pGUI->PrintMessage("No Orders will be served before Maghreb Athan - Ramadan Kareem");
+		Sleep(5000);
+	}
+
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
-
-
 
 		//Check all inServiceMotorcycles of each region, restore all ready ones
 		returnMotorcycles(currentTimestep);
@@ -180,6 +183,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 			//Show all active orders in each region
 			showActiveOrders();
+			//TODO: mistake in this condition: it will check only queues of Region A
 			if (normalQueue->getLength() + vipQueue->getLength() + frozenQueue->getLength() > 20) {
 				pGUI->UpdateInterface(true, currentTimestep);
 			}
@@ -188,8 +192,24 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			pGUI->PrintTimestep(currentTimestep);
 		}
 
-		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
-		assignMotorcycles(currentTimestep);
+		if (mode == MODE_RAMADAN && currentTimestep % 24 == 19) {
+			image img("Restaurant\\Ramadan\\maghreb.jpg");
+			pGUI->drawImage(img, 0, 0);
+			PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Maghreb.wav"), nullptr, SND_ASYNC);
+			Sleep(7000);
+		}
+
+		if (mode == MODE_RAMADAN && currentTimestep % 24 == 3) {
+			image img("Restaurant\\Ramadan\\fajr.jpg");
+			pGUI->drawImage(img, 0, 0);
+			PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Fajr.wav"), nullptr, SND_ASYNC);
+			Sleep(2000);
+		}
+
+		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 <= 3)) {
+			//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
+			assignMotorcycles(currentTimestep);
+		}
 
 		switch (mode)
 		{
@@ -200,6 +220,11 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 		case MODE_STEP:
 			Sleep(1000);
+			pGUI->ResetDrawingList();
+			break;
+
+		case MODE_RAMADAN:
+			Sleep(2000);
 			pGUI->ResetDrawingList();
 			break;
 		}

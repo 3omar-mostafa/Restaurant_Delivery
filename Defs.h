@@ -40,7 +40,7 @@ enum PROGRAM_MODE	//mode of the program interface
 	MODE_INTERACTIVE,	//interactive mode
 	MODE_STEP,	//Step-by-step mode
 	MODE_SILENT,	//Silent mode
-	MODE_DEMO,	//Demo mode (for introductory phase only, should be removed in phases 1&2)
+	MODE_RAMADAN,	//Mode for Ramadan holy month
 	MODE_COUNT	//number of possible modes
 };
 
