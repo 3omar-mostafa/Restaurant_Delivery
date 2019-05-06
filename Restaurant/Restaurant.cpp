@@ -156,7 +156,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	loadFromFile(inputFile);
 
 	if (mode == MODE_RAMADAN) {
-		pGUI->PrintMessage("No Orders will be served before Maghreb Athan - Ramadan Kareem");
+		pGUI->PrintMessage("No Orders will be served between Fajr and Maghreb - Ramadan Kareem");
 		Sleep(5000);
 	}
 
