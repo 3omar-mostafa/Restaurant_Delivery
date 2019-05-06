@@ -232,6 +232,11 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 		case MODE_RAMADAN:
 			Sleep(2000);
+
+			// Delay Time between Asr and Maghreb Athan as we feel in real life
+			if (currentTimestep % 24 >= 15 && currentTimestep % 24 <= 19)
+				Sleep(4000);
+
 			pGUI->ResetDrawingList();
 			break;
 		}

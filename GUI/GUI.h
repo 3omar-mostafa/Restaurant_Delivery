@@ -11,8 +11,7 @@ using namespace std;
 
 class GUI
 {
-
-  private:
+	PROGRAM_MODE Mode;
 	window *pWind;
 	color OrdersClrs[TYPE_COUNT];
 
@@ -96,7 +95,7 @@ class GUI
 
 	void drawImage(image img, int x, int y) const;
 
-	PROGRAM_MODE getGUIMode() const; //returns the mode of the program
+	PROGRAM_MODE getGUIMode(); //returns the mode of the program
 };
 
 #endif
