@@ -325,7 +325,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 {
 	color BG;
 	int t = time % 24;
-	if (t >= 3 && t < 11)
+	if (t >= 4 && t < 11)
 		BG = EARLYMORNING;
 	else if (t >= 11 && t < 19)
 		BG = AFTERNOON;

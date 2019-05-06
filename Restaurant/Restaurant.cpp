@@ -183,8 +183,15 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 			//Show all active orders in each region
 			showActiveOrders();
-			//TODO: mistake in this condition: it will check only queues of Region A
-			if (normalQueue->getLength() + vipQueue->getLength() + frozenQueue->getLength() > 20) {
+			//TODO: mistake in this condition: it will check only queues of Region A  
+			//DONE
+			int  totalOrders = 0;
+
+			for (int reg = 0; reg < REGION_COUNT;reg++) {
+				totalOrders += normalQueue[reg].getLength() + vipQueue[reg].getLength() + frozenQueue[reg].getLength();
+			}
+
+			if (totalOrders >= 20) {
 				pGUI->UpdateInterface(true, currentTimestep);
 			}
 			else
