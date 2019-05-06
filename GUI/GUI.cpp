@@ -422,6 +422,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 
 void GUI::OrderOut(int time)
 {
+	if (time <= 1) return;
 	int t = time % 24;
 	if (t >= 4 && t < 11) {
 		image img("Restaurant\\delivery_man_morning.jpg");
