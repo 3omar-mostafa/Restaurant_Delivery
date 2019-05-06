@@ -214,6 +214,12 @@ void GUI::ClearDrawingArea(int time) const
 		pWind->SetPen(afterNoonGrad, 3); 
 		pWind->SetBrush(afterNoonGrad);
 		pWind->DrawRectangle(0, 10*11+10, WindWidth, WindHeight - StatusBarHeight);
+		for (int i = 11; i >= 0; i--) {
+			afterNoonGrad = color(255, 165 + i * 3, 10 + 2 * i);
+			pWind->SetPen(afterNoonGrad, 3);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(0, 300+10 * (11-i), WindWidth, WindHeight - StatusBarHeight-10*i);
+		}
 		if (Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_afternoon.jpg", 0, 0);
 	}
