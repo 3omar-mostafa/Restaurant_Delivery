@@ -366,20 +366,18 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 		if (reg == A_REGION || reg == D_REGION)
 		{
 			pWind->DrawInteger(x - i, y, id);
-			Sleep(2);
+			Sleep(1);
 			pWind->SetPen(BG);
 			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x - i, y, x - i + OrderWidth - 10, y + 15);
-			//pWind->DrawCircle(x - i + 10, y + 7, 20);
 		}
 		else
 		{
 			pWind->DrawInteger(x + i, y, id);
-			Sleep(2);
+			Sleep(1);
 			pWind->SetPen(BG);
 			pWind->SetBrush(BG);
 			pWind->DrawRectangle(x + i, y, x + i + OrderWidth - 10, y + 15);
-			//pWind->DrawCircle(x + i + 10, y + 7, 20);
 		}
 	}
 
