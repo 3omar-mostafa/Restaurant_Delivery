@@ -181,7 +181,7 @@ void GUI::ClearDrawingArea(int time) const
 	if (t >= 4 && t < 11) {
 		pWind->SetPen(EARLYMORNING, 3);
 		pWind->SetBrush(EARLYMORNING);
-		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 0, WindWidth+10, WindHeight - StatusBarHeight);
 		pWind->SetBrush(WHITESMOKE);
 		pWind->SetPen(WHITESMOKE, 3);
 		if(Mode == MODE_RAMADAN)
@@ -208,16 +208,16 @@ void GUI::ClearDrawingArea(int time) const
 			afterNoonGrad = color(255,165+i*3,10+2*i);
 			pWind->SetPen(afterNoonGrad, 3);
 			pWind->SetBrush(afterNoonGrad);
-			pWind->DrawRectangle(0, 10 * i, WindWidth, 10 * i + 10); 
+			pWind->DrawRectangle(0, 10 * i, WindWidth+10, 10 * i + 10); 
 		}
 		pWind->SetPen(afterNoonGrad, 3); 
 		pWind->SetBrush(afterNoonGrad);
-		pWind->DrawRectangle(0, 10*11+10, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 10*11+10, WindWidth+10, WindHeight - StatusBarHeight);
 		for (int i = 11; i >= 0; i--) {
 			afterNoonGrad = color(255, 165 + i * 3, 10 + 2 * i);
 			pWind->SetPen(afterNoonGrad, 3);
 			pWind->SetBrush(afterNoonGrad);
-			pWind->DrawRectangle(0, 300+10 * (11-i), WindWidth, WindHeight - StatusBarHeight-10*i);
+			pWind->DrawRectangle(0, 300+10 * (11-i), WindWidth+10, WindHeight - StatusBarHeight-10*i);
 		}
 		if (Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_afternoon.jpg", 0, 0);
@@ -226,7 +226,7 @@ void GUI::ClearDrawingArea(int time) const
 	else {
 		pWind->SetPen(NIGHT, 3);
 		pWind->SetBrush(NIGHT);
-		pWind->DrawRectangle(0, 0, WindWidth, WindHeight - StatusBarHeight);
+		pWind->DrawRectangle(0, 0, WindWidth+10, WindHeight - StatusBarHeight);
 		if (Mode == MODE_RAMADAN)
 			pWind->DrawImage("Restaurant\\Ramadan\\decoration_night.jpg", 0, 0);
 		DrawStars(time);
@@ -430,9 +430,9 @@ void GUI::OrderOut(int time)
 			Sleep(50);
 			pWind->SetPen(EARLYMORNING);
 			pWind->SetBrush(EARLYMORNING);
-			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight);
 		}
-		
+		pWind->DrawRectangle(WindWidth - 350, WindHeight - StatusBarHeight - 40, WindWidth + 5, WindHeight - StatusBarHeight);
 	}
 		
 	else if (t >= 11 && t < 19) {
@@ -443,12 +443,13 @@ void GUI::OrderOut(int time)
 			color afterNoonGrad = color(255, 165 + 3 * 3, 10 + 2 * 3);
 			pWind->SetPen(afterNoonGrad);
 			pWind->SetBrush(afterNoonGrad);
-			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 90, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight-40);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 90, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight-40);
 			afterNoonGrad = color(255, 165, 10);
 			pWind->SetPen(afterNoonGrad);
 			pWind->SetBrush(afterNoonGrad);
-			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 40, WindWidth - 350 + i + 50, WindHeight - StatusBarHeight);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 40, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight);
 		}
+		pWind->DrawRectangle(WindWidth - 350, WindHeight - StatusBarHeight - 40, WindWidth + 5, WindHeight - StatusBarHeight);
 	}
 	else {
 		image img("Restaurant\\delivery_man_night.jpg");
@@ -457,7 +458,7 @@ void GUI::OrderOut(int time)
 			Sleep(50);
 			pWind->SetPen(NIGHT);
 			pWind->SetBrush(NIGHT);
-			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i+50, WindHeight - StatusBarHeight );	
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 80, WindWidth - 350 + i+80, WindHeight - StatusBarHeight );	
 			bool flip = t % 2;
 			if (!flip) {
 				pWind->SetPen(DARKSTAR);
@@ -474,6 +475,7 @@ void GUI::OrderOut(int time)
 				}
 			}
 		}
+		//pWind->DrawRectangle(WindWidth - 350, WindHeight - StatusBarHeight - 40, WindWidth + 5, WindHeight - StatusBarHeight);
 	}
 		
 }

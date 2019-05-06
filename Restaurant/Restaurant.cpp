@@ -195,7 +195,9 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 			pGUI->PrintTimestep(currentTimestep);
 		}
-
+		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 > 19 || currentTimestep % 24 < 3))
+			pGUI->OrderOut(currentTimestep);
+		Sleep(100);
 		if (mode == MODE_RAMADAN)
 		{
 			if (currentTimestep % 24 == 19) {
@@ -248,7 +250,6 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			pGUI->ResetDrawingList();
 			break;
 		}
-		pGUI->OrderOut(currentTimestep);
 		currentTimestep++;
 	}
 
