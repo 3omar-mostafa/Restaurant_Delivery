@@ -88,7 +88,7 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 {
 	ClearStatusBar(); //First clear the status bar
 	pWind->SetPen(TEXTGREY, 3);
-	pWind->DrawLine(0, WindHeight - StatusBarHeight / 2 - 10, WindWidth, WindHeight - StatusBarHeight / 2 - 10);
+	pWind->DrawLine(0, WindHeight - StatusBarHeight / 2 -5, WindWidth, WindHeight - StatusBarHeight / 2-5 );
 	pWind->DrawLine(WindWidth / 2, WindHeight - StatusBarHeight, WindWidth / 2, WindHeight);
 
 	for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -101,10 +101,10 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(200, WindHeight - StatusBarHeight + 5, "A");
 			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 20, data[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 22, data[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 39, dataMotor[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 56, dataAssignedMotors[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight + 73, servedOrders[reg]);
 			break;
 
 		case B_REGION:
@@ -113,41 +113,40 @@ void GUI::PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT]
 			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight + 5, "B");
 			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 20, data[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 35, dataMotor[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 50, dataAssignedMotors[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 65, servedOrders[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 22, data[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 39, dataMotor[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 56, dataAssignedMotors[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight + 73, servedOrders[reg]);
 			break;
 
 		case C_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
-			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight / 2 - 5, "C");
+			pWind->DrawString(WindWidth / 2 + 200, WindHeight - StatusBarHeight / 2 , "C");
 			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
-			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 13, data[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 31, dataMotor[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 49, dataAssignedMotors[reg]);
+			pWind->DrawString(WindWidth / 2 + 10, WindHeight - StatusBarHeight / 2 + 68, servedOrders[reg]);
 			break;
 
 		case D_REGION:
 			pWind->SetPen(TOMATO);
 			pWind->SetFont(20, BOLD, BY_NAME, "Arial");
-			pWind->DrawString(200, WindHeight - StatusBarHeight / 2 - 5, "D");
+			pWind->DrawString(200, WindHeight - StatusBarHeight / 2 , "D");
 			pWind->SetPen(TEXTGREY);
 			pWind->SetFont(16, PLAIN, BY_NAME, "Arial");
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 10, data[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 25, dataMotor[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 40, dataAssignedMotors[reg]);
-			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 55, servedOrders[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 13, data[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 31, dataMotor[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 49, dataAssignedMotors[reg]);
+			pWind->DrawString(10, WindHeight - StatusBarHeight / 2 + 68, servedOrders[reg]);
 			break;
 
 		default:
 			return;
 		}
 	}
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
