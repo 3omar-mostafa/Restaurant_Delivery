@@ -339,7 +339,7 @@ void Restaurant::writeToFile(string filename)
 	int serviceSum[REGION_COUNT] = {0};
 
 	//Writing order info:
-	outFile << "FT\tID\tAT\tWT\tST\n";
+	outFile << "FT   ID   AT   WT   ST \n";
 	while (!totalQueue.isEmpty())
 	{
 		Order *currentOrder = 0;
