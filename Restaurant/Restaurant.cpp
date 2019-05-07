@@ -228,7 +228,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	}
 
 	if (mode != MODE_SILENT) {
-		pGUI->UpdateInterface(currentTimestep);
+		pGUI->UpdateInterface(false, currentTimestep);
 		displayRegionsData();
 	}
 
