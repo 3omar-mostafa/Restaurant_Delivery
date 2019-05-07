@@ -47,17 +47,17 @@ Single Node Case:
 template <typename T>
 class Queue
 {
-private :
-	
-	Node<T>* backPtr;
-	Node<T>* frontPtr;
+private:
+	Node<T> *backPtr;
+	Node<T> *frontPtr;
 	int count;
-public :
-	Queue();	
-	bool isEmpty() const ;
-	bool enqueue(const T& newEntry);
-	bool dequeue(T& frntEntry);  
-	bool peekFront(T& frntEntry)  const;	
+
+public:
+	Queue();
+	bool isEmpty() const;
+	bool enqueue(const T &newEntry);
+	bool dequeue(T &frntEntry);
+	bool peekFront(T &frntEntry) const;
 	int getLength() const;
 	/*void cancellation(int id);*/
 	~Queue();
@@ -73,10 +73,9 @@ The constructor of the Queue class.
 template <typename T>
 Queue<T>::Queue()
 {
-	backPtr=nullptr;
-	frontPtr=nullptr;
+	backPtr = nullptr;
+	frontPtr = nullptr;
 	count = 0;
-
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -90,7 +89,7 @@ Output: True if the queue is empty; otherwise false.
 template <typename T>
 bool Queue<T>::isEmpty() const
 {
-	if(frontPtr==nullptr)
+	if (frontPtr == nullptr)
 		return true;
 	else
 		return false;
@@ -106,9 +105,9 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool Queue<T>::enqueue( const T& newEntry)
+bool Queue<T>::enqueue(const T &newEntry)
 {
-	Node<T>* newNodePtr = new Node<T>(newEntry);
+	Node<T> *newNodePtr = new Node<T>(newEntry);
 	// Insert the new node
 	if (isEmpty())
 	{
@@ -120,13 +119,12 @@ bool Queue<T>::enqueue( const T& newEntry)
 	else
 	{
 		backPtr->setNext(newNodePtr); // The queue was not empty
-		backPtr = newNodePtr; // New node is at back
+		backPtr = newNodePtr;		  // New node is at back
 		count++;
 		return true;
 	}
 	return false;
 } // end enqueue
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -139,24 +137,23 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool Queue<T>:: dequeue(T& frontEntry)  
+bool Queue<T>::dequeue(T &frontEntry)
 {
-	if(isEmpty())
+	if (isEmpty())
 		return false;
 
-	Node<T>* nodeToDeletePtr = frontPtr;
+	Node<T> *nodeToDeletePtr = frontPtr;
 	frontEntry = frontPtr->getItem();
 	frontPtr = frontPtr->getNext();
 	// Queue is not empty; remove front
-	if (nodeToDeletePtr == backPtr)	 // Special case: one node in queue
-		backPtr = nullptr ;	
-		
+	if (nodeToDeletePtr == backPtr) // Special case: one node in queue
+		backPtr = nullptr;
+
 	// Free memory reserved by the dequeued node
 	delete nodeToDeletePtr;
 
 	count--;
 	return true;
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -170,24 +167,22 @@ Output: The front of the queue.
 return: false if Queue is empty
 */
 template <typename T>
-bool Queue<T>:: peekFront(T& frntEntry) const 
+bool Queue<T>::peekFront(T &frntEntry) const
 {
-	if(isEmpty())
+	if (isEmpty())
 		return false;
 
 	frntEntry = frontPtr->getItem();
 	return true;
-
 }
 
-template<typename T>
+template <typename T>
 int Queue<T>::getLength() const
 {
 	return count;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
-
 
 template <typename T>
 Queue<T>::~Queue()

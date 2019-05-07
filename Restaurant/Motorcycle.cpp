@@ -27,6 +27,7 @@ bool Motorcycle::operator>(Motorcycle &right) const
 	return speed > right.speed;
 }
 
+//Returns true if the Motorcycle is damaged
 bool Motorcycle::getState() const
 {
 	return isDamaged;
@@ -58,7 +59,6 @@ STATUS Motorcycle::getStatus() const
 {
 	return status;
 }
-
 
 void Motorcycle::setFinishTime(int startTime, int distance)
 {

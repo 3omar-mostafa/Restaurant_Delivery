@@ -8,27 +8,27 @@ bool isGreaterThan(T left, T right);
 
 template <typename T>
 //Compares the references pointed to by the pointers.
-bool isGreaterThan(T* left, T* right);
+bool isGreaterThan(T *left, T *right);
 //Both implemented in Restaurant.cpp, to be moved to a utility functions file.
 
 template <typename T>
 class PriorityQueue
 {
-	Node<T>* backPtr;
-	Node<T>* frontPtr;
+	Node<T> *backPtr;
+	Node<T> *frontPtr;
 	int count;
+
 public:
 	PriorityQueue();
-	PriorityQueue(const PriorityQueue& copiedPQueue);
+	PriorityQueue(const PriorityQueue &copiedPQueue);
 	bool isEmpty() const;
-	bool enqueue(const T& newEntry);
-	bool dequeue(T& frntEntry);
-	bool peekFront(T& frntEntry)  const;
+	bool enqueue(const T &newEntry);
+	bool dequeue(T &frntEntry);
+	bool peekFront(T &frntEntry) const;
 	int getLength() const;
-	T* toArray() const;
+	T *toArray() const;
 	~PriorityQueue();
 };
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,8 +45,8 @@ PriorityQueue<T>::PriorityQueue()
 	frontPtr = nullptr;
 	count = 0;
 }
-template<typename T>
-PriorityQueue<T>::PriorityQueue(const PriorityQueue & copiedPQueue)
+template <typename T>
+PriorityQueue<T>::PriorityQueue(const PriorityQueue &copiedPQueue)
 {
 	frontPtr = backPtr = NULL;
 	count = 0;
@@ -84,10 +84,10 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool PriorityQueue<T>::enqueue(const T& newEntry)
+bool PriorityQueue<T>::enqueue(const T &newEntry)
 {
-	Node<T>* newNodePtr = new Node<T>(newEntry);
-// Insert the new node:
+	Node<T> *newNodePtr = new Node<T>(newEntry);
+	// Insert the new node:
 
 	// If the queue is empty
 	if (isEmpty())
@@ -128,7 +128,6 @@ bool PriorityQueue<T>::enqueue(const T& newEntry)
 	return true;
 } // end enqueue
 
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /*Function: dequeue
@@ -140,16 +139,16 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool PriorityQueue<T>::dequeue(T& frntEntry)
+bool PriorityQueue<T>::dequeue(T &frntEntry)
 {
 	if (isEmpty())
 		return false;
 
-	Node<T>* nodeToDeletePtr = frontPtr;
+	Node<T> *nodeToDeletePtr = frontPtr;
 	frntEntry = frontPtr->getItem();
 	frontPtr = frontPtr->getNext();
 	// PriorityQueue is not empty; remove front
-	if (nodeToDeletePtr == backPtr)	 // Special case: one node in PriorityQueue
+	if (nodeToDeletePtr == backPtr) // Special case: one node in PriorityQueue
 		backPtr = nullptr;
 
 	// Free memory reserved by the dequeued node
@@ -157,7 +156,6 @@ bool PriorityQueue<T>::dequeue(T& frntEntry)
 
 	count--;
 	return true;
-
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -171,27 +169,26 @@ Output: The front of the PriorityQueue.
 return: false if PriorityQueue is empty
 */
 template <typename T>
-bool PriorityQueue<T>::peekFront(T& frntEntry) const
+bool PriorityQueue<T>::peekFront(T &frntEntry) const
 {
 	if (isEmpty())
 		return false;
 
 	frntEntry = frontPtr->getItem();
 	return true;
-
 }
 
-template<typename T>
+template <typename T>
 int PriorityQueue<T>::getLength() const
 {
 	return count;
 }
 
 template <typename T>
-T* PriorityQueue<T>::toArray() const
+T *PriorityQueue<T>::toArray() const
 {
-	T* arr = new T[count];
-	Node<T>* currentPtr = frontPtr;
+	T *arr = new T[count];
+	Node<T> *currentPtr = frontPtr;
 
 	for (int i = 0; i < count; ++i)
 	{

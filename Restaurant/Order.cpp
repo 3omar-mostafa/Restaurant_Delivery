@@ -29,11 +29,11 @@ Order::Order(int r_Time, ORDER_TYPE r_Type, int r_ID, int r_Distance, int r_Mone
 {
 	arrivalTime = r_Time;
 	type = r_Type;
-	ID = (r_ID > 0 && r_ID < 1000) ? r_ID : 0;	//1<ID<999
+	ID = (r_ID > 0 && r_ID < 1000) ? r_ID : 0; //1<ID<999
 	distance = r_Distance;
 	totalMoney = r_Money;
 	region = r_region;
-	toBeDeleted = false;
+
 	setPriority();
 }
 
@@ -46,13 +46,12 @@ int Order::getID() const
 	return ID;
 }
 
-bool Order::operator ==(int id) const
+bool Order::operator==(int id) const
 {
 	return ID == id;
 }
 
-
-bool Order::operator>(Order & right) const
+bool Order::operator>(Order &right) const
 {
 	return priority > right.priority;
 }
@@ -74,9 +73,6 @@ void Order::setTimes(int startTime, int speed)
 	serviceTime = ceil(distance * 1.0 / speed);
 }
 
-
-
-
 void Order::setDistance(int d)
 {
 	distance = d > 0 ? d : 0;
@@ -85,16 +81,6 @@ void Order::setDistance(int d)
 int Order::getDistance() const
 {
 	return distance;
-}
-
-bool Order::isDeleted() const
-{
-	return toBeDeleted;
-}
-
-void Order::deleteIt(bool del)
-{
-	toBeDeleted = del;
 }
 
 int Order::getFinishTime() const
@@ -117,7 +103,7 @@ int Order::getServiceTime() const
 	return serviceTime;
 }
 
-void Order::writeData(ofstream & outFile) const
+void Order::writeData(ofstream &outFile) const
 {
 	outFile << finishTime << "\t" << ID << "\t" << arrivalTime << "\t" << waitTime << "\t" << serviceTime << endl;
 }

@@ -15,7 +15,7 @@
 // it is the maestro of the project
 class Restaurant
 {
-  private:
+private:
 	GUI *pGUI;
 	Queue<Event *> eventsQueue; //Queue of all events that will be loaded from file
 
@@ -24,9 +24,10 @@ class Restaurant
 	//Orders:
 	//	3rd idea:
 	//		A PriorityQueue for VIP orders.
-	//		A separate Data Structure(queue?)-->(MixedList) for Normal orders, which handles Auto and Manual Promotion, and cancellation.
+	//		A LinkedList for Normal orders, which handles Auto and Manual Promotion, and Cancellation.
 	//		A Queue for Frozen orders.
 	//		Separate Queues for each region.
+	//		A PriorityQueue for Served Orders.
 	//		Orders of each individual Timestep are added to each Queue in that specific Timestep,
 	//		only sorting the orders of that timestep with respect to each other.
 	PriorityQueue<Order *> vipQueue[REGION_COUNT];
@@ -39,13 +40,15 @@ class Restaurant
 	//	1st idea:
 	//		3 PriorityQueues for each type, fastest Motorcycles have the highest priority.
 	//		4 Regions, each region has its own PriorityQueues.
+	//		A PriorityQueue for Damaged Motorcycles.
+	//		A LinkedList for Motorcycles that are in service.
 	PriorityQueue<Motorcycle *>
 		vipMotorQueue[REGION_COUNT],
 		normalMotorQueue[REGION_COUNT],
 		frozenMotorQueue[REGION_COUNT],
 		damagedMotorQueue[REGION_COUNT];
 
-	LinkedList<Motorcycle*>
+	LinkedList<Motorcycle *>
 		inServiceMotorcycles[REGION_COUNT];
 
 	int totalOrdersServed[REGION_COUNT][TYPE_COUNT];
@@ -54,46 +57,50 @@ class Restaurant
 	//Array of Order* to handle cancellations.
 	Order *orderIdArray[MaxPossibleOrdCnt];
 
-  public:
+public:
 	Restaurant();
 	~Restaurant();
+
+	// Main Program functions:
+
 	void runSimulation();
-	void readColor();
-
-	// Event functions:
-	void addEvent(Event *pE);		  //adds a new event to the queue of events
-	void executeEvents(int TimeStep); //executes all events at current timestep
-
-	void loadFromFile(string fileName);
-	void writeToFile(string filename);
-	
 	void Operate(PROGRAM_MODE mode);
 	void Ramadan(int currentTimestep);
 
-	// Queue functions:
+	// Event functions:
+
+	void addEvent(Event *pE);
+	void executeEvents(int TimeStep);
+
+	// File functions:
+
+	void loadFromFile(string fileName);
+	void writeToFile(string filename);
+
+	// Order Queue functions:
+
 	void showActiveOrders();
-	void addToActiveQueue(Order *pOrd); //Adds the order to its proper Queue
+	void addToActiveQueue(Order *pOrd);
 	bool finished() const;
 
-	// Order functions:
 	Order *&orderOfID(int i);
 
-	// Promotion functions:
+	void displayRegionsData();
+
+	// Order functions:
+
 	bool promote(int id, int extraMoney);
-	bool autoPromoteRegion(int currentTimeStep, REGION reg); //Handles auto-promotion of Normal orders to VIP orders
+	bool autoPromoteRegion(int currentTimeStep, REGION reg);
 	void autoPromoteAll(int currentTimeStep);
 
-	// Cancellation functions:
 	bool cancel(int id);
 
 	// Motorcycle functions:
+
 	void assignOrderToMotorcycle(int currentTimestep, Order *pOrd, Motorcycle *pMotor) const;
 	void assignMotorcycles(int currentTimestep);
 	void returnMotorcycles(int currentTimestep);
-	string assignedMotorcyclesData(Motorcycle*, Order*) const; // get data of order and its motorcycle to display it later
-
-	// GUI functions:
-	void displayRegionsData();
+	string assignedMotorcyclesData(Motorcycle *, Order *) const;
 };
 
 #endif

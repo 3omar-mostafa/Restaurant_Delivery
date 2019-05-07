@@ -10,16 +10,12 @@ PromotionEvent::PromotionEvent() : Event(-1, -1)
 {
 }
 
-void PromotionEvent::execute(Restaurant *pRest)
-{
-	pRest->promote(orderID, extraMoney);
-}
-
 void PromotionEvent::readData(ifstream &inFile)
 {
 	inFile >> eventTime >> orderID >> extraMoney;
 }
 
-PromotionEvent::~PromotionEvent()
+void PromotionEvent::execute(Restaurant *pRest)
 {
+	pRest->promote(orderID, extraMoney);
 }

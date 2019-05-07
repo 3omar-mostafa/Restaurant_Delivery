@@ -9,10 +9,11 @@
 template <typename T>
 class LinkedList
 {
-	Node<T>* frontPtr;
-	Node<T>* backPtr;
+	Node<T> *frontPtr;
+	Node<T> *backPtr;
 	int count;
 	Node<T> *getNodeAt(int pos);
+
 public:
 	LinkedList();
 	LinkedList(const LinkedList &copiedList);
@@ -22,25 +23,25 @@ public:
 	void clear();
 	~LinkedList();
 
-	void append(T& newEntry);
-	bool pop(T& frontEntry);
-	bool peekFront(T& frontEntry);
+	void append(T &newEntry);
+	bool pop(T &frontEntry);
+	bool peekFront(T &frontEntry);
 
 	//Standard List Operations:
 	bool insertAt(int newPos, const T &newEntry);
 	bool removeAt(int pos);
 	bool getEntryAt(int pos, T &returnedEntry);
 	void setEntryAt(int pos, const T &newEntry);
-	
+
 	//Removes by element, returns false if the element wasn't found in the List
-	bool remove(T& removedEntry);	
+	bool remove(T &removedEntry);
 };
 
-
-template<typename T>
-Node<T>* LinkedList<T>::getNodeAt(int pos)
+template <typename T>
+Node<T> *LinkedList<T>::getNodeAt(int pos)
 {
-	if (pos >= count || isEmpty()) return nullptr;
+	if (pos >= count || isEmpty())
+		return nullptr;
 	Node<T> *currPtr = frontPtr;
 	for (int i = 0; i < pos; i++)
 	{
@@ -49,28 +50,28 @@ Node<T>* LinkedList<T>::getNodeAt(int pos)
 	return currPtr;
 }
 
-template<typename T>
+template <typename T>
 LinkedList<T>::LinkedList()
 {
 	frontPtr = backPtr = NULL;
 	count = 0;
 }
 
-template<typename T>
-LinkedList<T>::LinkedList(const LinkedList & copiedList)
+template <typename T>
+LinkedList<T>::LinkedList(const LinkedList &copiedList)
 {
 	*this = copiedList;
 }
 
-template<typename T>
-void LinkedList<T>::operator=(const LinkedList & copiedList)
+template <typename T>
+void LinkedList<T>::operator=(const LinkedList &copiedList)
 {
 	frontPtr = backPtr = nullptr;
 	count = 0;
 
 	if (copiedList.isEmpty())
 		return;
-	
+
 	Node<T> *copiedPtr = copiedList.frontPtr;
 	backPtr = frontPtr = new Node<T>(copiedPtr->getItem());
 	while (copiedPtr->getNext())
@@ -81,24 +82,22 @@ void LinkedList<T>::operator=(const LinkedList & copiedList)
 	}
 }
 
-template<typename T>
+template <typename T>
 int LinkedList<T>::getLength() const
 {
 	return count;
 }
 
-
-template<typename T>
+template <typename T>
 bool LinkedList<T>::isEmpty() const
 {
 	return frontPtr == nullptr;
 }
 
-
-template<typename T>
-void LinkedList<T>::append(T & newEntry)
+template <typename T>
+void LinkedList<T>::append(T &newEntry)
 {
-	Node<T>* newNodePtr = new Node<T>(newEntry);
+	Node<T> *newNodePtr = new Node<T>(newEntry);
 	// Insert the new node
 	if (isEmpty())
 	{
@@ -109,15 +108,13 @@ void LinkedList<T>::append(T & newEntry)
 	else
 	{
 		backPtr->setNext(newNodePtr); // The queue was not empty
-		backPtr = newNodePtr; // New node is at back
+		backPtr = newNodePtr;		  // New node is at back
 		count++;
 	}
-
-
 }
 
-template<typename T>
-bool LinkedList<T>::peekFront(T & frontEntry)
+template <typename T>
+bool LinkedList<T>::peekFront(T &frontEntry)
 {
 	if (isEmpty())
 		return false;
@@ -125,8 +122,8 @@ bool LinkedList<T>::peekFront(T & frontEntry)
 	return true;
 }
 
-template<typename T>
-bool LinkedList<T>::insertAt(int newPos, const T & newEntry)
+template <typename T>
+bool LinkedList<T>::insertAt(int newPos, const T &newEntry)
 {
 	if (newPos > count)
 		return false;
@@ -147,7 +144,7 @@ bool LinkedList<T>::insertAt(int newPos, const T & newEntry)
 	return true;
 }
 
-template<typename T>
+template <typename T>
 bool LinkedList<T>::removeAt(int pos)
 {
 	if (pos >= count)
@@ -159,7 +156,7 @@ bool LinkedList<T>::removeAt(int pos)
 		removedPtr = frontPtr;
 		frontPtr = frontPtr->getNext();
 	}
-	else 
+	else
 	{
 		Node<T> *prevPtr = getNodeAt(pos - 1);
 		removedPtr = prevPtr->getNext();
@@ -173,33 +170,32 @@ bool LinkedList<T>::removeAt(int pos)
 	return true;
 }
 
-template<typename T>
-bool LinkedList<T>::getEntryAt(int pos, T& returnedEntry)
+template <typename T>
+bool LinkedList<T>::getEntryAt(int pos, T &returnedEntry)
 {
 	Node<T> *returnedNodePtr = getNodeAt(pos);
 	returnedEntry = returnedNodePtr ? returnedNodePtr->getItem() : returnedEntry;
 	return returnedNodePtr;
 }
 
-template<typename T>
-void LinkedList<T>::setEntryAt(int pos, const T & newEntry)
+template <typename T>
+void LinkedList<T>::setEntryAt(int pos, const T &newEntry)
 {
 	if (getNodeAt(pos))
 		getNodeAt(pos)->setItem(newEntry);
 }
 
-
-template<typename T>
-bool LinkedList<T>::pop(T& frontEntry)
+template <typename T>
+bool LinkedList<T>::pop(T &frontEntry)
 {
 	if (isEmpty())
 		return false;
 
-	Node<T>* toRemovePtr = frontPtr;
+	Node<T> *toRemovePtr = frontPtr;
 	frontEntry = frontPtr->getItem();
-	frontPtr = frontPtr->getNext();		
+	frontPtr = frontPtr->getNext();
 	// Queue is not empty, remove front
-	if (toRemovePtr == backPtr)	 // Special case: one node in queue
+	if (toRemovePtr == backPtr) // Special case: one node in queue
 		backPtr = nullptr;
 
 	// Free memory reserved by the dequeued node
@@ -208,23 +204,23 @@ bool LinkedList<T>::pop(T& frontEntry)
 	return true;
 }
 
-
-template<typename T>
+template <typename T>
 void LinkedList<T>::clear()
 {
 	T clearPlace;
-	while (pop(clearPlace));
+	while (pop(clearPlace))
+		;
 	count = 0;
 }
 
-template<typename T>
+template <typename T>
 LinkedList<T>::~LinkedList()
 {
 	clear();
 }
 
-template<typename T>
-bool LinkedList<T>::remove(T & removedEntry)
+template <typename T>
+bool LinkedList<T>::remove(T &removedEntry)
 {
 	if (isEmpty())
 		return false;
@@ -232,8 +228,9 @@ bool LinkedList<T>::remove(T & removedEntry)
 	Node<T> *curPtr = frontPtr;
 	if (curPtr->getItem() == removedEntry)
 	{
-		frontPtr = frontPtr->getNext();					
-		if (!frontPtr) backPtr = frontPtr;
+		frontPtr = frontPtr->getNext();
+		if (!frontPtr)
+			backPtr = frontPtr;
 		curPtr->setNext(NULL);
 		delete curPtr;
 		count--;
@@ -244,9 +241,9 @@ bool LinkedList<T>::remove(T & removedEntry)
 	{
 		if (curPtr->getNext()->getItem() == removedEntry)
 		{
-			Node<T>* deletedPtr = curPtr->getNext();
+			Node<T> *deletedPtr = curPtr->getNext();
 			curPtr->setNext(deletedPtr->getNext());
-			if (backPtr == deletedPtr)						
+			if (backPtr == deletedPtr)
 				backPtr = curPtr;
 			deletedPtr->setNext(nullptr);
 			delete deletedPtr;

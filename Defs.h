@@ -9,41 +9,44 @@
 
 using namespace std;
 
-//The four regions: A, B, C , and D
-enum REGION {	
+//The four regions: A, B, C, and D
+enum REGION
+{
 	A_REGION,
 	B_REGION,
 	C_REGION,
 	D_REGION,
-	REGION_COUNT		//Total number of regions
+	REGION_COUNT //Total number of regions
 };
 
-
-enum ORDER_TYPE	//types of orders
+//Types of Orders
+enum ORDER_TYPE
 {
-	TYPE_NORMAL,	//normal order
-	TYPE_FROZEN,	//frozen
+	TYPE_NORMAL, //normal order
+	TYPE_FROZEN, //frozen
 	TYPE_VIP,	//VIP
-	TYPE_COUNT	//Number of types
+	TYPE_COUNT   //Number of types
 
 };
 
-enum STATUS	//status of motorcycles
+//Status of Motorcycles
+enum STATUS
 {
-	IDLE,	//idle ==> waiting to be assigned at order
-	SERVICE	//is-service ==> is delivering at order but hasn't returned yet.
+	IDLE,   //idle ==> waiting to be assigned at order
+	SERVICE //is-service ==> is delivering at order but hasn't returned yet.
 };
 
-
-enum PROGRAM_MODE	//mode of the program interface
+//Program Interface Mode
+enum PROGRAM_MODE
 {
-	MODE_INTERACTIVE,	//interactive mode
-	MODE_STEP,	//Step-by-step mode
-	MODE_SILENT,	//Silent mode
-	MODE_RAMADAN,	//Mode for Ramadan holy month
-	MODE_COUNT	//number of possible modes
+	MODE_INTERACTIVE, //interactive mode
+	MODE_STEP,		  //Step-by-step mode
+	MODE_SILENT,	  //Silent mode
+	MODE_RAMADAN,	 //Mode for Ramadan holy month
+	MODE_COUNT		  //number of possible modes
 };
 
+// Types of Motorcycles
 enum MOTOR_TYPE
 {
 	MOTOR_FAST,
@@ -51,10 +54,11 @@ enum MOTOR_TYPE
 	MOTOR_NORMAL,
 	MOTOR_COUNT
 };
+
 template <typename T>
 //Comparator function which has a specialization to deal with orders.
 bool isGreaterThan(T left, T right);
 
-#define MaxPossibleOrdCnt 999	//arbitrary value
+#define MaxPossibleOrdCnt 999 //arbitrary value
 
 #endif

@@ -1,8 +1,7 @@
 #include "ArrivalEvent.h"
 #include "..\Restaurant\Restaurant.h"
 
-
-ArrivalEvent::ArrivalEvent(int eTime, ORDER_TYPE oType, int oID, int oDistance, double oMoney, REGION oRegion) :Event(eTime, oID)
+ArrivalEvent::ArrivalEvent(int eTime, ORDER_TYPE oType, int oID, int oDistance, double oMoney, REGION oRegion) : Event(eTime, oID)
 {
 	orderType = oType;
 	orderDistance = oDistance;
@@ -10,23 +9,11 @@ ArrivalEvent::ArrivalEvent(int eTime, ORDER_TYPE oType, int oID, int oDistance, 
 	orderRegion = oRegion;
 }
 
-
-ArrivalEvent::ArrivalEvent() :Event(-1, -1)
+ArrivalEvent::ArrivalEvent() : Event(-1, -1)
 {
 }
 
-void ArrivalEvent::execute(Restaurant* pRest)
-{
-	//This function should create an order and and fills its data 
-	// Then adds it to normal, frozen, or VIP order lists that you will create in phase1
-
-	Order* pOrd = new Order(eventTime, orderType, orderID, orderDistance, orderMoney, orderRegion);
-	pRest->orderOfID(orderID) = pOrd;	//Add to order array
-
-	pRest->addToActiveQueue(pOrd);
-}
-
-void ArrivalEvent::readData(ifstream & inFile)
+void ArrivalEvent::readData(ifstream &inFile)
 {
 	char charOrderType, charOrderRegion;
 	inFile >> eventTime >> charOrderType >> orderID >> orderDistance >> orderMoney >> charOrderRegion;
@@ -41,8 +28,16 @@ void ArrivalEvent::readData(ifstream & inFile)
 		break;
 
 	case 'F':
-		orderType = TYPE_FROZEN;	
+		orderType = TYPE_FROZEN;
 		break;
 	}
 	orderRegion = REGION(charOrderRegion - 'A');
+}
+
+void ArrivalEvent::execute(Restaurant *pRest)
+{
+	Order *pOrd = new Order(eventTime, orderType, orderID, orderDistance, orderMoney, orderRegion);
+	pRest->orderOfID(orderID) = pOrd; //Add to order array
+
+	pRest->addToActiveQueue(pOrd);
 }

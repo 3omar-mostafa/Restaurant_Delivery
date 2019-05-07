@@ -45,36 +45,27 @@ class GUI
 		//Max no of orders that can be drawn in a single region
 		MaxRegionOrderCount = MaxHorizOrders * MaxVerticalOrders;
 
-	/////////
-	////////
-	////////
+	////////////////////////////////////////////////////////////////////////
 
 	int OrderCount; //the total number of orders to be drawn
 
 	Order *OrdListForDrawing[MaxPossibleOrdCnt]; // This Array of Pointers is used for drawing elements in the GUI
-	//NOTES:
-	//Orders are assumed to be sorted by arrival time
-	// At every time step, you should update those pointers
-	// to point to the current waiting orders only
 
-	//
-	// TODO: Add more members if needed
-	//
+	// Order Drawing Functions:
 
-	void DrawSingleOrder(Order* pO, int RegionCount, bool animate = 0, int time = 0) const;		//draws ONE order 
-	void DrawOrders(bool animate = 0, int time = 0) const;		//draws ALL orders in OrdListForDrawing
-	void Animate(int x, int y, int id, color colr, REGION reg,int time=0) const;
-	
+	void DrawOrders(bool animate = 0, int time = 0) const;									//draws ALL orders in OrdListForDrawing
+	void DrawSingleOrder(Order *pO, int RegionCount, bool animate = 0, int time = 0) const; //draws ONE order
+	void Animate(int x, int y, int id, color colr, REGION reg, int time = 0) const;
+
+	// Interface Functions:
 
 	void DrawString(const int iX, const int iY, const string Text) const; // prints a message in the passed coordinates
-	void DrawRestArea() const;	// draws the restaurant area
+	void DrawRestArea() const;											  // draws the restaurant area
 	void DrawStars(int time, bool flip = 0) const;
-	
-
-	void ClearStatusBar() const;   // clears the status bar
+	void ClearStatusBar() const;		   // clears the status bar
 	void ClearDrawingArea(int time) const; // clears the Drawing area from all drawings
 
-  public:
+public:
 	GUI();
 	~GUI();
 
@@ -88,7 +79,7 @@ class GUI
 	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT]) const;
 	void OrderOut(int time);
 
-	void UpdateInterface(bool animate = 0,int time = 0) const;
+	void UpdateInterface(bool animate = 0, int time = 0) const;
 	void UpdateInterface(color newColor) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list
 	void ResetDrawingList();			  //resets drawing list (should be called every timestep after drawing)
