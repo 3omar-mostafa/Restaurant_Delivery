@@ -178,7 +178,7 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 void GUI::DestroyOrder(Order * pO, int time)
 {
 	int t = (time-1) % 24;
-	int x = pO->getX(), y = pO->getY;
+	int x = pO->getX(), y = pO->getY();
 	if (t >= 4 && t < 11)
 	{
 		image img("bomb_explosion_morning.jpg");
