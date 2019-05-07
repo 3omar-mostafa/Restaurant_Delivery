@@ -442,15 +442,24 @@ void GUI::OrderOut(int time)
 		for (int i = 0; i < 300; i += 25) {
 			drawImage(img, WindWidth - 350 + i, WindHeight - StatusBarHeight - 90);
 			Sleep(50);
-			color afterNoonGrad = color(255, 165 + 3 * 3, 10 + 2 * 3);
+			color afterNoonGrad;
+			afterNoonGrad = color(255, 165+3*5, 10+2*5);
 			pWind->SetPen(afterNoonGrad);
 			pWind->SetBrush(afterNoonGrad);
-			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 90, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight-40);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 90, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight-70);
+			afterNoonGrad = color(255, 165 + 3 * 3, 10 + 2 * 3);
+			pWind->SetPen(afterNoonGrad);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 70, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight-50);
+			afterNoonGrad = color(255, 165 + 3 * 2, 10 + 2 * 2);
+			pWind->SetPen(afterNoonGrad);
+			pWind->SetBrush(afterNoonGrad);
+			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 50, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight - 40);
 			afterNoonGrad = color(255, 165, 10);
 			pWind->SetPen(afterNoonGrad);
 			pWind->SetBrush(afterNoonGrad);
 			pWind->DrawRectangle(WindWidth - 350 + i, WindHeight - StatusBarHeight - 40, WindWidth - 350 + i + 80, WindHeight - StatusBarHeight);
-		}
+			}
 		pWind->DrawRectangle(WindWidth - 350, WindHeight - StatusBarHeight - 40, WindWidth + 5, WindHeight - StatusBarHeight);
 	}
 	else {
