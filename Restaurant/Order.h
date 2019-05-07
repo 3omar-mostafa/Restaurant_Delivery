@@ -33,8 +33,8 @@ public:
 
 	void setDistance(int d);
 	int getDistance() const;
-	int getX();
-	int getY();
+	int getX() const;
+	int getY() const;
 	void setX(int x);
 	void setY(int y);
 

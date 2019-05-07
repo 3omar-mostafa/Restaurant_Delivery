@@ -15,7 +15,6 @@
 // it is the maestro of the project
 class Restaurant
 {
-private:
 	GUI *pGUI;
 	Queue<Event *> eventsQueue; //Queue of all events that will be loaded from file
 
@@ -62,7 +61,7 @@ public:
 	~Restaurant();
 
 
-	int getTimeStep();
+	int getTimeStep() const;
 	// Main Program functions:
 
 	void runSimulation();

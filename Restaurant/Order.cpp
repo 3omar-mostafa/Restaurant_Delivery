@@ -83,12 +83,12 @@ int Order::getDistance() const
 	return distance;
 }
 
-int Order::getX()
+int Order::getX() const
 {
 	return xCoordinate;
 }
 
-int Order::getY()
+int Order::getY() const
 {
 	return yCoordinate;
 }

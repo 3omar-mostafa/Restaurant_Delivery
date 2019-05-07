@@ -29,7 +29,7 @@ Restaurant::~Restaurant()
 	delete pGUI;
 }
 
-int Restaurant::getTimeStep()
+int Restaurant::getTimeStep() const
 {
 	return timeStep;
 }
@@ -342,7 +342,7 @@ void Restaurant::writeToFile(string filename)
 	outFile << "FT   ID   AT   WT   ST \n";
 	while (!totalQueue.isEmpty())
 	{
-		Order *currentOrder = 0;
+		Order *currentOrder = nullptr;
 		REGION orderRegion = REGION_COUNT;
 		ORDER_TYPE orderType = TYPE_COUNT;
 
@@ -541,8 +541,7 @@ bool Restaurant::autoPromoteRegion(int currentTimeStep, REGION reg)
 void Restaurant::autoPromoteAll(int currentTimeStep)
 {
 	for (int i = 0; i < REGION_COUNT; i++)
-		while (autoPromoteRegion(currentTimeStep, REGION(i)))
-			;
+		while (autoPromoteRegion(currentTimeStep, REGION(i)));
 }
 
 // Promotes an individual order, returns true if successful

@@ -116,14 +116,12 @@ bool Queue<T>::enqueue(const T &newEntry)
 		count++;
 		return true;
 	}
-	else
-	{
-		backPtr->setNext(newNodePtr); // The queue was not empty
-		backPtr = newNodePtr;		  // New node is at back
-		count++;
-		return true;
-	}
-	return false;
+
+	backPtr->setNext(newNodePtr); // The queue was not empty
+	backPtr = newNodePtr;		  // New node is at back
+	count++;
+	return true;
+
 } // end enqueue
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
