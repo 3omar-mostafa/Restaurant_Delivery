@@ -291,7 +291,7 @@ void GUI::DrawStars(int time, bool flip) const
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////
-void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes, int time) const // It is a private function
+void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool animate, int time) const // It is a private function
 {
 	
 	color clr = OrdersClrs[pO->getType()];
@@ -344,15 +344,16 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool deletes, int time) co
 	default:
 		break;
 	}
-	if (deletes)
+
+	if (animate)
+		Animate(x, y, pO->getID(), clr, Region, time);
+	else
 	{
 		pWind->SetPen(clr);
 		pWind->SetBrush(clr);
 		pWind->SetFont(20, BOLD, MODERN);
 		pWind->DrawInteger(x, y, pO->getID());
 	}
-	else
-		Animate(x, y, pO->getID(), clr, Region, time);
 }
 
 void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
@@ -489,7 +490,7 @@ void GUI::OrderOut(int time)
 // [Input Parameters]:
 //    orders [ ] : array of Order pointers (ALL orders from all regions in one array)
 //    TotalOrders : the size of the array (total no. of orders)
-void GUI::DrawOrders(bool delet, int time) const
+void GUI::DrawOrders(bool animate, int time) const
 {
 	color penColor;
 	int t = time % 24;
@@ -520,16 +521,16 @@ void GUI::DrawOrders(bool delet, int time) const
 	{ 
 		int orderRegion = OrdListForDrawing[i]->getRegion();
 		RegionsCounts[orderRegion]++;
-		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], delet, time);
+		DrawSingleOrder(OrdListForDrawing[i], RegionsCounts[orderRegion], animate, time);
 		DrawStars(time, i % 8 < 4);
 	}
 }
 
-void GUI::UpdateInterface(bool del, int time) const
+void GUI::UpdateInterface(bool animate, int time) const
 {
 	ClearDrawingArea(time);
 	DrawRestArea();
-	DrawOrders(del, time);
+	DrawOrders(animate, time);
 }
 
 void GUI::UpdateInterface(color newColor) const

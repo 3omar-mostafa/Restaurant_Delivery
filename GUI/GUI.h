@@ -61,8 +61,8 @@ class GUI
 	// TODO: Add more members if needed
 	//
 
-	void DrawSingleOrder(Order* pO, int RegionCount, bool deletes = 0,int time=0) const;		//draws ONE order 
-	void DrawOrders(bool delet = 0,int time=0) const;		//draws ALL orders in OrdListForDrawing
+	void DrawSingleOrder(Order* pO, int RegionCount, bool animate = 0, int time = 0) const;		//draws ONE order 
+	void DrawOrders(bool animate = 0, int time = 0) const;		//draws ALL orders in OrdListForDrawing
 	void Animate(int x, int y, int id, color colr, REGION reg,int time=0) const;
 	
 
@@ -88,7 +88,7 @@ class GUI
 	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT]) const;
 	void OrderOut(int time);
 
-	void UpdateInterface(bool del = 0,int time=0) const;
+	void UpdateInterface(bool animate = 0,int time = 0) const;
 	void UpdateInterface(color newColor) const;
 	void AddOrderForDrawing(Order *pOrd); //Adds a new order to the drawing list
 	void ResetDrawingList();			  //resets drawing list (should be called every timestep after drawing)

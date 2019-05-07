@@ -68,6 +68,7 @@ class Restaurant
 	void writeToFile(string filename);
 	
 	void Operate(PROGRAM_MODE mode);
+	void Ramadan(int currentTimestep);
 
 	// Queue functions:
 	void showActiveOrders();

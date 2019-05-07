@@ -175,59 +175,28 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 
 		if (mode != MODE_SILENT)
 		{
-			//Print current timestep
-			pGUI->PrintTimestep(currentTimestep);
-
-			//Display region info (on the status bar)
-			displayRegionsData();
+			if (mode == MODE_RAMADAN)
+				Ramadan(currentTimestep);
 
 			//Show all active orders in each region
 			showActiveOrders();
+
+			//Display region info (on the status bar)
+			displayRegionsData();
 
 			int totalOrders = 0;
 			for (int reg = 0; reg < REGION_COUNT; reg++)
 				totalOrders += normalQueue[reg].getLength() + vipQueue[reg].getLength() + frozenQueue[reg].getLength();
 
-			if (totalOrders >= 20)
-				pGUI->UpdateInterface(true, currentTimestep);
-			else
-				pGUI->UpdateInterface(false, currentTimestep);
-
+			pGUI->UpdateInterface(totalOrders < 20, currentTimestep);
 			pGUI->PrintTimestep(currentTimestep);
-		}
+		}		
 
-		if (mode != MODE_RAMADAN  || (mode == MODE_RAMADAN && currentTimestep % 24 > 19 || currentTimestep % 24 < 3))
-			pGUI->OrderOut(currentTimestep);
-
-		Sleep(100);
-		if (mode == MODE_RAMADAN)
-		{
-			if (currentTimestep % 24 == 19) {
-				image img("Restaurant\\Ramadan\\maghreb.jpg");
-				pGUI->drawImage(img, 0, 0);
-				PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Maghreb.wav"), nullptr, SND_SYNC);
-			}
-
-			else if (currentTimestep % 24 == 20) {
-				PlaySound(TEXT("Restaurant\\Ramadan\\Aho_geh_ya_wlad.wav"), nullptr, SND_ASYNC);
-			}
-
-			else if (currentTimestep % 24 == 3) {
-				image img("Restaurant\\Ramadan\\fajr.jpg");
-				pGUI->drawImage(img, 0, 0);
-				PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Fajr.wav"), nullptr, SND_SYNC);
-			}
-
-			else if (currentTimestep % 24 == 5) {
-				PlaySound(TEXT("Restaurant\\Ramadan\\Ramadan_gana.wav"), nullptr, SND_ASYNC);
-			}
-
-			
-		}
-
+		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 < 3)) {
-			//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 			assignMotorcycles(currentTimestep);
+			Sleep(100);
+			pGUI->OrderOut(currentTimestep);
 		}
 
 		switch (mode)
@@ -252,6 +221,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			pGUI->ResetDrawingList();
 			break;
 		}
+
 		currentTimestep++;
 	}
 
@@ -288,28 +258,65 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	system(outputFile.c_str());
 
 	/*
+	
 	The function should work as follows:
-	Print the current timestep (on the status bar?)
-	Check all inServiceMotorcycles of each region, restore all ready ones
-	Execute all events at current timestep
-	Check for auto-promotion of orders
-	Show active orders in each region on the screen (UpdateInterface)
+	// Check all inServiceMotorcycles of each region, restore all ready ones
+	// Execute all events at current timestep
+	// Check for auto-promotion of orders
+	// Show active orders in each region on the screen (UpdateInterface)
 	// Display region info (on the status bar)
-	// Display assigned Motorcycles of the last timestep (on the status bar?)
-	// Display total amount of orders served of each type (on the status bar?)
-	Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
-	Update the interface again, increase the timestep, reset the list of objects drawn on the screen
-	*/
-
-	/*
-	Statistics are required at the end of the program (please refer to the project document).
-	Ideas for calculating said statistics are yet to be decided on.
+	// Display assigned Motorcycles of the last timestep (on the status bar)
+	// Display total amount of orders served of each type (on the status bar)
+	// Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
+	// Update the interface
+	// Increment the Timestep
+	// Repeat until there are no more events or orders
+	
+	Statistics are required at the end of the program.
 	Where do we store the data for served orders?
-
 	---> Universal PriorityQueue for all orders of all regions.
-	---> setPriority now takes 0 for VIP priority and 1 for finishTime.
+	---> setPriority now takes 0 for VIP priority and 1 for -finishTime.
 	---> Orders are added after being assigned to motorcycles.
+
 	*/
+
+}
+
+void Restaurant::Ramadan(int currentTimestep)
+{
+	int t = currentTimestep % 24;
+	image img;
+
+	switch (t)
+	{
+	case 3:
+		img.Open("Restaurant\\Ramadan\\fajr.jpg");
+		pGUI->drawImage(img, 0, 0);
+		PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Fajr.wav"), nullptr, SND_SYNC);
+		break;
+
+	case 4:
+		for (int reg = 0; reg < REGION_COUNT; reg++)
+			assignedMotorcyclesLastTimestep[reg].clear();
+
+		PlaySound(TEXT("Restaurant\\Ramadan\\Ramadan_gana.wav"), nullptr, SND_ASYNC);
+		break;
+
+	case 12:
+		PlaySound(TEXT("Restaurant\\Ramadan\\Mar7ab_shahr_elsom.wav"), nullptr, SND_ASYNC);
+		break;
+
+	case 19:
+		Sleep(5000);
+		img.Open("Restaurant\\Ramadan\\maghreb.jpg");
+		pGUI->drawImage(img, 0, 0);
+		PlaySound(TEXT("Restaurant\\Ramadan\\Athan_Maghreb.wav"), nullptr, SND_SYNC);
+		break;
+
+	case 20:
+		PlaySound(TEXT("Restaurant\\Ramadan\\Aho_geh_ya_wlad.wav"), nullptr, SND_ASYNC);
+		break;
+	}
 }
 
 void Restaurant::loadFromFile(string fileName)
@@ -607,7 +614,6 @@ bool Restaurant::promote(int id, int extraMoney)
 bool Restaurant::cancel(int id)
 {
 	Order* cancelledOrder = orderIdArray[id];
-	//cancelledOrder->deleteIt(1);
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
 		if (normalQueue[reg].remove(cancelledOrder)) {
@@ -693,7 +699,6 @@ void Restaurant::returnMotorcycles(int currentTimestep)
 
 void Restaurant::assignMotorcycles(int currentTimestep)
 {
-
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
 		assignedMotorcyclesLastTimestep[reg].clear();
