@@ -228,7 +228,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	}
 
 	if (mode != MODE_SILENT) {
-		pGUI->UpdateInterface();
+		pGUI->UpdateInterface(currentTimestep);
 		displayRegionsData();
 	}
 
@@ -238,12 +238,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 		pGUI->waitForClick();
 		break;
 
-	case MODE_STEP:
+	case MODE_STEP: case MODE_RAMADAN:
 		Sleep(1000);
 		break;
 	}
-
-	pGUI->PrintMessage("Simulation over.");
 
 	//Return all motorcycles:
 	for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -252,15 +250,9 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			returnMotorcycles(++currentTimestep);
 	}
 
-	switch (mode)
-	{
-	case MODE_INTERACTIVE:
+	if (mode != MODE_SILENT) {
+		pGUI->PrintMessage("Simulation over. Click to continue.");
 		pGUI->waitForClick();
-		break;
-
-	case MODE_STEP:
-		Sleep(1000);
-		break;
 	}
 
 	pGUI->PrintMessage("Enter the Output File Name:");
