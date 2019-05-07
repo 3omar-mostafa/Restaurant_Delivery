@@ -195,9 +195,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 		//Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 < 3)) {
 			assignMotorcycles(currentTimestep);
-			Sleep(100);
-			if (mode != MODE_SILENT)
+			if (mode != MODE_SILENT) {
+				Sleep(100);
 				pGUI->OrderOut(currentTimestep);
+			}
 		}
 
 		//Increment the timestep
