@@ -160,7 +160,12 @@
   <ItemGroup>
     <Text Include="CMUgraphicsLib\Manual.txt" />
     <Text Include="CMUgraphicsLib\Readme.txt" />
-    <Text Include="input.txt" />
+    <Text Include="Test_Cases\input.txt" />
+    <Text Include="Test_Cases\input100.txt" />
+    <Text Include="Test_Cases\massive.txt" />
+    <Text Include="Test_Cases\newinput100.txt" />
+    <Text Include="Test_Cases\small.txt" />
+    <Text Include="Test_Cases\test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

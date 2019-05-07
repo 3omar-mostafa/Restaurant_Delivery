@@ -152,7 +152,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 {
 	pGUI->PrintMessage("Enter the Input File Name:");
 
-	string inputFile = pGUI->GetString() + ".txt";
+	string inputFile = "Test_Cases\\" + pGUI->GetString() + ".txt";
 	loadFromFile(inputFile);
 
 	if (mode == MODE_RAMADAN) {
@@ -178,11 +178,11 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			if (mode == MODE_RAMADAN)
 				Ramadan(currentTimestep);
 
-			//Show all active orders in each region
-			showActiveOrders();
-
 			//Display region info (on the status bar)
 			displayRegionsData();
+
+			//Show all active orders in each region
+			showActiveOrders();
 
 			int totalOrders = 0;
 			for (int reg = 0; reg < REGION_COUNT; reg++)
@@ -196,9 +196,11 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 		if (mode != MODE_RAMADAN || (mode == MODE_RAMADAN && currentTimestep % 24 >= 19 || currentTimestep % 24 < 3)) {
 			assignMotorcycles(currentTimestep);
 			Sleep(100);
-			pGUI->OrderOut(currentTimestep);
+			if (mode != MODE_SILENT)
+				pGUI->OrderOut(currentTimestep);
 		}
 
+		//Increment the timestep
 		switch (mode)
 		{
 		case MODE_INTERACTIVE:
@@ -225,10 +227,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 		currentTimestep++;
 	}
 
-	if (mode != MODE_SILENT)
+	if (mode != MODE_SILENT) {
 		pGUI->UpdateInterface();
-
-	pGUI->PrintMessage("Simulation over.");
+		displayRegionsData();
+	}
 
 	switch (mode)
 	{
@@ -241,6 +243,8 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 		break;
 	}
 
+	pGUI->PrintMessage("Simulation over.");
+
 	//Return all motorcycles:
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
@@ -248,6 +252,16 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 			returnMotorcycles(++currentTimestep);
 	}
 
+	switch (mode)
+	{
+	case MODE_INTERACTIVE:
+		pGUI->waitForClick();
+		break;
+
+	case MODE_STEP:
+		Sleep(1000);
+		break;
+	}
 
 	pGUI->PrintMessage("Enter the Output File Name:");
 
@@ -263,10 +277,10 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	// Check all inServiceMotorcycles of each region, restore all ready ones
 	// Execute all events at current timestep
 	// Check for auto-promotion of orders
-	// Show active orders in each region on the screen (UpdateInterface)
 	// Display region info (on the status bar)
 	// Display assigned Motorcycles of the last timestep (on the status bar)
 	// Display total amount of orders served of each type (on the status bar)
+	// Show active orders in each region on the screen (UpdateInterface)
 	// Send out all orders possible that are in the active Queues/Lists and assign Motorcycles to them
 	// Update the interface
 	// Increment the Timestep
@@ -483,8 +497,8 @@ void Restaurant::writeToFile(string filename)
 			<< ", Frozen: " << frozenMotorQueue[reg].getLength()
 			<< ", VIP: " << vipMotorQueue[reg].getLength() << "]\n";
 
-		float averageWait = waitSum[reg] * 1.0 / totalOrderCount[reg];
-		float averageService = serviceSum[reg] * 1.0 / totalOrderCount[reg];
+		float averageWait = totalOrderCount[reg] ? waitSum[reg] * 1.0 / totalOrderCount[reg] : 0;
+		float averageService = totalOrderCount[reg] ? serviceSum[reg] * 1.0 / totalOrderCount[reg] : 0;
 
 		outFile << "\tAverage Wait = " << averageWait << ", " << "Average Service = " << averageService;
 	}

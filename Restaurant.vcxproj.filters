@@ -24,6 +24,9 @@
     <Filter Include="Generic_DS">
       <UniqueIdentifier>{f9c05740-74ef-4242-8f5c-c406c492135c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Test Cases">
+      <UniqueIdentifier>{74ba5010-f733-4fed-9984-1100ff5c114c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defs.h" />
@@ -260,6 +263,23 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
-    <Text Include="input.txt" />
+    <Text Include="Test_Cases\input.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
+    <Text Include="Test_Cases\input100.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
+    <Text Include="Test_Cases\massive.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
+    <Text Include="Test_Cases\newinput100.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
+    <Text Include="Test_Cases\small.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
+    <Text Include="Test_Cases\test.txt">
+      <Filter>Test Cases</Filter>
+    </Text>
   </ItemGroup>
 </Project>
