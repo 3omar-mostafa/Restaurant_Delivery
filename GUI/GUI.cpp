@@ -178,23 +178,23 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 void GUI::DestroyOrder(Order * pO, int time)
 {
 	int t = (time-1) % 24;
-	int x = pO->getX(), y = pO->getY;
+	int x = pO->getX(), y = pO->getY();
 	if (t >= 4 && t < 11)
 	{
 		image img("bomb_explosion_morning.jpg");
-		pWind->DrawImage(img,x,y);
+		pWind->DrawImage(img,x-5,y-5);
 	}
 
 	else if (t >= 11 && t < 19)
 	{
 		image img("bomb_explosion_noon.jpg");
-		pWind->DrawImage(img, x, y);
+		pWind->DrawImage(img, x-5, y-5);
 	}
 	else {
 		image img("bomb_explosion_night.jpg");
-		pWind->DrawImage(img, x, y);
+		pWind->DrawImage(img, x-5, y-5);
 	}
-	
+	Sleep(2000);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
