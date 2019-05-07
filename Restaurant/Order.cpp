@@ -83,6 +83,26 @@ int Order::getDistance() const
 	return distance;
 }
 
+int Order::getX()
+{
+	return xCoordinate;
+}
+
+int Order::getY()
+{
+	return yCoordinate;
+}
+
+void Order::setX(int x)
+{
+	xCoordinate = x;
+}
+
+void Order::setY(int y)
+{
+	yCoordinate = y;
+}
+
 int Order::getFinishTime() const
 {
 	return finishTime;

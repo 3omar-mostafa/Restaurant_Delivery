@@ -29,6 +29,11 @@ Restaurant::~Restaurant()
 	delete pGUI;
 }
 
+int Restaurant::getTimeStep()
+{
+	return timeStep;
+}
+
 ////////////////////////////////  Main Program Functions   /////////////////////////////
 
 void Restaurant::runSimulation()
@@ -54,7 +59,7 @@ void Restaurant::Operate(PROGRAM_MODE mode)
 	int currentTimestep = 1;
 	while (!eventsQueue.isEmpty() || !finished())
 	{
-
+		timeStep = currentTimestep;
 		//Check all inServiceMotorcycles of each region, restore all ready ones
 		returnMotorcycles(currentTimestep);
 
@@ -557,13 +562,14 @@ bool Restaurant::promote(int id, int extraMoney)
 }
 
 // Cancels an individual order, returns true if successful
-bool Restaurant::cancel(int id)
+bool Restaurant::cancel(int id,int time)
 {
 	Order *cancelledOrder = orderIdArray[id];
 	for (int reg = 0; reg < REGION_COUNT; reg++)
 	{
 		if (normalQueue[reg].remove(cancelledOrder))
 		{
+			pGUI->DestroyOrder(cancelledOrder,time);
 			return true;
 		}
 	}

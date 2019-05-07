@@ -56,6 +56,7 @@ class GUI
 	void DrawOrders(bool animate = 0, int time = 0) const;									//draws ALL orders in OrdListForDrawing
 	void DrawSingleOrder(Order *pO, int RegionCount, bool animate = 0, int time = 0) const; //draws ONE order
 	void Animate(int x, int y, int id, color colr, REGION reg, int time = 0) const;
+	
 
 	// Interface Functions:
 
@@ -78,6 +79,7 @@ public:
 	void PrintTimestep(int time) const;
 	void PrintRegions(string data[REGION_COUNT], string dataMotor[REGION_COUNT], string dataAssignedMotors[REGION_COUNT], string servedOrders[REGION_COUNT]) const;
 	void OrderOut(int time);
+	void DestroyOrder(Order* pO, int time);
 
 	void UpdateInterface(bool animate = 0, int time = 0) const;
 	void UpdateInterface(color newColor) const;

@@ -10,7 +10,7 @@ private:
 	ORDER_TYPE type; //order type: Normal, Frozen, VIP
 	REGION region;   //Region of this order
 	int distance;	//The distance (in meters) between the order location and the restaurant
-
+	int xCoordinate, yCoordinate;
 	double totalMoney; //Total order money
 
 	float priority; //Used to sort the elements in the PriorityQueue
@@ -33,6 +33,10 @@ public:
 
 	void setDistance(int d);
 	int getDistance() const;
+	int getX();
+	int getY();
+	void setX(int x);
+	void setY(int y);
 
 	void setTimes(int startTime, int speed);
 

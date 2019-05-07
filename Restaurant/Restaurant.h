@@ -20,7 +20,7 @@ private:
 	Queue<Event *> eventsQueue; //Queue of all events that will be loaded from file
 
 	int autoPromotionLimit;
-
+	int timeStep;
 	//Orders:
 	//	3rd idea:
 	//		A PriorityQueue for VIP orders.
@@ -61,6 +61,8 @@ public:
 	Restaurant();
 	~Restaurant();
 
+
+	int getTimeStep();
 	// Main Program functions:
 
 	void runSimulation();
@@ -93,7 +95,7 @@ public:
 	bool autoPromoteRegion(int currentTimeStep, REGION reg);
 	void autoPromoteAll(int currentTimeStep);
 
-	bool cancel(int id);
+	bool cancel(int id,int time);
 
 	// Motorcycle functions:
 

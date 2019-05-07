@@ -120,6 +120,8 @@ void GUI::DrawSingleOrder(Order *pO, int RegionCount, bool animate, int time) co
 	default:
 		break;
 	}
+	pO->setX(x);
+	pO->setY(y);
 
 	if (animate)
 		Animate(x, y, pO->getID(), clr, Region, time);
@@ -171,6 +173,28 @@ void GUI::Animate(int x, int y, int id, color colr, REGION reg, int time) const
 	pWind->SetBrush(colr);
 	pWind->SetFont(20, BOLD, MODERN);
 	pWind->DrawInteger(x, y, id);
+}
+
+void GUI::DestroyOrder(Order * pO, int time)
+{
+	int t = (time-1) % 24;
+	int x = pO->getX(), y = pO->getY;
+	if (t >= 4 && t < 11)
+	{
+		image img("bomb_explosion_morning.jpg");
+		pWind->DrawImage(img,x,y);
+	}
+
+	else if (t >= 11 && t < 19)
+	{
+		image img("bomb_explosion_noon.jpg");
+		pWind->DrawImage(img, x, y);
+	}
+	else {
+		image img("bomb_explosion_night.jpg");
+		pWind->DrawImage(img, x, y);
+	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

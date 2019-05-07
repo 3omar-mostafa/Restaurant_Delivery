@@ -12,5 +12,5 @@ void CancellationEvent::readData(ifstream &inFile)
 
 void CancellationEvent::execute(Restaurant *pRest)
 {
-	pRest->cancel(orderID);
+	pRest->cancel(orderID,pRest->getTimeStep());
 }
