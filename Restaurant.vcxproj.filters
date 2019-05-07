@@ -263,22 +263,16 @@
     <Text Include="CMUgraphicsLib\Readme.txt">
       <Filter>CMUGraphicsLib</Filter>
     </Text>
-    <Text Include="Test_Cases\input.txt">
+    <Text Include="Test_Cases\cancel.txt">
       <Filter>Test Cases</Filter>
     </Text>
-    <Text Include="Test_Cases\input100.txt">
+    <Text Include="Test_Cases\speed_ap.txt">
       <Filter>Test Cases</Filter>
     </Text>
-    <Text Include="Test_Cases\massive.txt">
+    <Text Include="Test_Cases\vip.txt">
       <Filter>Test Cases</Filter>
     </Text>
-    <Text Include="Test_Cases\newinput100.txt">
-      <Filter>Test Cases</Filter>
-    </Text>
-    <Text Include="Test_Cases\small.txt">
-      <Filter>Test Cases</Filter>
-    </Text>
-    <Text Include="Test_Cases\test.txt">
+    <Text Include="Test_Cases\chaos.txt">
       <Filter>Test Cases</Filter>
     </Text>
   </ItemGroup>
